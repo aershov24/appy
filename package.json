@@ -1,0 +1,27 @@
+{
+  "name": "NodeJs.RestAPI.Template",
+  "version": "1.0.0",
+  "description": "NodeJs.RestAPI.Template",
+  "main": "app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "nodemon": "node node_modules/nodemon/bin/nodemon -e js src/app.js",
+    "apidoc": "node node_modules/apidoc/bin/apidoc -i src/ -o src/public/"
+  },
+  "author": "ErshovAS",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "jade": "^1.11.0",
+    "jsonwebtoken": "^5.5.4",
+    "winston": "^2.1.1"
+  },
+  "apidoc": {
+    "title": "NodeJs.Site.Template API"
+  },
+  "devDependencies": {
+    "apidoc": "^0.14.0",
+    "nodemon": "^1.8.1"
+  }
+}
