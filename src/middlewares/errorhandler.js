@@ -7,7 +7,7 @@ exports.logerror = function(err, req, res, next){
   
 exports.handler_404 = function(req, res, next){
     var err;
-    logger.debug('404: Page not found...');
+    logger.error('404: Page not found: %s', req.url);
     err = new Error;
     err.status = 404;
     return next(err);
@@ -16,7 +16,7 @@ exports.handler_404 = function(req, res, next){
 exports.handler_500 = function(err, req, res, next){
     if (req.xhr) {
       return res.status(500).send({
-        error: 'Something blew up!'
+        error: '500 Internal Server Error'
       });
     } else {
       return next(err);
@@ -25,15 +25,39 @@ exports.handler_500 = function(err, req, res, next){
   
 exports.render_404 = function(err, req, res, next){
     if (err.status !== 404) {
-      logger.debug('next');
       return next(err);
     }
-    return res.send(err.message || '** Page not found! **');
-  };
+
+    // respond with html page
+    if (req.accepts('html')) {
+      res.render('404', { url: req.url });
+      return;
+    }
+
+    // respond with json
+    if (req.accepts('json')) {
+      res.send({ error: 'Not found' });
+      return;
+    }
+
+    // default to plain-text. send()
+    res.type('txt').send('Not found');
+};
   
 exports.render_500 = function(err, req, res, next){
     res.status(500);
-    return res.send({
-      error: err.stack
-    });
+    // respond with html page
+    if (req.accepts('html')) {
+      res.render('500', { url: req.url, error: err.stack });
+      return;
+    }
+
+    // respond with json
+    if (req.accepts('json')) {
+      res.send({ error: 'Internal Server Error' });
+      return;
+    }
+
+    // default to plain-text. send()
+    res.type('txt').send('Internal Server Error');
   };

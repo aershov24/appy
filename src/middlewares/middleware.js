@@ -1,5 +1,5 @@
-var logger = require('../helpers/logger.js')
-  , path = require('path')
+var logger  = require('../helpers/logger.js')
+  , path    = require('path')
   , cfg     = require('../config.js')
   , jwt     = require('jsonwebtoken');
   
@@ -18,11 +18,20 @@ exports.isAuthentificated = function(req, res, next){
       }
     });
     } else {
-    // if there is no token
-    // return an error
-    return res.status(403).send({ 
-        success: false, 
-        message: 'No token provided.' 
-    });
+       // respond with html page
+    if (req.accepts('html')) {
+      return res.redirect('/users/login')
+    }
+
+    // respond with json
+    if (req.accepts('json')) {
+      // if there is no token
+      // return an error
+      return res.status(403).send({ 
+          success: false, 
+          message: 'No token provided.' 
+      });
+    }
+
   }
 };

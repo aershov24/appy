@@ -1,0 +1,545 @@
+@import url(http://fonts.googleapis.com/css?family=Asap);
+html {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%
+}
+body {
+    margin: 0
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+    display: block
+}
+audio,
+canvas,
+progress,
+video {
+    display: inline-block;
+    vertical-align: baseline
+}
+audio:not([controls]) {
+    display: none;
+    height: 0
+}
+[hidden],
+template {
+    display: none
+}
+a, label, li{
+    font-size: 16px;
+}
+abbr[title] {
+    border-bottom: 1px dotted
+}
+b,
+strong {
+    font-weight: 700
+}
+dfn {
+    font-style: italic
+}
+h1 {
+    font-size: 2em
+}
+mark {
+    background: #ff0;
+    color: #000
+}
+small {
+    font-size: 80%
+}
+sub,
+sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline
+}
+sup {
+    top: -.5em
+}
+sub {
+    bottom: -.25em
+}
+img {
+    border: 0
+}
+svg:not(:root) {
+    overflow: hidden
+}
+figure {
+    margin: 1em 40px
+}
+hr {
+    box-sizing: content-box;
+    height: 0
+}
+pre {
+    overflow: auto
+}
+code,
+kbd,
+pre,
+samp {
+    font-family: monospace, monospace;
+    font-size: 1em
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+    color: inherit;
+    font: inherit;
+    margin: 0
+}
+button {
+    overflow: visible
+}
+button,
+select {
+    text-transform: none
+}
+button,
+html input[type=button],
+input[type=reset],
+input[type=submit] {
+    -webkit-appearance: button;
+    cursor: pointer
+}
+button[disabled]:hover {
+    background: #666
+}
+button[disabled],
+html input[disabled] {
+    cursor: default
+}
+button::-moz-focus-inner,
+fieldset {
+    border: 1px solid silver;
+    margin: 0 2px;
+    padding: .35em .625em .75em
+}
+legend {
+    border: 0;
+    padding: 0
+}
+textarea {
+    overflow: auto
+}
+optgroup {
+    font-weight: 700
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+td,
+th {
+    padding: 0
+}
+[hidden] {
+    display: none!important
+}
+.ChooseYourNews h1,
+.ErrorLabel,
+.LoginBox h1,
+.___LT-B-U____,
+body,
+html {
+    height: 100%;
+    font-family: Asap, Tahoma, Trebuchet MS, TrebuchetMS, sans-serif
+}
+body>form {
+    height: 100%
+}
+html {
+    box-sizing: border-box
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+    margin: 0
+}
+* {
+    box-sizing: inherit;
+    transition: all .2s ease;
+    background-repeat: no-repeat;
+    position: relative
+}
+:after,
+:before {
+    transition: all .2s ease;
+    box-sizing: inherit;
+    background-repeat: no-repeat;
+    position: relative
+}
+/*a {
+    color: #0074d9
+}
+a:active,
+a:visited {
+    color: #b10dc9
+}*/
+.LoginBox>div {
+    letter-spacing: -.31em;
+    *letter-spacing: normal;
+    *word-spacing: -.43em;
+    text-rendering: optimizespeed;
+    font-family: FreeSans, Arimo, "Droid Sans", Helvetica, Arial, sans-serif;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap
+}
+.LoginBox>div,
+.opera-only:-o-prefocus {
+    word-spacing: -.43em
+}
+.Wrapper {
+    height: 100%
+}
+.Wrapper *+* {
+    margin-top: .75em
+}
+.ChooseYourNews,
+.Header,
+.LoginBox {
+    padding: 0 10px;
+    height: 5em
+}
+.Header {
+    border-bottom: 1px solid #ccc;
+    z-index: 2;
+    background: #fff
+}
+.Header img {
+    margin: 1em 0
+}
+.Header #Logout {
+    float: right;
+    display: block
+}
+.tools {
+    transition: none;
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    margin-top: 80px;
+    height: 50px;
+    background: #ccc;
+    width: 100%
+}
+.tools .wrap {
+    width: 1000px;
+    margin: 0 auto;
+    background: #666
+}
+input.Error{
+  background:#ffa19c
+}
+.Content {
+    min-height: 100%;
+    background: #e5e5e5;
+    padding-top: 5em;
+    margin-top: -5em
+}
+.ChooseYourNews,
+.LoginBox {
+    width: 1000px;
+    background: #fff;
+    height: 100%;
+    margin: 0 auto
+}
+.ChooseYourNews h1,
+.LoginBox h1 {
+    margin-top: 1em;
+    width: 100%
+}
+.ChooseYourNews .choose {
+    margin-top: 82px
+}
+.StandardLightbox {
+    border: none;
+    padding: 50px;
+    background: #fff
+}
+table {
+    width: 100%;
+    border: none;
+    font-size: 16px;
+}
+table th {
+    line-height: 60px;
+    background: #ff4136;
+    color: #fff;
+    text-transform: uppercase;
+    border: none;
+    text-align: left;
+    padding: 0 10px
+}
+table td {
+    border: none;
+    padding-top: 10px;
+    padding-right: 10px;
+    line-height: 40px
+}
+
+#AdsTable{
+    margin-bottom: 10px;
+}
+
+.logoText{
+  color:grey;
+}
+.SuccessLabel {
+    width: 100%;
+    color: #00802b;
+    font-size: .85em
+}
+.ErrorLabel {
+    width: 100%;
+    color: #ff4136;
+    font-size: .85em
+}
+form{
+  font-size: 16px;
+}
+
+form[action*=PrefillChooseYourNews] input[type=button],
+form[action*=PrefillChooseYourNews] input[type=submit] {
+    margin-left: 0;
+    margin-right: 10px
+}
+form[action*=PrefillChooseYourNews] h5 {
+    margin-bottom: 1em
+}
+form[action*=PrefillChooseYourNews] select {
+    line-height: 40px;
+    height: 40px;
+    width: 100%;
+    border: none;
+    border-bottom: 4px solid #ccc
+}
+form[action*=PrefillChooseYourNews] select:focus,
+form[action*=PrefillChooseYourNews] select:hover {
+    outline: 0;
+    border-bottom: 4px solid #ff4136
+}
+.Scrollable {
+    max-height: 400px;
+    overflow: auto;
+    margin: .5em 0
+}
+.Scrollable ul {
+    padding: 0;
+    list-style-type: none
+}
+.Scrollable ul li {
+    border: none;
+    cursor: pointer;
+    margin: 5px 0;
+    /*border-radius: 3px;*/
+    background: #f0f0f5;
+    padding: 5px;
+    color: #111
+}
+.Scrollable ul li.Selected {
+    background: #2ecc40;
+    color: #fff
+}
+.StandardLightbox {
+    height: 410px
+}
+
+@media only screen and (min-width: 700px) {
+  .iframes {
+      /*width: 1000px;*/
+      height: 925px;
+      margin: 30px 0 0 -30px;
+      background: url(../img/bg2.jpg) no-repeat center
+  }
+  .iframes iframe {
+      border: none;
+      margin: 0
+  }
+  .iframes #Banner {
+      position: absolute;
+      top: 10px;
+      left: 262px;
+      width: 728px;
+      height: 90px
+  }
+  .iframes #Skyscraper {
+      position: absolute;
+      top: 180px;
+      left: 10px;
+      width: 160px;
+      height: 600px
+  }
+  .iframes #Preview {
+      position: relative;
+      top: 240px;
+      /*left: 731px;*/
+      left: 66%;
+      width: 300px;
+      height: 250px;
+      border: 1px solid silver;
+  }
+
+  .iframes #PreviewDiv{
+      position: absolute;
+      top: 238px;
+      left: 68%;
+      display: inline-block;
+      width: 250px;
+  }
+
+  .iframes #PreviewDiv #news{
+      position: relative;
+      font-family: Open sans;
+      font-size: 24px;
+      color: white;
+      display: inline-block;
+      width: 250px;
+      text-decoration: none;
+      font-weight: bold;
+      letter-spacing: -0.02em;
+      line-height: 130%;
+  }
+
+  .iframes #PreviewDiv #footer{
+      position: relative;
+      display: inline-block;
+      margin-top: 20px;
+      margin-left: -4px;
+  }
+
+  .iframes a:hover{
+      text-decoration: none;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .iframes iframe {
+        margin: 0;
+        border: none;
+  }
+
+  .iframes #Preview {
+      border: 1px solid silver;
+  }
+
+  .iframes #PreviewDiv{
+      position: absolute;
+      top: 20px;
+      left: 25px;
+      display: inline-block;
+      width: 250px;
+  }
+
+  .iframes #PreviewDiv #news{
+      position: relative;
+      font-family: Open sans;
+      font-size: 24px;
+      color: white;
+      display: inline-block;
+      width: 250px;
+      text-decoration: none;
+      font-weight: bold;
+      letter-spacing: -0.02em;
+      line-height: 130%;
+  }
+
+  .iframes #PreviewDiv #footer{
+      position: relative;
+      display: inline-block;
+      margin-top: 20px;
+      margin-left: -4px;
+  }
+
+}
+
+.browsehappy {
+    margin: .2em 0;
+    background: #ccc;
+    color: #000;
+    padding: .2em 0
+}
+.hidden {
+    display: none!important;
+    visibility: hidden
+}
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px
+}
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto
+}
+.invisible {
+    visibility: hidden
+}
+.clearfix:after,
+.clearfix:before {
+    content: " ";
+    display: table
+}
+.clearfix:after {
+    clear: both
+}
+.modal {
+     overflow-y: auto;
+     }
+.modal-open {
+  overflow: auto;
+}
+.modal-open[style] {
+  padding-right: 0px !important;
+}
+
+@media only screen and (max-width: 400px) {
+    #fadeshow1 {
+        display: none;
+    }
+}
+
+.breadcrumb>li+li:before
+{
+  content:"/";
+  padding:0 5px;
+  color: #999999;
+}
+
+.logoImg
+{
+  height: 30px; 
+  margin-top: -4px;
+}

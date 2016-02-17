@@ -1,0 +1,24 @@
+nav.navbar.navbar-inverse
+  .container-fluid
+    .navbar-header
+      button.navbar-toggle(type='button', data-toggle='collapse', data-target='#myNavbar')
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      a.navbar-brand(href='/')
+        img(alt='Carsales.com.au - Banner Admin', src='/img/logo.png', style='height: 42px; margin-top: -8px;')
+    #myNavbar.collapse.navbar-collapse
+      ul.nav.navbar-nav
+        li.active
+          a(href='/campaigns/#{user.client}')
+            span.glyphicon.glyphicon-list
+            |  Campaigns
+      ul.nav.navbar-nav.navbar-right
+        li 
+          a(href='/')
+            span.glyphicon.glyphicon-user  
+            |   #{user.username}
+        li
+          a(href='/users/logout')
+            span.glyphicon.glyphicon-log-in
+            |   Logout

@@ -1,0 +1,26 @@
+extends ./layout.jade
+
+block body
+  body
+    nav.navbar.navbar-inverse
+      .container-fluid
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#myNavbar')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(href='/')
+            img.logoImg(alt='Logo', src='/img/logo.png')
+        #myNavbar.collapse.navbar-collapse
+          ul.nav.navbar-nav.navbar-right
+            li
+              a(href='/user/login')
+                span.glyphicon.glyphicon-log-in
+                |   Login
+    .container
+      h1 404 - Page not found
+      p
+        | URL: #{url}
+      p
+        a(href='/') Homepage
+    include ./footer.jade

@@ -1,7 +1,7 @@
-NodeJS Rest API service template
+Appy Web Service
 
 ## Description
-NodeJS Rest API service template uses the following modules and tools:
+Appy Web Service uses the following modules and tools:
 
 Dependencies:
 * Express as HTTP server
@@ -15,8 +15,8 @@ Dev dependencies are:
 ## Installation 
 Run the following commands:
 ```
-git clone https://github.com/aershov24/node.restapi.template.git
-cd node.restapi.template
+git clone https://github.com/aershov24/appy.git
+cd appy
 npm install
 npm run nodemon
 ```
