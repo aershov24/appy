@@ -3,6 +3,7 @@ var exp = require('express')
   , logger = require('../helpers/logger.js')
   , cfg   =   require('../config.js')
   , jwt     = require('jsonwebtoken')
+  , User = require('../models/users.js')
   , router = exp.Router();
 
 /**
