@@ -4,6 +4,7 @@ var Log = null;
 var MongoDB = null;
 var MongoDBLog = null;
 var loggly = null;
+var secret = null;
 
 // production environment
 if (ENV == 'production')
@@ -26,6 +27,8 @@ if (ENV == 'production')
     tags: ["Appy"],
     json:true
   };
+
+  secret = 'secret';
 }
 
 // development environment
@@ -49,6 +52,8 @@ if (ENV == 'DEV')
     tags: ["Appy"],
     json:true
   };
+
+  secret = 'secret';
 }
 
 var fbcall;
@@ -70,3 +75,4 @@ exports.MongoDB = MongoDB;
 exports.MongoDBLog = MongoDBLog;
 exports.facebook = facebook;
 exports.loggly = loggly;
+exports.secret = secret;

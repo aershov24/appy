@@ -24,17 +24,13 @@ localAuth = function(req, username, password, done) {
       {
         // if the user is not exist
         logger.debug("The user is not exist");
-        return done(null, false, {message: "The user is not exist"});
+        return done(null, null, {message: "The user is not exist"});
       }
       else 
         User.ValidatePassword(password, user.password, function(err, result){
-          if (result == true)
+          if (result === true)
           {
             logger.debug("User authentificated");
-            // create json token and save it with user
-            //var token = jwt.sign(user, cfg.secret, {
-            //  expiresIn: 10*60 // expires in 10 minutes
-            //});
             return done(null, user);
           }
           else
@@ -48,69 +44,52 @@ localAuth = function(req, username, password, done) {
 };
 
 facebookAuth = function(rq, accessToken, refreshToken, profile, done){
-    process.nextTick(function(){
-    logger.debug('Facebook authentification...');
-    if (length(profile.emails) !== 0) {
-      logger.debug("Facebook profile: ", JSON.stringify(profile, null, 2));
-      User.FindByEmail(profile.emails[0].value, 
-        function (err, users){
-          if (!err){
-            if (users == null){
-              // create new user
-              var newUser = {
-                facebook: {
-                  id: profile.id,
-                  username: profile.username,
-                  displayName: profile.displayName,
-                  name: {
-                      familyName: profile.name.familyName,
-                      givenName: profile.name.givenName,
-                      middleName: null
-                  },
-                  gender: profile.gender,
-                  profileUrl: profile.profileUrl,
-                  emails: profile.emails,
-                },
-                username:  profile.name.givenName+profile.name.familyName,
-                name: profile.name.givenName+' '+profile.name.familyName,
-                email: profile.emails[0].value
-              };
+  process.nextTick(function(){
+    logger.debug("Facebook profile: ", JSON.stringify(profile, null, 2));
+    User.FindByFacebookId(profile.id, 
+      function (err, user){
+        if (err)
+        {
+          logger.error(err);
+          return done(err, false);
+        }
 
-              User.AddUser(newUser, function(err, user){
-                if (!err){
-                  // TODO add token
-                  //var token = jwt.sign(user, cfg.secret, {
-                  //  expiresIn: 10*60 // expires in 10 minutes
-                  //});
-                  logger.debug('User authentificated');
-                  return done(null, profile);
-                }
-                else{
-                  logger.error('Error create user'+ err);
-                  return done(null, profile);
-                }
-              });
-            }
-            else{
-              // TODO: add token
-              //var token = jwt.sign(user, cfg.secret, {
-              //  expiresIn: 10*60 // expires in 10 minutes
-              //});
-              logger.debug('User authentificated: ', users);
-              return done(null, profile);
-            }
-          }
-          else{
-            logger.warn("Error getting user with email: " + profile.emails[0].value);
-            return done(null, profile);
-          }
-        });
-      }
-    else {
-      logger.warn("Error facebook login: "+ profile);
-      return done(null, profile);
-    }
-    });
+        logger.debug("Founded User: ", user);
+        if (!user){
+          var newUser = {
+            facebook: {
+              id: profile.id,
+              username: profile.username,
+              displayName: profile.displayName,
+              name: {
+                  familyName: profile.name.familyName,
+                  givenName: profile.name.givenName,
+                  middleName: null
+              },
+              gender: profile.gender,
+              profileUrl: profile.profileUrl,
+              emails: profile.emails,
+            },
+            username:  profile.name.givenName+profile.name.familyName,
+            name: profile.name.givenName+' '+profile.name.familyName,
+            email: profile.emails[0].value
+          };
+
+          logger.debug("New Facebook User: ", newUser);
+
+          User.AddUser(newUser, function(err, user){
+            if (err) return done(err, null);
+            logger.debug('User created with FacebookId: %s', profile.id);
+            logger.debug(user);
+            return done(null, user);
+          });
+        }
+        else{
+          logger.debug('User with FacebookId existed: ', profile.id);
+          return done(null, user);
+        }
+      });
+  });
 };
   
 exports.facebookAuth = facebookAuth;

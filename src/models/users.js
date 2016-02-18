@@ -32,9 +32,22 @@ exports.FindByEmail = function(email, cb) {
   });
 };
 
+exports.FindByFacebookId = function(facebookId, cb) {
+  MongoClient.connect(cfg.MongoDB.connectionString, function(err, db) {
+    assert.equal(null, err);
+    logger.debug("Search by facebookId: %s", facebookId);
+    var users = db.collection('users');
+    users.findOne({ "facebook.id": facebookId}, function(err, user) {
+      if (err) {
+        logger.error(err);
+        cb(err, null);
+      }
+      cb(null, user);
+    });
+  });
+};
 
-exports.AddUser = function(newUser, cb)
-{
+exports.AddUser = function(newUser, cb){
     MongoClient.connect(cfg.MongoDB.connectionString, function(err, db) {
     assert.equal(null, err);
     // TODO: check collection for existing
@@ -51,7 +64,8 @@ exports.AddUser = function(newUser, cb)
           if (err) 
             cb(err, null);
           if (user){
-            cb(RESOURCES.ERRORS.UserEmailExists);
+            // user with the email exists - linking accounts
+            cb(RESOURCES.ERRORS.UserEmailExists, null);
           } else{
             saltAndHash(newUser.password, function(hash){
               newUser.password = hash;
@@ -67,7 +81,7 @@ exports.AddUser = function(newUser, cb)
       }
     });
   });
-}
+};
 
 exports.ValidatePassword = function(plainPass, hashedPass, callback)
 {

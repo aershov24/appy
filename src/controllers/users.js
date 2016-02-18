@@ -4,6 +4,7 @@ var express = require('express')
   , customMw = require('../middlewares/middleware.js')
   , User    = require('../models/users.js')
   , jwt     = require('jsonwebtoken')
+  , cfg   =   require('../config.js')
   , passport = require('passport');
 
 router.get('/login', function(req, res) {
@@ -18,10 +19,19 @@ router.get('/signup', function(req, res) {
   res.render('signup');
 });
 
-router.post('/login', 
-  passport.authenticate('local', { failureRedirect: '/users/login' }),
-  function(req, res) {
-    res.send({result: 'auth ok'});
+router.post('/login', function(req, res, next){
+  passport.authenticate('local', function(err, user, info) {
+    if (err) { return next(err); }
+    if (!user) {
+      return res.json(401, { error: info });
+    }
+    //user has authenticated correctly thus we create a JWT token 
+    var token = jwt.sign(user, cfg.secret, {
+      expiresIn: 10*60*6 // expires in 10 minutes
+    });
+    res.json({ token : token });
+
+  })(req, res, next);
 });
 
 router.post('/signup', function(req, res) { 
