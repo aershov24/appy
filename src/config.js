@@ -69,6 +69,19 @@ var facebook = {
     fields: ["id", "birthday", "email", "first_name", "gender", "last_name"]
 }
 
+var linkedincall;
+if (ENV == 'PROD')
+  linkedincall = 'https://appyws.herokuapp.com/auth/linkedin/callback';
+else
+  linkedincall = 'http://localhost:3000/auth/linkedin/callback';
+
+var linkedin = {
+    consumerKey: '755qgme9oyarzu',
+    consumerSecret: '4NH0WMakwmfngFAd',
+    callbackURL: linkedincall,
+    profileFields: ['id', 'first-name', 'last-name', 'email-address', 'headline']
+}
+
 exports.ENV = ENV;
 exports.Log = Log;
 exports.MongoDB = MongoDB;
