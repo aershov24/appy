@@ -15,9 +15,16 @@ router.get('/facebook', passport.authenticate('facebook', {
   scope: ['email', 'user_friends']
 }));
 
+router.get('/linkedin',
+  passport.authenticate('linkedin', { state: 'SOME STATE'  }),
+  function(req, res){
+    // The request will be redirected to LinkedIn for authentication, so this
+    // function will not be called.
+});
+
 /**
  * @api {get} /auth/facebook/callback Facebook authentification callback
- * @apiName AuthFacebookaCallback
+ * @apiName AuthFacebookCallback
  * @apiGroup User
  */
 router.get('/facebook/callback', function(req, res, next){
@@ -27,7 +34,27 @@ router.get('/facebook/callback', function(req, res, next){
       return res.json(401, { error: info });
     }
     //user has authenticated correctly thus we create a JWT token 
-    var token = jwt.sign(user, cfg.secret, {
+    var token = jwt.sign(user._id, cfg.secret, {
+      expiresIn: 10*60*6 // expires in 10 minutes
+    });
+    res.json({ token : token });
+  })(req, res, next);
+});
+
+/**
+ * @api {get} /auth/linkedin/callback LinkedIn authentification callback
+ * @apiName AuthLinkedInCallback
+ * @apiGroup User
+ */
+router.get('/linkedin/callback', function(req, res, next){
+  passport.authenticate('linkedin', function(err, user, info) {
+    if (err) return res.json(401, { error: err});
+    if (!user) {
+      return res.json(401, { error: info });
+    }
+    logger.debug(JSON.stringify(user, null, 2));
+    //user has authenticated correctly thus we create a JWT token 
+    var token = jwt.sign(user._id, cfg.secret, {
       expiresIn: 10*60*6 // expires in 10 minutes
     });
     res.json({ token : token });
@@ -41,7 +68,7 @@ router.post('/login', function(req, res, next){
       return res.json(401, { error: info });
     }
     //user has authenticated correctly thus we create a JWT token 
-    var token = jwt.sign(user, cfg.secret, {
+    var token = jwt.sign(user._id, cfg.secret, {
       expiresIn: 10*60*6 // expires in 10 minutes
     });
     res.json({ token : token });
@@ -59,7 +86,7 @@ router.post('/signup', function(req, res) {
   User.AddUser(newUser, function(err, user){
     if (err) res.send({error: err});
      //user has authenticated correctly thus we create a JWT token 
-    var token = jwt.sign(user, cfg.secret, {
+    var token = jwt.sign(user._id, cfg.secret, {
       expiresIn: 10*60*6 // expires in 10 minutes
     });
     res.json({ token : token });

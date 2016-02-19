@@ -2,9 +2,29 @@ var logger = require('../helpers/logger.js')
   , RESOURCES = require('../models/resources.js')
   , MongoClient = require('mongodb').MongoClient
   , cfg = require('../config.js')
+  , jwt     = require('jsonwebtoken')
   , assert = require('assert')
   , moment = require('moment')
   , crypto = require('crypto');
+
+exports.GetUserByToken = function(token, cb) {
+    // invalid token 
+  jwt.verify(token, cfg.secret, function(err, decoded) {
+    if (err) cb(err, null);
+    if (!decoded) cb('Wrong token', null);
+    logger.debug("Decoded: ", decoded);
+    MongoClient.connect(cfg.MongoDB.connectionString, function(err, db) {
+      assert.equal(null, err);
+      // TODO: check collection for existing
+      var users = db.collection('users');
+      users.findOne({ _id: decoded}, function(err, user) {
+        if (err) 
+          cb(err, null);
+        cb(null, user);
+      });
+    });
+  });
+};
 
 exports.GetUser = function(username, cb) {
   MongoClient.connect(cfg.MongoDB.connectionString, function(err, db) {
@@ -47,6 +67,21 @@ exports.FindByFacebookId = function(facebookId, cb) {
   });
 };
 
+exports.FindByLinkedinId = function(linkedinId, cb) {
+  MongoClient.connect(cfg.MongoDB.connectionString, function(err, db) {
+    assert.equal(null, err);
+    logger.debug("Search by LinkedinId: %s", linkedinId);
+    var users = db.collection('users');
+    users.findOne({ "linkedin.id": linkedinId}, function(err, user) {
+      if (err) {
+        logger.error(err);
+        cb(err, null);
+      }
+      cb(null, user);
+    });
+  });
+};
+
 exports.AddUser = function(newUser, cb){
     MongoClient.connect(cfg.MongoDB.connectionString, function(err, db) {
     assert.equal(null, err);
@@ -73,7 +108,7 @@ exports.AddUser = function(newUser, cb){
               newUser.dateCreate = moment().format();
               users.insert(newUser, { safe: true }, function(err, result){
                 if (err) cb(err, null);
-                cb(null, result.ops);
+                cb(null, result.ops[0]);
               });
             });
           }

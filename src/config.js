@@ -76,10 +76,10 @@ else
   linkedincall = 'http://localhost:3000/auth/linkedin/callback';
 
 var linkedin = {
-    consumerKey: '755qgme9oyarzu',
-    consumerSecret: '4NH0WMakwmfngFAd',
-    callbackURL: linkedincall,
-    profileFields: ['id', 'first-name', 'last-name', 'email-address', 'headline']
+    apiKey: '755qgme9oyarzu',
+    apiSecret: '4NH0WMakwmfngFAd',
+    callback: linkedincall,
+    profileFields: ['r_emailaddress', 'r_basicprofile']
 }
 
 exports.ENV = ENV;
@@ -87,5 +87,6 @@ exports.Log = Log;
 exports.MongoDB = MongoDB;
 exports.MongoDBLog = MongoDBLog;
 exports.facebook = facebook;
+exports.linkedin = linkedin;
 exports.loggly = loggly;
 exports.secret = secret;

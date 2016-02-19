@@ -11,6 +11,7 @@ var logger  = require('./helpers/logger.js')
   , createDomain = require('domain').create
   , passport  = require('passport')
   , LocalStrategy = require('passport-local').Strategy
+  , LinkedInStrategy = require('passport-linkedin-oauth2').Strategy
   , FacebookStrategy = require('passport-facebook').Strategy
   , auth = require('./helpers/auth.js')
   , port = process.env.PORT || 3000
@@ -51,6 +52,13 @@ passport.use(new FacebookStrategy({
     profileFields: cfg.facebook.fields,
     passReqToCallback: true
   }, auth.facebookAuth));
+
+passport.use(new LinkedInStrategy({
+    clientID: cfg.linkedin.apiKey,
+    clientSecret: cfg.linkedin.apiSecret,
+    callbackURL: cfg.linkedin.callback,
+    scope: cfg.linkedin.profileFields
+  }, auth.linkedinAuth));
   
 passport.serializeUser(function(user, done){
     return done(null, user);
