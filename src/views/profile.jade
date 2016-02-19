@@ -1,0 +1,16 @@
+extends ./layout.jade
+
+block body
+  body
+    include ./navbar.jade
+    .container
+      ol.breadcrumb
+        li
+          a(href='/profile') #{user.username}
+        li
+          label Profile
+      p
+        h1 #{user.username}: 
+      p
+        | !{JSON.stringify(user)}
+    include ./footer.jade

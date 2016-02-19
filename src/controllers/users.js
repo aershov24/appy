@@ -11,7 +11,7 @@ router.get('/login', function(req, res) {
   res.render('login');
 });
 
-router.get('/profile', customMw.isAuthentificated, function(req, res) {
+router.get('/getUserInfo', customMw.isAuthentificated, function(req, res) {
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
   User.GetUserByToken(token, function(err, user) {
     if (err) { return next(err); }
@@ -19,6 +19,17 @@ router.get('/profile', customMw.isAuthentificated, function(req, res) {
       return res.json(401, { error: 'No user found' });
     }
     res.json({ user : user });
+  });
+});
+
+router.get('/profile', customMw.isAuthentificated, function(req, res) {
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  User.GetUserByToken(token, function(err, user) {
+    if (err) { return next(err); }
+    if (!user) {
+      return res.json(401, { error: 'No user found' });
+    }
+    res.render('profile', { user : user });
   });
 });
 
