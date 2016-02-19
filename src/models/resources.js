@@ -3,4 +3,9 @@ var ERRORS = {
   UserEmailExists: 'User with the email exists'
 }
 
+var EMAILS = {
+  WelcomeEmailSubject: 'Welcome to Appy'
+}
+
 exports.ERRORS = ERRORS;
+exports.EMAILS = EMAILS;

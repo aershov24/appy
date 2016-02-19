@@ -7,6 +7,7 @@ var JSONToken = null;
 
 var fbcall = null;
 var linkedincall = null;
+var rootPath = __dirname;
 
 // production environment
 if (ENV == 'PROD')
@@ -84,6 +85,15 @@ var linkedin = {
     profileFields: ['r_emailaddress', 'r_basicprofile']
 }
 
+var mailgun = {
+  apiKey: 'key-20700b4cadc80c0ad3116f0f794ff620', 
+  domain: 'sandboxad4d16cd62bd4df9a26e2b4ee96feacc.mailgun.org'
+}
+
+var mail = {
+  from: 'info@appy.com'
+}
+
 exports.ENV = ENV;
 exports.Log = Log;
 exports.MongoDB = MongoDB;
@@ -92,3 +102,6 @@ exports.facebook = facebook;
 exports.linkedin = linkedin;
 exports.loggly = loggly;
 exports.JSONToken = JSONToken;
+exports.mailgun = mailgun;
+exports.mail = mail;
+exports.rootPath = rootPath;

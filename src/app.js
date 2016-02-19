@@ -22,12 +22,12 @@ var opt = {
   }
 };
 
-app.set('secret', cfg.secret)
-app.set('views', __dirname + '/views')
+app.set('secret', cfg.JSONToken.secret)
+app.set('views', cfg.rootPath + '/views')
 app.engine('jade', require('jade').__express)
 app.set('view engine', 'jade')
 
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(cfg.rootPath + '/public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(morgan('combined', {

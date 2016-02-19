@@ -1,6 +1,7 @@
 var exp = require('express')
   , passport = require('passport')
   , logger = require('../helpers/logger.js')
+  , mailer = require('../helpers/mailer.js')
   , cfg   =   require('../config.js')
   , jwt     = require('jsonwebtoken')
   , User = require('../models/users.js')
@@ -82,7 +83,6 @@ router.post('/login', function(req, res, next){
       expiresIn: cfg.JSONToken.expires
     });
     res.json({ token : token, expires: cfg.JSONToken.expires });
-
   })(req, res, next);
 });
 
@@ -100,11 +100,16 @@ router.post('/signup', function(req, res) {
 
   User.AddUser(newUser, function(err, user){
     if (err) res.send({error: err});
-     //user has authenticated correctly thus we create a JWT token 
+    //user has authenticated correctly thus we create a JWT token 
     var token = jwt.sign(user._id, cfg.JSONToken.secret, {
       expiresIn: cfg.JSONToken.expires
     });
-    res.json({ token : token, expires: cfg.JSONToken.expires });
+
+    mailer.sendWelcomeEmail(user, function(err, body){
+      if (err) 
+        logger.error('Cant send register email: %s', err);
+      res.json({ token : token, expires: cfg.JSONToken.expires });
+    });
   });
 });
 
