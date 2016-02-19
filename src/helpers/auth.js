@@ -14,7 +14,7 @@ localAuth = function(req, username, password, done) {
     logger.debug("Local authentification...");
     logger.debug("Username: %s", username);
     logger.debug("Password: %s", password);
-    User.GetUser(username, function(err, user){
+    User.GetUserByUsername(username, function(err, user){
       if (err)
       {
         logger.error(err);

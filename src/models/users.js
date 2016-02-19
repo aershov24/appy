@@ -9,7 +9,7 @@ var logger = require('../helpers/logger.js')
 
 exports.GetUserByToken = function(token, cb) {
     // invalid token 
-  jwt.verify(token, cfg.secret, function(err, decoded) {
+  jwt.verify(token, cfg.JSONToken.secret, function(err, decoded) {
     if (err) cb(err, null);
     if (!decoded) cb('Wrong token', null);
     logger.debug("Decoded: ", decoded);
@@ -26,7 +26,7 @@ exports.GetUserByToken = function(token, cb) {
   });
 };
 
-exports.GetUser = function(username, cb) {
+exports.GetUserByUsername = function(username, cb) {
   MongoClient.connect(cfg.MongoDB.connectionString, function(err, db) {
     assert.equal(null, err);
     // TODO: check collection for existing

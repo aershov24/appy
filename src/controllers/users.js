@@ -7,10 +7,20 @@ var express = require('express')
   , cfg   =   require('../config.js')
   , passport = require('passport');
 
+/**
+ * @api {get} /users/login Render login page
+ * @apiName UserLogin
+ * @apiGroup User
+ */
 router.get('/login', function(req, res) {
   res.render('login');
 });
 
+/**
+ * @api {get} /users/getUserInfo Get user info by token
+ * @apiName GetUserInfo
+ * @apiGroup User
+ */
 router.get('/getUserInfo', customMw.isAuthentificated, function(req, res) {
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
   User.GetUserByToken(token, function(err, user) {
@@ -22,6 +32,11 @@ router.get('/getUserInfo', customMw.isAuthentificated, function(req, res) {
   });
 });
 
+/**
+ * @api {get} /users/profile Render profile oage
+ * @apiName UserProfile
+ * @apiGroup User
+ */
 router.get('/profile', customMw.isAuthentificated, function(req, res) {
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
   User.GetUserByToken(token, function(err, user) {
@@ -37,46 +52,11 @@ router.get('/signup', function(req, res) {
   res.render('signup');
 });
 
-router.post('/login', function(req, res, next){
-  passport.authenticate('local', function(err, user, info) {
-    if (err) { return next(err); }
-    if (!user) {
-      return res.json(401, { error: info });
-    }
-    //user has authenticated correctly thus we create a JWT token 
-    var token = jwt.sign(user, cfg.secret, {
-      expiresIn: 10*60*6 // expires in 10 minutes
-    });
-    res.json({ token : token });
-
-  })(req, res, next);
-});
-
-router.post('/signup', function(req, res) { 
-  var newUser = {
-    username: req.body.username,
-    email: req.body.email,
-    password: req.body.password
-  };
-
-  User.AddUser(newUser, function(err, user){
-    if (err) res.send({error: err});
-    logger.debug('New user added: %j', user);
-    // todo render profile page
-    //var token = jwt.sign(user, cfg.secret, {
-    //  expiresIn: 10*60 // expires in 10 minutes
-    //});
-
-    // return the information including token as JSON
-    //res.json({
-    //  success: true,
-    //  message: 'User authentificated',
-    //  token: token
-    //});
-    res.send(user);
-  });
-});
-
+/**
+ * @api {get} /users/logout Logout from current session
+ * @apiName UserLogout
+ * @apiGroup User
+ */
 router.get('/logout', customMw.isAuthentificated, function(req, res) {
   req.session.destroy(function(err) {
     if (!err){

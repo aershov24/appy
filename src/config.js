@@ -1,13 +1,15 @@
 var ENV = process.env.NODE_ENV || 'DEV';
-
 var Log = null;
 var MongoDB = null;
 var MongoDBLog = null;
 var loggly = null;
-var secret = null;
+var JSONToken = null;
+
+var fbcall = null;
+var linkedincall = null;
 
 // production environment
-if (ENV == 'production')
+if (ENV == 'PROD')
 {
   MongoDB = {
     connectionString: "mongodb://appy:appy99@ds011288.mongolab.com:11288/appy"
@@ -28,7 +30,13 @@ if (ENV == 'production')
     json:true
   };
 
-  secret = 'secret';
+  JSONToken = {
+    secret: 'secret',
+    expires: 10*60*6
+  };
+
+  fbcall = 'https://appyws.herokuapp.com/auth/facebook/callback';
+  linkedincall = 'https://appyws.herokuapp.com/auth/linkedin/callback';
 }
 
 // development environment
@@ -53,14 +61,14 @@ if (ENV == 'DEV')
     json:true
   };
 
-  secret = 'secret';
-}
+  JSONToken = {
+    secret : 'secret',
+    expires: 10*60*6
+  };
 
-var fbcall;
-if (ENV == 'PROD')
-  fbcall = 'https://appyws.herokuapp.com/auth/facebook/callback';
-else
   fbcall = 'http://localhost:3000/auth/facebook/callback';
+  linkedincall = 'http://localhost:3000/auth/linkedin/callback';
+}
 
 var facebook = {
     apiKey: '1526838307617018',
@@ -68,12 +76,6 @@ var facebook = {
     callback: fbcall,
     fields: ["id", "birthday", "email", "first_name", "gender", "last_name"]
 }
-
-var linkedincall;
-if (ENV == 'PROD')
-  linkedincall = 'https://appyws.herokuapp.com/auth/linkedin/callback';
-else
-  linkedincall = 'http://localhost:3000/auth/linkedin/callback';
 
 var linkedin = {
     apiKey: '755qgme9oyarzu',
@@ -89,4 +91,4 @@ exports.MongoDBLog = MongoDBLog;
 exports.facebook = facebook;
 exports.linkedin = linkedin;
 exports.loggly = loggly;
-exports.secret = secret;
+exports.JSONToken = JSONToken;
