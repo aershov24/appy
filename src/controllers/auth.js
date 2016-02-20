@@ -78,6 +78,7 @@ router.post('/login', function(req, res, next){
     if (!user) {
       return res.json(401, { error: info });
     }
+    logger.debug(JSON.stringify(user, null, 2));
     //user has authenticated correctly thus we create a JWT token 
     var token = jwt.sign(user._id, cfg.JSONToken.secret, {
       expiresIn: cfg.JSONToken.expires
@@ -125,7 +126,7 @@ router.post('/login', function(req, res, next){
       return res.json(401, { error: info });
     }
     //user has authenticated correctly thus we create a JWT token 
-    var token = jwt.sign(user, cfg.secret, {
+    var token = jwt.sign(user._id, cfg.secret, {
       expiresIn: cfg.JSONToken.expires
     });
     return res.json({ token : token, expires: cfg.JSONToken.expires });

@@ -1,9 +1,11 @@
 var express = require('express')
   , router = express.Router()
   , logger = require('../helpers/logger.js')
+  , logger = require('../helpers/logger.js')
+  , cache = require('../helpers/cache.js')
+  , decoder = require('../helpers/decoder.js')
   , customMw = require('../middlewares/middleware.js')
   , User    = require('../models/users.js')
-  , jwt     = require('jsonwebtoken')
   , cfg   =   require('../config.js')
   , passport = require('passport');
 
@@ -23,28 +25,34 @@ router.get('/login', function(req, res) {
  */
 router.get('/getUserInfo', customMw.isAuthentificated, function(req, res) {
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  User.GetUserByToken(token, function(err, user) {
-    if (err) { return next(err); }
-    if (!user) {
-      return res.json(401, { error: 'No user found' });
-    }
-    res.json({ user : user });
+  decoder.getObjectByToken(token, function(err, id){
+    if (err) { return res.status(401).json({ error: err }); }
+    cache.fetchUser(id, function(err, user) {
+      if (err) { return res.status(401).json({ error: err });  }
+      if (!user) {
+        return res.status(401).json({ error: 'No user found' });
+      }
+      res.json({ user : user });
+    });
   });
 });
 
 /**
- * @api {get} /users/profile Render profile oage
+ * @api {get} /users/profile Render profile page
  * @apiName UserProfile
  * @apiGroup User
  */
 router.get('/profile', customMw.isAuthentificated, function(req, res) {
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  User.GetUserByToken(token, function(err, user) {
-    if (err) { return next(err); }
-    if (!user) {
-      return res.json(401, { error: 'No user found' });
-    }
-    res.render('profile', { user : user });
+  decoder.getObjectByToken(token, function(err, id){
+    if (err) { return res.status(401).json({ error: err });  }
+    User.GetUserById(id, function(err, user) {
+      if (err) { return res.status(401).json({ error: err }); }
+      if (!user) {
+        return res.status(401).json({ error: 'No user found' });
+      }
+      res.render('profile', { user : user });
+    });
   });
 });
 
@@ -58,15 +66,7 @@ router.get('/signup', function(req, res) {
  * @apiGroup User
  */
 router.get('/logout', customMw.isAuthentificated, function(req, res) {
-  req.session.destroy(function(err) {
-    if (!err){
-      res.redirect('/user/login');
-    }
-    else {
-      logger.warn(err);
-      res.redirect('/user/login');
-    }
-  })
+  // TODO: implement token blacklist for logout users
 });
 
 module.exports = router;

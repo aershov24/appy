@@ -6,6 +6,7 @@ var MongoDB = null;
 var MongoDBLog = null;
 var loggly = null;
 var JSONToken = null;
+var redis = null;
 
 var fbcall = null;
 var linkedincall = null;
@@ -40,6 +41,12 @@ if (ENV == 'PROD')
     expires: 10*60*6
   };
 
+  redis = {
+    host: 'ec2-54-221-194-20.compute-1.amazonaws.com',
+    port: '18799',
+    password: 'pcnj8oj3um615b3j1mifv0a8rfa'
+  };
+
   fbcall = 'https://appyws.herokuapp.com/auth/facebook/callback';
   linkedincall = 'https://appyws.herokuapp.com/auth/linkedin/callback';
 }
@@ -69,6 +76,12 @@ if (ENV == 'DEV')
   JSONToken = {
     secret : 'secret',
     expires: 10*60*6
+  };
+
+  redis = {
+    host: 'ec2-54-221-194-20.compute-1.amazonaws.com',
+    port: '18799',
+    password: 'pcnj8oj3um615b3j1mifv0a8rfa'
   };
 
   fbcall = 'http://localhost:3000/auth/facebook/callback';
@@ -114,6 +127,7 @@ exports.loggly = loggly;
 exports.JSONToken = JSONToken;
 exports.mailgun = mailgun;
 exports.twilio = twilio;
+exports.redis = redis;
 
 exports.mail = mail;
 exports.rootPath = rootPath;
