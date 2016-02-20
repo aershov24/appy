@@ -5,6 +5,7 @@ var express = require('express')
 
 router.use('/users', require('./users'));
 router.use('/auth', require('./auth'));
+router.use('/api', require('./api'));
 
 router.get('/', customMw.isAuthentificated, function(req, res){
     res.redirect('/users/profile');

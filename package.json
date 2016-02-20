@@ -1,12 +1,12 @@
 {
-  "name": "NodeJs.RestAPI.Template",
+  "name": "Appy",
   "version": "1.0.0",
-  "description": "NodeJs.RestAPI.Template",
+  "description": "Appy Web Service",
   "main": "app.js",
   "scripts": {
     "start": "node src/app.js",
     "nodemon": "node node_modules/nodemon/bin/nodemon -e js src/app.js",
-    "apidoc": "node node_modules/apidoc/bin/apidoc -i src/ -o src/public/"
+    "apidoc": "node node_modules/apidoc/bin/apidoc -i src/ -o src/public/docs"
   },
   "author": "ErshovAS",
   "license": "ISC",

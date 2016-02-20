@@ -1,3 +1,5 @@
+var path = require('path');
+
 var ENV = process.env.NODE_ENV || 'DEV';
 var Log = null;
 var MongoDB = null;
@@ -8,6 +10,8 @@ var JSONToken = null;
 var fbcall = null;
 var linkedincall = null;
 var rootPath = __dirname;
+var templatesPath = path.join(rootPath, 'templates'); 
+var filesPath = path.join(rootPath, 'files'); 
 
 // production environment
 if (ENV == 'PROD')
@@ -28,7 +32,7 @@ if (ENV == 'PROD')
     token: "3a7c8ea5-1b6a-4759-8b9f-cbe2a8423a86",
     subdomain: "appy",
     tags: ["Appy"],
-    json:true
+    json: true
   };
 
   JSONToken = {
@@ -59,7 +63,7 @@ if (ENV == 'DEV')
     token: "3a7c8ea5-1b6a-4759-8b9f-cbe2a8423a86",
     subdomain: "appy",
     tags: ["Appy"],
-    json:true
+    json: true
   };
 
   JSONToken = {
@@ -105,3 +109,5 @@ exports.JSONToken = JSONToken;
 exports.mailgun = mailgun;
 exports.mail = mail;
 exports.rootPath = rootPath;
+exports.templatesPath = templatesPath;
+exports.filesPath = filesPath;
