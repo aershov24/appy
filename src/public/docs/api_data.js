@@ -170,7 +170,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/users/profile",
-    "title": "Render profile oage",
+    "title": "Render profile page",
     "name": "UserProfile",
     "group": "User",
     "version": "0.0.0",
