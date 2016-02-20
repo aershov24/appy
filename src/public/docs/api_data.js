@@ -70,6 +70,34 @@ define({ "api": [
     "groupTitle": "Authentication"
   },
   {
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "varname1",
+            "description": "<p>No type.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "varname2",
+            "description": "<p>With type.</p>"
+          }
+        ]
+      }
+    },
+    "type": "",
+    "url": "",
+    "version": "0.0.0",
+    "filename": "src/public/docs/main.js",
+    "group": "C__Work_Appy_src_public_docs_main_js",
+    "groupTitle": "C__Work_Appy_src_public_docs_main_js",
+    "name": ""
+  },
+  {
     "type": "get",
     "url": "/api/sendEmailWithAttachments",
     "title": "Send an email with attachments to a current user",
@@ -98,6 +126,16 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "src/controllers/api.js",
     "groupTitle": "Email"
+  },
+  {
+    "type": "get",
+    "url": "/api/sendSMSMessage",
+    "title": "Send SMS message to a phone number",
+    "name": "SendSMSMessage",
+    "group": "SMS",
+    "version": "0.0.0",
+    "filename": "src/controllers/api.js",
+    "groupTitle": "SMS"
   },
   {
     "type": "get",

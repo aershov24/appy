@@ -9,16 +9,20 @@ renderWelcomeEmail = function(user, cb){
   var templateDir = path.join(cfg.templatesPath, 'welcome-email')
   var welcomeEmail = new EmailTemplate(templateDir);
   welcomeEmail.render(user, function (err, result) {
-    if (err) cb (err, null);
-    cb(null, result);
+    if (err){ 
+      logger.error(err);
+      return cb (err, null);
+    }
+    return cb(null, result);
   })
 };
 
 sendWelcomeEmail = function(user, cb){
   renderWelcomeEmail(user, function(err, render){
-    logger.debug(render);
-    if (err)
+    if (err){
+      logger.error(err);
       cb(err, null);
+    }
 
     var data = {
       from: cfg.mail.from,
@@ -28,9 +32,11 @@ sendWelcomeEmail = function(user, cb){
     };
 
     mailgun.messages().send(data, function (err, body) {
-      if (err) 
-        cb(err, null);
-      cb(null, body);
+      if (err){
+        logger.error(err);
+        return cb(err, null);
+      }
+      return cb(null, body);
     });
   });
 };
@@ -44,9 +50,11 @@ sendRawEmail = function(from, to, subject, body, cb){
   };
 
   mailgun.messages().send(data, function (err, body) {
-    if (err) 
-      cb(err, null);
-    cb(null, body);
+    if (err){
+      logger.error(err);
+      return cb(err, null);
+    }
+    return cb(null, body);
   });
 };
 
@@ -64,9 +72,11 @@ sendEmailWithAttachment = function(from, to, subject, body, files, cb){
   };
 
   mailgun.messages().send(data, function (err, body) {
-    if (err) 
-      cb(err, null);
-    cb(null, body);
+    if (err) {
+      logger.error(err);
+      return cb(err, null);
+    }
+    return cb(null, body);
   });
 };
 

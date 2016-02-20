@@ -94,6 +94,12 @@ var mailgun = {
   domain: 'sandboxad4d16cd62bd4df9a26e2b4ee96feacc.mailgun.org'
 }
 
+var twilio = {
+  from: '+61481072223',
+  accountSid: 'ACacb739d781ca5c996c0733789ebb6a83',
+  authToken: 'd8472a21473b6fa49baf10860aa1fe43'
+}
+
 var mail = {
   from: 'info@appy.com'
 }
@@ -107,6 +113,8 @@ exports.linkedin = linkedin;
 exports.loggly = loggly;
 exports.JSONToken = JSONToken;
 exports.mailgun = mailgun;
+exports.twilio = twilio;
+
 exports.mail = mail;
 exports.rootPath = rootPath;
 exports.templatesPath = templatesPath;

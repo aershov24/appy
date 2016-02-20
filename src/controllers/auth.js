@@ -43,7 +43,7 @@ router.get('/facebook/callback', function(req, res, next){
     var token = jwt.sign(user._id, cfg.JSONToken.secret, {
       expiresIn: cfg.JSONToken.expires
     });
-    res.json({ token : token, expires: cfg.JSONToken.expires });
+    return res.json({ token : token, expires: cfg.JSONToken.expires });
   })(req, res, next);
 });
 
@@ -63,7 +63,7 @@ router.get('/linkedin/callback', function(req, res, next){
     var token = jwt.sign(user._id, cfg.JSONToken.secret, {
       expiresIn: cfg.JSONToken.expires
     });
-    res.json({ token : token, expires: cfg.JSONToken.expires });
+    return res.json({ token : token, expires: cfg.JSONToken.expires });
   })(req, res, next);
 });
 
@@ -82,7 +82,7 @@ router.post('/login', function(req, res, next){
     var token = jwt.sign(user._id, cfg.JSONToken.secret, {
       expiresIn: cfg.JSONToken.expires
     });
-    res.json({ token : token, expires: cfg.JSONToken.expires });
+    return res.json({ token : token, expires: cfg.JSONToken.expires });
   })(req, res, next);
 });
 
@@ -108,7 +108,7 @@ router.post('/signup', function(req, res) {
     mailer.sendWelcomeEmail(user, function(err, body){
       if (err) 
         logger.error('Cant send register email: %s', err);
-      res.json({ token : token, expires: cfg.JSONToken.expires });
+      return res.json({ token : token, expires: cfg.JSONToken.expires });
     });
   });
 });
@@ -128,7 +128,7 @@ router.post('/login', function(req, res, next){
     var token = jwt.sign(user, cfg.secret, {
       expiresIn: cfg.JSONToken.expires
     });
-    res.json({ token : token, expires: cfg.JSONToken.expires });
+    return res.json({ token : token, expires: cfg.JSONToken.expires });
 
   })(req, res, next);
 });
