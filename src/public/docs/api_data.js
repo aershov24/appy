@@ -1,8 +1,28 @@
 define({ "api": [
   {
     "type": "get",
-    "url": "/auth/facebook",
-    "title": "Facebook authentification",
+    "url": "/admin/addUserRoles",
+    "title": "Add a user to a role",
+    "name": "AddUserRoles",
+    "group": "Admin",
+    "version": "0.0.0",
+    "filename": "src/controllers/admin.js",
+    "groupTitle": "Admin"
+  },
+  {
+    "type": "get",
+    "url": "/admin/manageUsers",
+    "title": "Check permissions for user manage",
+    "name": "ManageUsers",
+    "group": "Admin",
+    "version": "0.0.0",
+    "filename": "src/controllers/admin.js",
+    "groupTitle": "Admin"
+  },
+  {
+    "type": "get",
+    "url": "/auth/linkedin",
+    "title": "LinkedIn authentification",
     "name": "AuthFacebook",
     "group": "Authentication",
     "version": "0.0.0",
@@ -11,8 +31,8 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/auth/linkedin",
-    "title": "LinkedIn authentification",
+    "url": "/auth/facebook",
+    "title": "Facebook authentification",
     "name": "AuthFacebook",
     "group": "Authentication",
     "version": "0.0.0",
@@ -42,7 +62,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/auth/login",
-    "title": "Local (username, email) authentification",
+    "title": "Get user info by token",
     "name": "AuthLogin",
     "group": "Authentication",
     "version": "0.0.0",
@@ -52,7 +72,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/auth/login",
-    "title": "Get user info by token",
+    "title": "Local (username, email) authentification",
     "name": "AuthLogin",
     "group": "Authentication",
     "version": "0.0.0",

@@ -1,71 +1,60 @@
 var logger = require('../helpers/logger.js')
   , RESOURCES = require('../models/resources.js')
-  , MongoClient = require('mongodb').MongoClient
   , cfg = require('../config.js')
-  , assert = require('assert')
+  , db = require('./db.js')
   , moment = require('moment')
   , crypto = require('crypto');
 
 exports.GetUserById = function(id, cb) {
-  MongoClient.connect(cfg.MongoDB.connectionString, function(err, db) {
-    assert.equal(null, err);
-    // TODO: check collection for existing
-    var users = db.collection('users');
-    users.findOne({ _id: id}, function(err, user) {
+  db.init(function(err){
+    if (err) return cb(err, null);
+    db.users.findOne({ _id: id}, function(err, user) {
       if (err) 
-        cb(err, null);
-      cb(null, user);
+        return cb(err, null);
+      return cb(null, user);
     });
   });
 };
 
 exports.GetUserByUsername = function(username, cb) {
-  MongoClient.connect(cfg.MongoDB.connectionString, function(err, db) {
-    assert.equal(null, err);
-    // TODO: check collection for existing
-    var users = db.collection('users');
-    users.findOne({ username: username}, function(err, user) {
+  db.init(function(err){
+    if (err) return cb(err, null);
+    db.users.findOne({ username: username}, function(err, user) {
       if (err) 
-        cb(err, null);
-      cb(null, user);
+        return cb(err, null);
+      return cb(null, user);
     });
   });
 };
 
 exports.FindByEmail = function(email, cb) {
-  MongoClient.connect(cfg.MongoDB.connectionString, function(err, db) {
-    assert.equal(null, err);
-    // TODO: check collection for existing
-    var users = db.collection('users');
-    users.findOne({ email: email}, function(err, user) {
+  db.init(function(err){
+    if (err) return cb(err, null);
+    db.users.findOne({ email: email}, function(err, user) {
       if (err) 
-        cb(err, null);
-      cb(null, user);
+        return cb(err, null);
+      return cb(null, user);
     });
   });
 };
 
 exports.FindByFacebookId = function(facebookId, cb) {
-  MongoClient.connect(cfg.MongoDB.connectionString, function(err, db) {
-    assert.equal(null, err);
-    logger.debug("Search by facebookId: %s", facebookId);
-    var users = db.collection('users');
-    users.findOne({ "facebook.id": facebookId}, function(err, user) {
+  db.init(function(err){
+    if (err) return cb(err, null);
+    db.users.findOne({ "facebook.id": facebookId}, function(err, user) {
       if (err) {
         logger.error(err);
-        cb(err, null);
+        return cb(err, null);
       }
-      cb(null, user);
+      return cb(null, user);
     });
   });
 };
 
 exports.FindByLinkedinId = function(linkedinId, cb) {
-  MongoClient.connect(cfg.MongoDB.connectionString, function(err, db) {
-    assert.equal(null, err);
-    logger.debug("Search by LinkedinId: %s", linkedinId);
-    var users = db.collection('users');
-    users.findOne({ "linkedin.id": linkedinId}, function(err, user) {
+  db.init(function(err){
+    if (err) return cb(err, null);
+    db.users.findOne({ "linkedin.id": linkedinId}, function(err, user) {
       if (err) {
         logger.error(err);
         cb(err, null);
@@ -76,19 +65,16 @@ exports.FindByLinkedinId = function(linkedinId, cb) {
 };
 
 exports.AddUser = function(newUser, cb){
-    MongoClient.connect(cfg.MongoDB.connectionString, function(err, db) {
-    assert.equal(null, err);
-    // TODO: check collection for existing
-    var users = db.collection('users');
-
-    users.findOne({ username: newUser.username}, function(err, user) {
+  db.init(function(err){
+    if (err) return cb(err, null);
+    db.users.findOne({ username: newUser.username}, function(err, user) {
       if (err) 
         cb(err, null);
       if (user){
         cb(RESOURCES.ERRORS.UserNameExists, null);
       } 
       else{
-        users.findOne({ email: newUser.email }, function(e, user) {
+        db.users.findOne({ email: newUser.email }, function(e, user) {
           if (err) 
             cb(err, null);
           if (user){
@@ -99,7 +85,7 @@ exports.AddUser = function(newUser, cb){
               newUser.password = hash;
               // append date stamp when record was created //
               newUser.dateCreate = moment().format();
-              users.insert(newUser, { safe: true }, function(err, result){
+              db.users.insert(newUser, { safe: true }, function(err, result){
                 if (err) cb(err, null);
                 cb(null, result.ops[0]);
               });

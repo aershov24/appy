@@ -35,7 +35,7 @@ cache.set('foo', 'bar', ttl, function(err) {
  * cache the result. Subsequent requests, until the cache TTL
  * has expired, will return the user from cache.
  */
-function fetchUser(id, cb) {
+fetchUser = function(id, cb) {
   var objectId = new ObjectID(id.id);
   logger.debug("Get user from cache: ", objectId.toHexString());
     var cacheKey = 'user_' + objectId.toHexString();
