@@ -90,6 +90,76 @@
     "groupTitle": "Authentication"
   },
   {
+    "type": "post",
+    "url": "/api/authentification",
+    "title": "User authentification",
+    "name": "Authentification",
+    "group": "Authentification",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "details",
+            "description": "<p>Login details</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n  \"name\"      : \"aershov24@gmail.com\",\n  \"password\"  : \"demo\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "object",
+            "description": "<p>User token object or error message</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Sucess-Response:",
+          "content": "{\n  \"success\": true,\n  \"message\": \"User authentificated\",\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGc\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "403",
+            "description": "<p>Failed authentification info</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n  \"success\": false,\n  \"message\": \"Authentication failed. Wrong password.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/controllers/api.js",
+    "groupTitle": "Authentification"
+  },
+  {
     "success": {
       "fields": {
         "Success 200": [
@@ -156,6 +226,16 @@
     "version": "0.0.0",
     "filename": "src/controllers/api.js",
     "groupTitle": "SMS"
+  },
+  {
+    "type": "get",
+    "url": "/users/getUserInfo",
+    "title": "Get user info by token",
+    "name": "GetUserInfo",
+    "group": "User",
+    "version": "0.0.0",
+    "filename": "src/controllers/users.js",
+    "groupTitle": "User"
   },
   {
     "type": "get",

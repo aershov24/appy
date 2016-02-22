@@ -90,7 +90,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-logger.debug("Start Appy Service...");
+logger.debug("Start Appy Service....");
 httpServer = http.createServer(app);
 httpServer.listen(port, function(){
   logger.debug("Worker %d is ready (:%d)", process.pid, port)

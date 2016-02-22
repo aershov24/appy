@@ -41,6 +41,10 @@ if (cfg.ENV == 'DEV')
               json: false,
               colorize: true
           }),
+          new winston.transports.MongoDB({
+            level: 'debug',
+            db: cfg.MongoDBLog.connectionString
+          }),
           new winston.transports.Loggly(cfg.loggly)
       ],
       exitOnError: false

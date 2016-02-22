@@ -12,9 +12,29 @@ var exp = require('express')
   , router = exp.Router();
 
 /**
- * @api {get} /api/getDiff Get difference between two objects 
- * @apiName GetDiff
- * @apiGroup History
+ * @api {post} /api/authentification User authentification
+ * @apiName Authentification
+ * @apiGroup Authentification
+ *
+ * @apiParam {Object} details Login details
+ * @apiParamExample {json} Request-Example:
+ *     {
+ *       "name"      : "aershov24@gmail.com",
+ *       "password"  : "demo"
+ *     }
+ * @apiSuccess {Object} object User token object or error message
+ * @apiSuccessExample {json} Sucess-Response:
+ *  {
+ *    "success": true,
+ *    "message": "User authentificated",
+ *    "token": "eyJ0eXAiOiJKV1QiLCJhbGc"
+ *  }
+ * @apiError {Object} 403  Failed authentification info
+ * @apiErrorExample {json} Error-Response:
+ *  {
+ *    "success": false,
+ *    "message": "Authentication failed. Wrong password."
+ *  }  
  */
 router.get('/getDiff/:id1/:id2', customMw.isAuthentificated, function(req, res) {
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
