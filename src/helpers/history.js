@@ -36,7 +36,7 @@ exports.getDiff = function (historyId1, historyId2, cb) {
         var acc = [];
         diff(row1, row2, false, acc);
         logger.debug(JSON.stringify(acc));
-        return cb(JSON.stringify(acc));
+        return cb(acc);
       });
     });
   });
