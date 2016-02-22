@@ -38,6 +38,29 @@ router.get('/getUserInfo', customMw.isAuthentificated, function(req, res) {
 });
 
 /**
+ * @api {get} /users/getUserInfo Get user info by token
+ * @apiName GetUserInfo
+ * @apiGroup User
+ */
+router.get('/updateUser', customMw.isAuthentificated, function(req, res) {
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  decoder.getObjectByToken(token, function(err, id){
+    if (err) { return res.status(401).json({ error: err }); }
+    cache.fetchUser(id, function(err, user) {
+      if (err) { return res.status(401).json({ error: err });  }
+      if (!user) {
+        return res.status(401).json({ error: 'No user found' });
+      }
+      user.email = user.email+'1';
+      User.UpdateUser(user, function(err, result){
+        if (err) { return res.status(401).json({ error: err });  }
+        res.json({ result : result });
+      });
+    });
+  });
+});
+
+/**
  * @api {get} /users/profile Render profile page
  * @apiName UserProfile
  * @apiGroup User

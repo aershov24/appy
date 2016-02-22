@@ -3,6 +3,7 @@ var logger = require('../helpers/logger.js')
   , cfg = require('../config.js')
   , db = require('./db.js')
   , moment = require('moment')
+  , history = require('../helpers/history.js')
   , crypto = require('crypto');
 
 exports.GetUserById = function(id, cb) {
@@ -64,30 +65,49 @@ exports.FindByLinkedinId = function(linkedinId, cb) {
   });
 };
 
+exports.UpdateUser = function(user, cb) {
+  logger.debug('Update user', user);
+  db.init(function(err){
+    if (err) return cb(err, null);
+    db.users.update({ _id: user._id}, user, function(err, result) {
+      if (err) 
+        return cb(err, null);
+      history.addHistory(user, 'users', 'updated', db.getIdFromBLOB(user._id), {action: 'updated user', src: 'Users.AddUser'});
+      return cb(null, result);
+    });
+  });
+};
+
 exports.AddUser = function(newUser, cb){
   db.init(function(err){
     if (err) return cb(err, null);
     db.users.findOne({ username: newUser.username}, function(err, user) {
       if (err) 
-        cb(err, null);
+        return cb(err, null);
       if (user){
-        cb(RESOURCES.ERRORS.UserNameExists, null);
+        return cb(RESOURCES.ERRORS.UserNameExists, null);
       } 
       else{
         db.users.findOne({ email: newUser.email }, function(e, user) {
           if (err) 
-            cb(err, null);
+            return cb(err, null);
           if (user){
             // user with the email exists - linking accounts
-            cb(RESOURCES.ERRORS.UserEmailExists, null);
+            return cb(RESOURCES.ERRORS.UserEmailExists, null);
           } else{
             saltAndHash(newUser.password, function(hash){
               newUser.password = hash;
               // append date stamp when record was created //
               newUser.dateCreate = moment().format();
               db.users.insert(newUser, { safe: true }, function(err, result){
-                if (err) cb(err, null);
-                cb(null, result.ops[0]);
+                if (err) return cb(err, null);
+                logger.debug(JSON.stringify(result, null, 2));
+                history.addHistory(JSON.parse(JSON.stringify(result.ops[0])), 
+                  'users', 
+                  'created', 
+                  db.getIdFromBLOB(result.ops[0]._id), 
+                  {action: 'created user', src: 'Users.AddUser'});
+                return cb(null, result.ops[0]);
               });
             });
           }

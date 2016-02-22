@@ -100,7 +100,7 @@ router.post('/signup', function(req, res) {
   };
 
   User.AddUser(newUser, function(err, user){
-    if (err) res.send({error: err});
+    if (err) return res.send({ error: err});
     //user has authenticated correctly thus we create a JWT token 
     var token = jwt.sign(user._id, cfg.JSONToken.secret, {
       expiresIn: cfg.JSONToken.expires

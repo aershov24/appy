@@ -14,7 +14,11 @@ var logger  = require('./helpers/logger.js')
   , LinkedInStrategy = require('passport-linkedin-oauth2').Strategy
   , FacebookStrategy = require('passport-facebook').Strategy
   , auth = require('./helpers/auth.js')
-  , port = process.env.PORT || 3000
+  , port = process.env.PORT || 3000;
+
+process.on('uncaughtException', function (err) {
+   logger.error(err.stack);
+});
 
 var opt = {  
   server:{
@@ -89,5 +93,5 @@ app.use(function(req, res, next) {
 logger.debug("Start Appy Service...");
 httpServer = http.createServer(app);
 httpServer.listen(port, function(){
-	logger.debug("Worker %d is ready (:%d)", process.pid, port)
+  logger.debug("Worker %d is ready (:%d)", process.pid, port)
 });

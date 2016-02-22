@@ -4,9 +4,11 @@ var ENV = process.env.NODE_ENV || 'DEV';
 var Log = null;
 var MongoDB = null;
 var MongoDBLog = null;
+var MongoDBHistory = null;
 var loggly = null;
 var JSONToken = null;
 var redis = null;
+var datadiff = null;
 
 var fbcall = null;
 var linkedincall = null;
@@ -23,6 +25,10 @@ if (ENV == 'PROD')
 
   MongoDBLog = {
     connectionString: "mongodb://appy:appy99@ds011308.mongolab.com:11308/appy_log"
+  };
+
+  MongoDBHistory = {
+    connectionString: "mongodb://appy:appy99@ds013898.mongolab.com:13898/appy_history"
   };
 
   Log = {
@@ -42,9 +48,14 @@ if (ENV == 'PROD')
   };
 
   redis = {
-    host: 'ec2-54-221-194-20.compute-1.amazonaws.com',
-    port: '18799',
+    host: 'ec2-54-83-207-91.compute-1.amazonaws.com',
+    port: '7089',
     password: 'pcnj8oj3um615b3j1mifv0a8rfa'
+  };
+
+  datadiff = {
+    key: 'c4fyad2sxscerk9qmyp7wb9vzp5vcxr', 
+    secret: 'tix3imk8s2vmfgvipjl43xg4rbb7qfr'
   };
 
   fbcall = 'https://appyws.herokuapp.com/auth/facebook/callback';
@@ -60,6 +71,10 @@ if (ENV == 'DEV')
 
   MongoDBLog = {
     connectionString: "mongodb://appy:appy99@ds011308.mongolab.com:11308/appy_log"
+  };
+
+  MongoDBHistory = {
+    connectionString: "mongodb://appy:appy99@ds013898.mongolab.com:13898/appy_history"
   };
 
   Log = {
@@ -79,9 +94,14 @@ if (ENV == 'DEV')
   };
 
   redis = {
-    host: 'ec2-54-221-194-20.compute-1.amazonaws.com',
-    port: '18799',
+    host: 'ec2-54-83-207-91.compute-1.amazonaws.com',
+    port: '7089',
     password: 'pcnj8oj3um615b3j1mifv0a8rfa'
+  };
+
+  datadiff = {
+    key: 'c4fyad2sxscerk9qmyp7wb9vzp5vcxr', 
+    secret: 'tix3imk8s2vmfgvipjl43xg4rbb7qfr'
   };
 
   fbcall = 'http://localhost:3000/auth/facebook/callback';
@@ -121,6 +141,7 @@ exports.ENV = ENV;
 exports.Log = Log;
 exports.MongoDB = MongoDB;
 exports.MongoDBLog = MongoDBLog;
+exports.MongoDBHistory = MongoDBHistory;
 exports.facebook = facebook;
 exports.linkedin = linkedin;
 exports.loggly = loggly;
@@ -128,6 +149,7 @@ exports.JSONToken = JSONToken;
 exports.mailgun = mailgun;
 exports.twilio = twilio;
 exports.redis = redis;
+exports.datadiff = datadiff;
 
 exports.mail = mail;
 exports.rootPath = rootPath;
