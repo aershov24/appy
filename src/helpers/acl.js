@@ -1,7 +1,8 @@
 var acl = require('acl')
   , logger = require('../helpers/logger.js')
   , cfg = require('../config.js')
-  , db = require('../models/db.js');
+  , MongoClient = require('mongodb').MongoClient
+  , ObjectID = require('mongodb').ObjectID;
 
 var ROLES = {
   Admin: 'Admin',
@@ -21,11 +22,11 @@ var PERMISSIONS = {
 
 module.exports.init = function (cb) {
   logger.debug('ACL Init...');
-  db.init(function(err) {
+   MongoClient.connect(cfg.MongoDBHistory.connectionString, function(err, db) {
     module.exports.ROLES = ROLES;
     module.exports.RESOURCES = RESOURCES;
     module.exports.PERMISSIONS = PERMISSIONS;
-    var aclManager = new acl(new acl.mongodbBackend(db.db, 'acl_'));
+    var aclManager = new acl(new acl.mongodbBackend(db, 'acl_'));
     
     aclManager.allow(ROLES.Admin, RESOURCES.User, PERMISSIONS.All);
     aclManager.allow(ROLES.User, RESOURCES.User, [PERMISSIONS.View]);

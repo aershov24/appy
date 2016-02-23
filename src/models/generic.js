@@ -5,17 +5,17 @@ var mongodb = require('mongodb')
   , history = require('../helpers/history.js')
   , cfg = require('../config.js');
 
-var Repository = exports.Repository = function (collection) {
+var Generic = exports.Generic = function (collection) {
   this.collection = collection;
   this.connectionString = cfg.MongoDB.connectionString;
 };
 
-Repository.prototype.getIdFromBLOB = function (id) {
+Generic.prototype.getIdFromBLOB = function (id) {
   var objectId = new ObjectID(id.id);
   return objectId.toHexString();
 };
 
-Repository.prototype.create = function(object, cb) {
+Generic.prototype.create = function(object, cb) {
   object.created = new Date();
   var collectionName = this.collection;
   MongoClient.connect(this.connectionString, function(err, db) {
@@ -36,7 +36,7 @@ Repository.prototype.create = function(object, cb) {
   });
 };
 
-Repository.prototype.update = function(object, cb) {
+Generic.prototype.update = function(object, cb) {
   object.modified = new Date();
   var collectionName = this.collection;
   MongoClient.connect(this.connectionString, function(err, db) {
@@ -53,7 +53,7 @@ Repository.prototype.update = function(object, cb) {
   });
 };
 
-Repository.prototype.delete = function(object, cb) {
+Generic.prototype.delete = function(object, cb) {
   var collectionName = this.collection;
   MongoClient.connect(this.connectionString, function(err, db) {
     db.collection(collectionName, function(err, col){
@@ -69,7 +69,7 @@ Repository.prototype.delete = function(object, cb) {
   });
 };
 
-Repository.prototype.getById = function(objectId, cb) {
+Generic.prototype.getById = function(objectId, cb) {
   var collectionName = this.collection;
   MongoClient.connect(this.connectionString, function(err, db) {
     db.collection(collectionName, function(err, col){
@@ -82,7 +82,7 @@ Repository.prototype.getById = function(objectId, cb) {
   });
 };
 
-Repository.prototype.findByValue = function(field, value, cb) {
+Generic.prototype.findByValue = function(field, value, cb) {
   logger.debug('FinByValue: ', field, value );
   var collectionName = this.collection;
   MongoClient.connect(this.connectionString, function(err, db) {
@@ -98,5 +98,5 @@ Repository.prototype.findByValue = function(field, value, cb) {
   });
 };
 
-module.exports = Repository;
+module.exports = Generic;
 

@@ -1,6 +1,7 @@
 var cacheManager = require('cache-manager')
   , redisStore = require('cache-manager-redis')
-  , UserRepository = require('../models/userRepository')
+  , UserRepository = require('../models/users')
+  , User = new UserRepository()
   , logger = require('../helpers/logger.js')
   , cfg   =   require('../config.js')
   , ObjectID = require('mongodb').ObjectID
@@ -12,8 +13,6 @@ var cacheManager = require('cache-manager')
       db: 0,
       ttl: 10
   });
-
-var User = new UserRepository();
 
 var ttl = 5;
 

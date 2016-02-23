@@ -112,7 +112,9 @@ var facebook = {
     apiKey: '1526838307617018',
     apiSecret: '6e7115c22cb22d89d7b208ba1b5045a6',
     callback: fbcall,
-    fields: ["id", "birthday", "email", "first_name", "gender", "last_name"]
+    // All the fields
+    // https://developers.facebook.com/docs/graph-api/reference/v2.5/user
+    fields: ["id", "birthday", "email", "first_name", "gender", "last_name", "friends", "languages"]
 }
 
 var linkedin = {

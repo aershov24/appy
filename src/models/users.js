@@ -1,16 +1,16 @@
-var Repository = require('./repository')
+var Generic = require('./generic')
   , logger = require('../helpers/logger.js')
   , crypto = require('crypto')
   , RESOURCES = require('../models/resources.js')
   , inherits   = require('util').inherits
 
-function UserRepository() {
-  UserRepository.super_.apply(this, ['users']);
+function User() {
+  User.super_.apply(this, ['users']);
 }
 
-inherits(UserRepository, Repository);
+inherits(User, Generic);
 
-UserRepository.prototype.GetUserById = function(id, cb) {
+User.prototype.GetUserById = function(id, cb) {
   this.getById(id, function(err, user) {
     if (err) 
       return cb(err, null);
@@ -18,7 +18,7 @@ UserRepository.prototype.GetUserById = function(id, cb) {
   });
 };
 
-UserRepository.prototype.GetUserByUsername = function(username, cb) {
+User.prototype.GetUserByUsername = function(username, cb) {
   logger.debug('GetUserByUsername: ', username);
   this.findByValue('username', username, function(err, user) {
     if (err) 
@@ -27,7 +27,7 @@ UserRepository.prototype.GetUserByUsername = function(username, cb) {
   });
 };
 
-UserRepository.prototype.FindByEmail = function(email, cb) {
+User.prototype.FindByEmail = function(email, cb) {
   this.findByValue('email', email, function(err, user) {
     if (err) 
       return cb(err, null);
@@ -35,7 +35,7 @@ UserRepository.prototype.FindByEmail = function(email, cb) {
   });
 };
 
-UserRepository.prototype.FindByFacebookId = function(facebookId, cb) {
+User.prototype.FindByFacebookId = function(facebookId, cb) {
   this.findByValue('facebook.id', facebookId, function(err, user) {
     if (err) 
       return cb(err, null);
@@ -43,7 +43,7 @@ UserRepository.prototype.FindByFacebookId = function(facebookId, cb) {
   });
 };
 
-UserRepository.prototype.FindByLinkedinId = function(linkedinId, cb) {
+User.prototype.FindByLinkedinId = function(linkedinId, cb) {
   this.findByValue('linkedin.id', linkedinId, function(err, user) {
     if (err) 
       return cb(err, null);
@@ -51,7 +51,7 @@ UserRepository.prototype.FindByLinkedinId = function(linkedinId, cb) {
   });
 };
 
-UserRepository.prototype.AddUser = function(newUser, cb){
+User.prototype.AddUser = function(newUser, cb){
   var self = this;
   self.findByValue('username', newUser.username, function(err, user) {
     if (err) return cb(err, null);
@@ -70,7 +70,7 @@ UserRepository.prototype.AddUser = function(newUser, cb){
   });
 };
 
-UserRepository.prototype.ValidatePassword = function(plainPass, hashedPass, callback)
+User.prototype.ValidatePassword = function(plainPass, hashedPass, callback)
 {
   var salt = hashedPass.substr(0, 10);
   var validHash = salt + md5(plainPass + salt);
@@ -127,4 +127,4 @@ var findByMultipleFields = function(a, callback)
 };
 
 
-module.exports = UserRepository;
+module.exports = User;

@@ -4,7 +4,7 @@ var exp = require('express')
   , mailer = require('../helpers/mailer.js')
   , cfg   =   require('../config.js')
   , jwt     = require('jsonwebtoken')
-  , UserRepository  = require('../models/userRepository.js')
+  , UserRepository  = require('../models/users')
   , router = exp.Router();
 
 var User = new UserRepository();

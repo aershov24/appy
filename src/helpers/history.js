@@ -2,7 +2,6 @@ var request = require('request')
   , logger = require('../helpers/logger.js')
   , MongoClient = require('mongodb').MongoClient
   , ObjectID = require('mongodb').ObjectID
-  , db = require('../models/db.js')
   , moment = require('moment')
   , deep = require('deep-diff')
   , diff = require('deep-diff').diff

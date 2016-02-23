@@ -2,7 +2,8 @@ var exp = require('express')
   , passport = require('passport')
   , customMw = require('../middlewares/middleware.js')
   , cfg   =   require('../config.js')
-  , UserRepository  = require('../models/userRepository.js')
+  , UserRepository  = require('../models/users')
+  , User = new UserRepository()
   , logger = require('../helpers/logger.js')
   , mailer = require('../helpers/mailer.js')
   , smssender = require('../helpers/smssender.js')
@@ -11,8 +12,6 @@ var exp = require('express')
   , acl = require('../helpers/acl.js')
   , resources = require('../models/resources')
   , router = exp.Router();
-
-var User = new UserRepository();
 
 /**
  * @api {get} /admin/manageUsers Check permissions for user manage

@@ -3,9 +3,8 @@ var passport = require('passport')
   , logger = require('../helpers/logger')
   , jwt     = require('jsonwebtoken')
   , cfg   =   require('../config')
-  , UserRepository = require('../models/userRepository');
-
-var User = new UserRepository();
+  , UserRepository = require('../models/users')
+  , User = new UserRepository();
 
 length = function(it){
     return it.length;
@@ -59,19 +58,7 @@ facebookAuth = function(rq, accessToken, refreshToken, profile, done){
         logger.debug("Founded User: ", user);
         if (!user){
           var newUser = {
-            facebook: {
-              id: profile.id,
-              username: profile.username,
-              displayName: profile.displayName,
-              name: {
-                  familyName: profile.name.familyName,
-                  givenName: profile.name.givenName,
-                  middleName: null
-              },
-              gender: profile.gender,
-              profileUrl: profile.profileUrl,
-              emails: profile.emails,
-            },
+            facebook: profile,
             username:  profile.name.givenName+profile.name.familyName,
             name: profile.name.givenName+' '+profile.name.familyName,
             email: profile.emails[0].value

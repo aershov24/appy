@@ -6,11 +6,10 @@ var express = require('express')
   , decoder = require('../helpers/decoder.js')
   , customMw = require('../middlewares/middleware.js')
   //, User    = require('../models/users.js')
-  , UserRepository  = require('../models/userRepository.js')
+  , UserRepository  = require('../models/users')
   , User = new UserRepository()
   , cfg   =   require('../config.js')
   , passport = require('passport');
-
 /**
  * @api {get} /users/login Render login page
  * @apiName UserLogin
