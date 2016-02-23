@@ -99,32 +99,4 @@ var saltAndHash = function(pass, callback)
   callback(salt + md5(pass + salt));
 }
 
-/* auxiliary methods */
-
-var getObjectId = function(id)
-{
-  return new require('mongodb').ObjectID(id);
-};
-
-var findById = function(id, callback)
-{
-  accounts.findOne({_id: getObjectId(id)},
-    function(e, res) {
-    if (e) callback(e)
-    else callback(null, res)
-  });
-};
-
-
-var findByMultipleFields = function(a, callback)
-{
-// this takes an array of name/val pairs to search against {fieldName : 'value'} //
-  accounts.find( { $or : a } ).toArray(
-    function(e, results) {
-    if (e) callback(e)
-    else callback(null, results)
-  });
-};
-
-
 module.exports = User;

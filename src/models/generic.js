@@ -10,11 +10,6 @@ var Generic = exports.Generic = function (collection) {
   this.connectionString = cfg.MongoDB.connectionString;
 };
 
-Generic.prototype.getIdFromBLOB = function (id) {
-  var objectId = new ObjectID(id.id);
-  return objectId.toHexString();
-};
-
 Generic.prototype.create = function(object, cb) {
   object.created = new Date();
   var collectionName = this.collection;
@@ -83,7 +78,7 @@ Generic.prototype.getById = function(objectId, cb) {
 };
 
 Generic.prototype.findByValue = function(field, value, cb) {
-  logger.debug('FinByValue: ', field, value );
+  logger.debug('FindByValue: ', field, value );
   var collectionName = this.collection;
   MongoClient.connect(this.connectionString, function(err, db) {
     db.collection(collectionName, function(err, col){
@@ -96,6 +91,33 @@ Generic.prototype.findByValue = function(field, value, cb) {
       });
     });
   });
+};
+
+Generic.prototype.getObjectId = function(id)
+{
+  return new require('mongodb').ObjectID(id);
+};
+
+// this takes an array of name/val pairs to search against {fieldName : 'value'} //
+Generic.prototype.findByMultipleFields = function(a, cb)
+{
+  logger.debug('FindByMultipleFields: ', field, value );
+  var collectionName = this.collection;
+  MongoClient.connect(this.connectionString, function(err, db) {
+    db.collection(collectionName, function(err, col){
+      if (err) return cb(err, null);
+      col.find( { $or : a } ).toArray(
+        function(e, results) {
+        if (e) cb(e)
+        else cb(null, results)
+      });
+    });
+  });
+};
+
+Generic.prototype.getIdFromBLOB = function (id) {
+  var objectId = new ObjectID(id.id);
+  return objectId.toHexString();
 };
 
 module.exports = Generic;
