@@ -1,9 +1,11 @@
 var passport = require('passport')
   , FacebookStrategy = require('passport-facebook').Strategy
-  , logger = require('../helpers/logger.js')
+  , logger = require('../helpers/logger')
   , jwt     = require('jsonwebtoken')
-  , cfg   =   require('../config.js')
-  , User = require('../models/users.js');
+  , cfg   =   require('../config')
+  , UserRepository = require('../models/userRepository');
+
+var User = new UserRepository();
 
 length = function(it){
     return it.length;

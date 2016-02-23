@@ -5,7 +5,9 @@ var express = require('express')
   , cache = require('../helpers/cache.js')
   , decoder = require('../helpers/decoder.js')
   , customMw = require('../middlewares/middleware.js')
-  , User    = require('../models/users.js')
+  //, User    = require('../models/users.js')
+  , UserRepository  = require('../models/userRepository.js')
+  , User = new UserRepository()
   , cfg   =   require('../config.js')
   , passport = require('passport');
 
@@ -52,13 +54,14 @@ router.get('/updateUser', customMw.isAuthentificated, function(req, res) {
         return res.status(401).json({ error: 'No user found' });
       }
       user.email = user.email+'1';
-      User.UpdateUser(user, function(err, result){
+      User.update(user, function(err, result){
         if (err) { return res.status(401).json({ error: err });  }
         res.json({ result : result });
       });
     });
   });
 });
+
 
 /**
  * @api {get} /users/profile Render profile page
@@ -68,7 +71,7 @@ router.get('/updateUser', customMw.isAuthentificated, function(req, res) {
 router.get('/profile', customMw.isAuthentificated, function(req, res) {
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
   decoder.getObjectByToken(token, function(err, id){
-    if (err) { return res.status(401).json({ error: err });  }
+    if (err) { return res.status(401).json({ error: err }); }
     User.GetUserById(id, function(err, user) {
       if (err) { return res.status(401).json({ error: err }); }
       if (!user) {

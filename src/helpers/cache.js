@@ -1,6 +1,6 @@
 var cacheManager = require('cache-manager')
   , redisStore = require('cache-manager-redis')
-  , User = require('../models/users.js')
+  , UserRepository = require('../models/userRepository')
   , logger = require('../helpers/logger.js')
   , cfg   =   require('../config.js')
   , ObjectID = require('mongodb').ObjectID
@@ -12,6 +12,8 @@ var cacheManager = require('cache-manager')
       db: 0,
       ttl: 10
   });
+
+var User = new UserRepository();
 
 var ttl = 5;
 
@@ -41,7 +43,7 @@ fetchUser = function(id, cb) {
     var cacheKey = 'user_' + objectId.toHexString();
     cache.wrap(cacheKey, function (cacheCb) {
         logger.debug("Fetching user from db");
-        User.GetUserById(id, cacheCb);
+        User.getById(id, cacheCb);
     }, cb);
 };
 

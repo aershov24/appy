@@ -4,8 +4,10 @@ var exp = require('express')
   , mailer = require('../helpers/mailer.js')
   , cfg   =   require('../config.js')
   , jwt     = require('jsonwebtoken')
-  , User = require('../models/users.js')
+  , UserRepository  = require('../models/userRepository.js')
   , router = exp.Router();
+
+var User = new UserRepository();
 
 /**
  * @api {get} /auth/facebook Facebook authentification

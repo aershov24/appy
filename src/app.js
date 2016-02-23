@@ -2,7 +2,6 @@ var logger  = require('./helpers/logger.js')
   , express = require('express')
   , app     = express()
   , bodyParser = require('body-parser')
-  , user    = require('./models/users.js')
   , cfg     = require('./config.js')
   , http    = require('http')
   , errorhandler = require('./middlewares/errorhandler.js')
@@ -91,6 +90,7 @@ app.use(function(req, res, next) {
 });
 
 logger.debug("Start Appy Service....");
+
 httpServer = http.createServer(app);
 httpServer.listen(port, function(){
   logger.debug("Worker %d is ready (:%d)", process.pid, port)

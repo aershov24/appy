@@ -1,5 +1,4 @@
 var request = require('request')
-  //, Datadiff = require('datadiff')
   , logger = require('../helpers/logger.js')
   , MongoClient = require('mongodb').MongoClient
   , ObjectID = require('mongodb').ObjectID
@@ -8,7 +7,6 @@ var request = require('request')
   , deep = require('deep-diff')
   , diff = require('deep-diff').diff
   , cfg = require('../config.js');
-  //, ddiff = new Datadiff({key: cfg.datadiff.key, secret: cfg.datadiff.secret});
 
 getIdFromBLOB = function (id) {
   var objectId = new ObjectID(id.id);
