@@ -13,28 +13,29 @@ getIdFromBLOB = function (id) {
 };
 
 exports.getDiff = function (historyId1, historyId2, cb) {
-  logger.debug('historyId1: ', historyId1);
-  logger.debug('historyId2: ', historyId2);
   MongoClient.connect(cfg.MongoDBHistory.connectionString, function(err, db) {
     history = db.collection('history');
     history.findOne({ '_id': new ObjectID(historyId1) }, function(err, row1) {
-      if (err) 
-      {
-        logger.error(err);
-        return;
-      }
-      logger.debug('Row 1: ', row1);
+      if (err) return cb(err, null);
       history.findOne({ '_id': new ObjectID(historyId2) }, function(err, row2) {
-        if (err) {
-          logger.error(err);
-          return;
-        }
-        logger.debug('Row 2', row2);
+        if (err) return cb(err, null);
         var acc = [];
         diff(row1, row2, false, acc);
         logger.debug(JSON.stringify(acc));
-        return cb(acc);
+        return cb(null, acc);
       });
+    });
+  });
+};
+
+exports.getHistory = function (id, cb) {
+  MongoClient.connect(cfg.MongoDBHistory.connectionString, function(err, db) {
+    history = db.collection('history');
+    history.
+      find({ 'id': id }).
+      toArray(function(err, rows) {
+        if (err) return cb(err, null);
+        return cb(null, rows);
     });
   });
 };

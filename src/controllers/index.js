@@ -5,8 +5,10 @@ var express = require('express')
 
 router.use('/users', require('./users'));
 router.use('/auth', require('./auth'));
-router.use('/api', require('./api'));
+router.use('/history', require('./history'));
 router.use('/admin', require('./admin'));
+router.use('/mail', require('./mail'));
+router.use('/foursquare', require('./foursquare'));
 
 router.get('/', customMw.isAuthentificated, function(req, res){
     res.redirect('/users/profile');

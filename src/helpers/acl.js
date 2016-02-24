@@ -22,7 +22,7 @@ var PERMISSIONS = {
 
 module.exports.init = function (cb) {
   logger.debug('ACL Init...');
-   MongoClient.connect(cfg.MongoDBHistory.connectionString, function(err, db) {
+   MongoClient.connect(cfg.MongoDB.connectionString, function(err, db) {
     module.exports.ROLES = ROLES;
     module.exports.RESOURCES = RESOURCES;
     module.exports.PERMISSIONS = PERMISSIONS;

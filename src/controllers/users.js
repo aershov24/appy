@@ -10,6 +10,7 @@ var express = require('express')
   , User = new UserRepository()
   , cfg   =   require('../config.js')
   , passport = require('passport');
+  
 /**
  * @api {get} /users/login Render login page
  * @apiName UserLogin

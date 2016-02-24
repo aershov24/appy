@@ -12,6 +12,7 @@ var datadiff = null;
 
 var fbcall = null;
 var linkedincall = null;
+var foursquarecall = null;
 var rootPath = __dirname;
 var templatesPath = path.join(rootPath, 'templates'); 
 var filesPath = path.join(rootPath, 'files'); 
@@ -60,6 +61,7 @@ if (ENV == 'PROD')
 
   fbcall = 'https://appyws.herokuapp.com/auth/facebook/callback';
   linkedincall = 'https://appyws.herokuapp.com/auth/linkedin/callback';
+  foursquarecall = 'https://appyws.herokuapp.com/foursquare/callback';
 }
 
 // development environment
@@ -106,6 +108,7 @@ if (ENV == 'DEV')
 
   fbcall = 'http://localhost:3000/auth/facebook/callback';
   linkedincall = 'http://localhost:3000/auth/linkedin/callback';
+  foursquarecall = 'http://localhost:3000/foursquare/callback';
 }
 
 var facebook = {
@@ -122,6 +125,14 @@ var linkedin = {
     apiSecret: '4NH0WMakwmfngFAd',
     callback: linkedincall,
     profileFields: ['r_emailaddress', 'r_basicprofile']
+}
+
+var foursquare = {
+  'secrets' : {
+    'clientId' : 'AIVNATEDJSU21PUF3YY523GPV3XCQM05OH3IWQRBY24NPMTC',
+    'clientSecret' : 'Q2DQQHRKI2VVPG2NJTQEKNSENGBAT05YRCOT4N0KIW2LFDT5',
+    'redirectUrl' : foursquarecall
+  }
 }
 
 var mailgun = {
@@ -146,6 +157,7 @@ exports.MongoDBLog = MongoDBLog;
 exports.MongoDBHistory = MongoDBHistory;
 exports.facebook = facebook;
 exports.linkedin = linkedin;
+exports.foursquare = foursquare;
 exports.loggly = loggly;
 exports.JSONToken = JSONToken;
 exports.mailgun = mailgun;

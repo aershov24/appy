@@ -9,48 +9,10 @@ var exp = require('express')
   , smssender = require('../helpers/smssender.js')
   , decoder = require('../helpers/decoder.js')
   , cache = require('../helpers/cache.js')
-  , history = require('../helpers/history.js')
   , router = exp.Router();
 
 /**
- * @api {post} /api/authentification User authentification
- * @apiName Authentification
- * @apiGroup Authentification
- *
- * @apiParam {Object} details Login details
- * @apiParamExample {json} Request-Example:
- *     {
- *       "name"      : "aershov24@gmail.com",
- *       "password"  : "demo"
- *     }
- * @apiSuccess {Object} object User token object or error message
- * @apiSuccessExample {json} Sucess-Response:
- *  {
- *    "success": true,
- *    "message": "User authentificated",
- *    "token": "eyJ0eXAiOiJKV1QiLCJhbGc"
- *  }
- * @apiError {Object} 403  Failed authentification info
- * @apiErrorExample {json} Error-Response:
- *  {
- *    "success": false,
- *    "message": "Authentication failed. Wrong password."
- *  }  
- */
-router.get('/getDiff/:id1/:id2', customMw.isAuthentificated, function(req, res) {
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  decoder.getObjectByToken(token, function(err, id){
-    if (err) { return res.status(401).json({ error: err });  }
-    cache.fetchUser(id, function(err, user) {
-      if (err) { return res.status(401).json({ error: err });  }
-      history.getDiff(req.params.id1, req.params.id2, function(df){
-        return res.json({ diff: df});
-      });
-    });
-  });
-});
-/**
- * @api {get} /api/sendSMSMessage Send SMS message to a phone number
+ * @api {get} /mail/sendSMSMessage Send SMS message to a phone number
  * @apiName SendSMSMessage
  * @apiGroup SMS
  */
@@ -71,7 +33,7 @@ router.get('/sendSMSMessage/:number', customMw.isAuthentificated, function(req, 
 });
 
 /**
- * @api {get} /api/sendRawEmail Send raw email to a current user
+ * @api {get} /mail/sendRawEmail Send raw email to a current user
  * @apiName SendRawEmail
  * @apiGroup Email
  */
@@ -94,7 +56,7 @@ router.get('/sendRawEmail', customMw.isAuthentificated, function(req, res) {
 });
 
 /**
- * @api {get} /api/sendWelcomeEmail Send welcome email to a current user
+ * @api {get} /mail/sendWelcomeEmail Send welcome email to a current user
  * @apiName SendWelcomeEmail
  * @apiGroup Email
  */
@@ -113,7 +75,7 @@ router.get('/sendWelcomeEmail', customMw.isAuthentificated, function(req, res) {
 });
 
 /**
- * @api {get} /api/sendEmailWithAttachments Send an email with attachments to a current user
+ * @api {get} /mail/sendEmailWithAttachments Send an email with attachments to a current user
  * @apiName SendEmailWithAttachments
  * @apiGroup Email
  */

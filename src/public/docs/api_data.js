@@ -21,8 +21,8 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/auth/linkedin",
-    "title": "LinkedIn authentification",
+    "url": "/auth/facebook",
+    "title": "Facebook authentification",
     "name": "AuthFacebook",
     "group": "Authentication",
     "version": "0.0.0",
@@ -31,8 +31,8 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/auth/facebook",
-    "title": "Facebook authentification",
+    "url": "/auth/linkedin",
+    "title": "LinkedIn authentification",
     "name": "AuthFacebook",
     "group": "Authentication",
     "version": "0.0.0",
@@ -62,7 +62,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/auth/login",
-    "title": "Get user info by token",
+    "title": "Local (username, email) authentification",
     "name": "AuthLogin",
     "group": "Authentication",
     "version": "0.0.0",
@@ -72,7 +72,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/auth/login",
-    "title": "Local (username, email) authentification",
+    "title": "Get user info by token",
     "name": "AuthLogin",
     "group": "Authentication",
     "version": "0.0.0",
@@ -88,76 +88,6 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "src/controllers/auth.js",
     "groupTitle": "Authentication"
-  },
-  {
-    "type": "post",
-    "url": "/api/authentification",
-    "title": "User authentification",
-    "name": "Authentification",
-    "group": "Authentification",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Object",
-            "optional": false,
-            "field": "details",
-            "description": "<p>Login details</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n  \"name\"      : \"aershov24@gmail.com\",\n  \"password\"  : \"demo\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "object",
-            "description": "<p>User token object or error message</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Sucess-Response:",
-          "content": "{\n  \"success\": true,\n  \"message\": \"User authentificated\",\n  \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGc\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "Object",
-            "optional": false,
-            "field": "403",
-            "description": "<p>Failed authentification info</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "{\n  \"success\": false,\n  \"message\": \"Authentication failed. Wrong password.\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "src/controllers/api.js",
-    "groupTitle": "Authentification"
   },
   {
     "success": {
@@ -189,42 +119,112 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/sendEmailWithAttachments",
+    "url": "/mail/sendEmailWithAttachments",
     "title": "Send an email with attachments to a current user",
     "name": "SendEmailWithAttachments",
     "group": "Email",
     "version": "0.0.0",
-    "filename": "src/controllers/api.js",
+    "filename": "src/controllers/mail.js",
     "groupTitle": "Email"
   },
   {
     "type": "get",
-    "url": "/api/sendRawEmail",
+    "url": "/mail/sendRawEmail",
     "title": "Send raw email to a current user",
     "name": "SendRawEmail",
     "group": "Email",
     "version": "0.0.0",
-    "filename": "src/controllers/api.js",
+    "filename": "src/controllers/mail.js",
     "groupTitle": "Email"
   },
   {
     "type": "get",
-    "url": "/api/sendWelcomeEmail",
+    "url": "/mail/sendWelcomeEmail",
     "title": "Send welcome email to a current user",
     "name": "SendWelcomeEmail",
     "group": "Email",
     "version": "0.0.0",
-    "filename": "src/controllers/api.js",
+    "filename": "src/controllers/mail.js",
     "groupTitle": "Email"
   },
   {
     "type": "get",
-    "url": "/api/sendSMSMessage",
+    "url": "/foursquare/callbacks",
+    "title": "Foursquare token callback",
+    "name": "Callback",
+    "group": "Foursquare",
+    "version": "0.0.0",
+    "filename": "src/controllers/foursquare.js",
+    "groupTitle": "Foursquare"
+  },
+  {
+    "type": "get",
+    "url": "/foursquare/",
+    "title": "Get Foursquare token",
+    "name": "GetToken",
+    "group": "Foursquare",
+    "version": "0.0.0",
+    "filename": "src/controllers/foursquare.js",
+    "groupTitle": "Foursquare"
+  },
+  {
+    "type": "get",
+    "url": "/foursquare/search",
+    "title": "Search venues",
+    "name": "Search",
+    "group": "Foursquare",
+    "version": "0.0.0",
+    "filename": "src/controllers/foursquare.js",
+    "groupTitle": "Foursquare"
+  },
+  {
+    "type": "get",
+    "url": "/foursquare/venue",
+    "title": "Get venue's details",
+    "name": "VenueDetails",
+    "group": "Foursquare",
+    "version": "0.0.0",
+    "filename": "src/controllers/foursquare.js",
+    "groupTitle": "Foursquare"
+  },
+  {
+    "type": "get",
+    "url": "/foursquare/venue/tips",
+    "title": "Get venue's tips",
+    "name": "VenueTips",
+    "group": "Foursquare",
+    "version": "0.0.0",
+    "filename": "src/controllers/foursquare.js",
+    "groupTitle": "Foursquare"
+  },
+  {
+    "type": "get",
+    "url": "/history/getDiff",
+    "title": "Get diff between two objects from history db",
+    "name": "GetDiff",
+    "group": "History",
+    "version": "0.0.0",
+    "filename": "src/controllers/history.js",
+    "groupTitle": "History"
+  },
+  {
+    "type": "get",
+    "url": "/history/getHistory/:objectId",
+    "title": "Get object's history",
+    "name": "GetObjectHistory",
+    "group": "History",
+    "version": "0.0.0",
+    "filename": "src/controllers/history.js",
+    "groupTitle": "History"
+  },
+  {
+    "type": "get",
+    "url": "/mail/sendSMSMessage",
     "title": "Send SMS message to a phone number",
     "name": "SendSMSMessage",
     "group": "SMS",
     "version": "0.0.0",
-    "filename": "src/controllers/api.js",
+    "filename": "src/controllers/mail.js",
     "groupTitle": "SMS"
   },
   {
