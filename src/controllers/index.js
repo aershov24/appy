@@ -9,6 +9,7 @@ router.use('/history', require('./history'));
 router.use('/admin', require('./admin'));
 router.use('/mail', require('./mail'));
 router.use('/foursquare', require('./foursquare'));
+router.use('/locu', require('./locu'));
 
 router.get('/', customMw.isAuthentificated, function(req, res){
     res.redirect('/users/profile');

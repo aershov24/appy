@@ -135,6 +135,11 @@ var foursquare = {
   }
 }
 
+var locu = {
+  apiKey : 'f5a0902036696fdbc49875dc4440d41114cfbd47',
+  widgetKey : 'a1f89be959bc4f8c683d3a687f4d2640fe7af675'
+}
+
 var mailgun = {
   apiKey: 'key-20700b4cadc80c0ad3116f0f794ff620', 
   domain: 'sandboxad4d16cd62bd4df9a26e2b4ee96feacc.mailgun.org'
@@ -158,6 +163,7 @@ exports.MongoDBHistory = MongoDBHistory;
 exports.facebook = facebook;
 exports.linkedin = linkedin;
 exports.foursquare = foursquare;
+exports.locu = locu;
 exports.loggly = loggly;
 exports.JSONToken = JSONToken;
 exports.mailgun = mailgun;
