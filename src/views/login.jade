@@ -1,5 +1,8 @@
 extends ./layout.jade
 
+block js
+  script(src='/libs/login.js')
+
 block body
   body
     nav.navbar.navbar-inverse
@@ -27,12 +30,12 @@ block body
       p
         | Sign In
       br
-      form(role='form', action="/auth/login",method="post", style='max-width: 300px;')
+      form(role='form', style='max-width: 300px;')
         .form-group
-            input.form-control(type='text', name="username", placeholder='Enter Username')
+            input#username.form-control(type='text', name="username", placeholder='Enter Username')
         .form-group
-          input.form-control(type='password', name="password", placeholder='Password')
-        button.btn.btn-default(type='submit') Submit
+          input#password.form-control(type='password', name="password", placeholder='Password')
+        button#LoginButton.btn.btn-default(type='submit') Submit
         &nbsp;
         a(href='/')
           button.btn.btn-primary(type="button") Cancel
