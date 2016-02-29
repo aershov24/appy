@@ -17,18 +17,11 @@ var exp = require('express')
  * @apiGroup SMS
  */
 router.get('/sendSMSMessage/:number', customMw.isAuthentificated, function(req, res) {
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  decoder.getObjectByToken(token, function(err, id){
-    if (err) { return res.status(401).json({ error: err });  }
-    cache.fetchUser(id, function(err, user) {
-      if (err) { return res.status(401).json({ error: err });  }
-      var to = req.params.number;
-      var body = 'SMS message';
-      smssender.sendSMSMessage(to, body, function(err, body){
-        if (err) return res.json({error: err});
-        return res.json({message: "ok"});
-      });
-    });
+  var to = req.params.number;
+  var body = 'SMS message';
+  smssender.sendSMSMessage(to, body, function(err, body){
+    if (err) return res.json({error: err});
+    return res.json({message: "ok"});
   });
 });
 
@@ -38,20 +31,13 @@ router.get('/sendSMSMessage/:number', customMw.isAuthentificated, function(req, 
  * @apiGroup Email
  */
 router.get('/sendRawEmail', customMw.isAuthentificated, function(req, res) {
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  decoder.getObjectByToken(token, function(err, id){
-    if (err) { return res.status(401).json({ error: err });  }
-    cache.fetchUser(id, function(err, user) {
-      if (err) { return res.status(401).json({ error: err });  }
-      var from = cfg.mail.from;
-      var to = user.email;
-      var subject = 'Raw subject';
-      var body = 'Raw email';
-      mailer.sendRawEmail(from, to, subject, body, function(err, body){
-        if (err) return res.json({error: err});
-        return res.json({message: 'ok'});
-      });
-    });
+  var from = cfg.mail.from;
+  var to = req.user.email;
+  var subject = 'Raw subject';
+  var body = 'Raw email';
+  mailer.sendRawEmail(from, to, subject, body, function(err, body){
+    if (err) return res.json({error: err});
+    return res.json({message: 'ok'});
   });
 });
 
@@ -61,16 +47,9 @@ router.get('/sendRawEmail', customMw.isAuthentificated, function(req, res) {
  * @apiGroup Email
  */
 router.get('/sendWelcomeEmail', customMw.isAuthentificated, function(req, res) {
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  decoder.getObjectByToken(token, function(err, id){
-    if (err) { return res.status(401).json({ error: err });  }
-    cache.fetchUser(id, function(err, user) {
-      if (err) { return res.status(401).json({ error: err });  }
-      mailer.sendWelcomeEmail(user, function(err, body){
-        if (err) return res.json({error: err});
-        return res.json({message: 'ok'});
-      });
-    });
+  mailer.sendWelcomeEmail(req.user, function(err, body){
+    if (err) return res.json({error: err});
+    return res.json({message: 'ok'});
   });
 });
 
@@ -80,23 +59,15 @@ router.get('/sendWelcomeEmail', customMw.isAuthentificated, function(req, res) {
  * @apiGroup Email
  */
 router.get('/sendEmailWithAttachments', customMw.isAuthentificated, function(req, res) {
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  decoder.getObjectByToken(token, function(err, id){
-    if (err) { return res.status(401).json({ error: err });  }
-    cache.fetchUser(id, function(err, user) {
-      if (err) { return res.status(401).json({ error: err });  }
+  var from = cfg.mail.from;
+  var to = req.user.email;
+  var subject = 'Raw subject';
+  var body = 'Raw email';
+  var files = ['invoice1.txt'];
 
-      var from = cfg.mail.from;
-      var to = user.email;
-      var subject = 'Raw subject';
-      var body = 'Raw email';
-      var files = ['invoice1.txt', 'invoice2.txt'];
-
-      mailer.sendEmailWithAttachment(from, to, subject, body, files, function(err, body){
-        if (err) return res.json({error: err});
-        return res.json({message: 'ok'});
-      });
-    });
+  mailer.sendEmailWithAttachment(from, to, subject, body, files, function(err, body){
+    if (err) return res.json({error: err});
+    return res.json({message: 'ok'});
   });
 });
 

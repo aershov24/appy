@@ -116,8 +116,12 @@ Generic.prototype.findByMultipleFields = function(a, cb)
 };
 
 Generic.prototype.getIdFromBLOB = function (id) {
-  var objectId = new ObjectID(id.id);
-  return objectId.toHexString();
+  if (typeof id === 'object'){
+    var objectId = new ObjectID(id.id);
+    return objectId.toHexString();
+  }
+  else
+    return id;
 };
 
 module.exports = Generic;

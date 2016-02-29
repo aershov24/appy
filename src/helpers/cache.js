@@ -11,7 +11,7 @@ var cacheManager = require('cache-manager')
       port: cfg.redis.port, // default value
       auth_pass: cfg.redis.password,
       db: 0,
-      ttl: 10
+      ttl: 30
   });
 
 var ttl = 5;

@@ -18,31 +18,12 @@ var exp = require('express')
  * @apiName ManageUsers
  * @apiGroup Admin
  */
-router.get('/manageUsers', customMw.isAuthentificated, function(req, res) {
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  decoder.getObjectByToken(token, function(err, id){
-    if (err) { return res.status(401).json({ error: err });  }
-    cache.fetchUser(id, function(err, user) {
-      if (err) { return res.status(401).json({ error: err });  }
-      acl.init(function(err){
-        if (err) { return res.status(401).json({ error: err });  }
-        acl.aclManager.isAllowed(User.getIdFromBLOB(id), acl.RESOURCES.User, acl.PERMISSIONS.All, function(err, result){
-          if (err){ 
-            logger.error(err); 
-            return res.status(401).json({ error: err }); 
-          }
-          if (result) {
-            logger.debug(result);
-            return res.json({message: result});
-          }
-          else {
-            logger.debug(resources.ERRORS.PermissionDenied );
-            return res.json({ error: resources.ERRORS.PermissionDenied });
-          }
-        });
-      });
-    });
-  });
+router.get('/manageUsers', 
+  customMw.isAuthentificated, 
+  customMw.isAllowed('User', '*'), 
+  function(req, res) {
+    logger.debug('Managing users...');
+    return res.json({message: 'managing users...'});
 });
 
 /**
@@ -50,51 +31,29 @@ router.get('/manageUsers', customMw.isAuthentificated, function(req, res) {
  * @apiName AddUserRoles
  * @apiGroup Admin
  */
-router.get('/addUserRoles/:userId/:role', customMw.isAuthentificated, function(req, res) {
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  decoder.getObjectByToken(token, function(err, id){
-    if (err) { return res.status(401).json({ error: err });  }
-    cache.fetchUser(id, function(err, user) {
-      if (err) { return res.status(401).json({ error: err });  }
-      acl.init(function(err){
-        if (err) { return res.status(401).json({ error: err });  }
-        acl.aclManager.isAllowed(User.getIdFromBLOB(id), acl.RESOURCES.User, acl.PERMISSIONS.All, function(err, result){
-          if (err) return res.status(401).json({ error: err }); 
-          if (!result) return res.status(401).json({ error: resources.ERRORS.PermissionDenied });
-          acl.aclManager.addUserRoles(req.params.userId, req.params.role, function(err){
-            if (err) { return res.status(401).json({ error: err }); }
-            return res.json({message: 'User added to role'});
-          });
-        });
-      });
+router.get('/addUserRoles/:userId/:role', 
+  customMw.isAuthentificated, 
+  customMw.isAllowed('User', '*'),
+  function(req, res) {
+    acl.aclManager.addUserRoles(req.params.userId, req.params.role, function(err){
+      if (err) { return res.json({ error: err }); }
+      return res.json({message: 'User added to role'});
     });
-  });
 });
 
 /**
- * @api {get} /admin/addUserRoles Add a user to a role
- * @apiName AddUserRoles
+ * @api {get} /admin/deleteUserRoles Delete user from a role
+ * @apiName DeleteUserRoles
  * @apiGroup Admin
  */
-router.get('/deleteUserRoles/:userId/:role', customMw.isAuthentificated, function(req, res) {
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  decoder.getObjectByToken(token, function(err, id){
-    if (err) { return res.status(401).json({ error: err });  }
-    cache.fetchUser(id, function(err, user) {
-      if (err) { return res.status(401).json({ error: err });  }
-      acl.init(function(err){
-        if (err) { return res.status(401).json({ error: err });  }
-        acl.aclManager.isAllowed(User.getIdFromBLOB(id), acl.RESOURCES.User, acl.PERMISSIONS.All, function(err, result){
-          if (err) return res.status(401).json({ error: err }); 
-          if (!result) return res.status(401).json({ error: resources.ERRORS.PermissionDenied });
-          acl.aclManager.removeUserRoles(req.params.userId, req.params.role, function(err){
-            if (err) { return res.status(401).json({ error: err }); }
-            return res.json({message: 'User removed from role'});
-          });
-        });
-      });
+router.get('/deleteUserRoles/:userId/:role',
+  customMw.isAuthentificated, 
+  customMw.isAllowed('User', '*'), 
+  function(req, res) {
+    acl.aclManager.removeUserRoles(req.params.userId, req.params.role, function(err){
+      if (err) { return res.json({ error: err }); }
+      return res.json({message: 'User removed from role'});
     });
-  });
 });
 
 module.exports = router;

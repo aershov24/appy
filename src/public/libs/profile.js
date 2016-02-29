@@ -112,15 +112,16 @@ $(document).ready(function() {
   });
 
   // DRA12X2VFBVZNVMCKFMJKSXY3V2EOYWV52COJC4JGMPPTG2P
+  // WVYACRR0VL5V2YTO0X4EKOP2BHTJIS1BH3L02GVD3ZD0LMKE
   $("#SearchFoursquareVenues").click(function(){
     $.ajax({
       type: "GET",
-      url: "/foursquare/venue?token="+token+"&venueId=552d1f33498e8589de121113&fstoken=DRA12X2VFBVZNVMCKFMJKSXY3V2EOYWV52COJC4JGMPPTG2P",
+      url: "/foursquare/search?token="+token+"&near=Perth,WA&name=laundry&fstoken=WVYACRR0VL5V2YTO0X4EKOP2BHTJIS1BH3L02GVD3ZD0LMKE",
       dataType: 'json',
       success: function(data){
         alert(JSON.stringify(data));
       },
-      failure: function(errMsg) {
+      error: function(errMsg) {
         alert(JSON.stringify(errMsg));
       }
     });
@@ -129,7 +130,7 @@ $(document).ready(function() {
   $("#GetFoursquareVenuewDetails").click(function(){
     $.ajax({
       type: "GET",
-      url: "/foursquare/venue?token="+token+"&venueId=552d1f33498e8589de121113&fstoken=DRA12X2VFBVZNVMCKFMJKSXY3V2EOYWV52COJC4JGMPPTG2P",
+      url: "/foursquare/venue?token="+token+"&venueId=552d1f33498e8589de121113&fstoken=WVYACRR0VL5V2YTO0X4EKOP2BHTJIS1BH3L02GVD3ZD0LMKE",
       dataType: 'json',
       success: function(data){
         alert(JSON.stringify(data));
@@ -143,7 +144,7 @@ $(document).ready(function() {
   $("#GetFoursquareVenueTips").click(function(){
     $.ajax({
       type: "GET",
-      url: "/foursquare/venue/tips?token="+token+"&venueId=552d1f33498e8589de121113&fstoken=DRA12X2VFBVZNVMCKFMJKSXY3V2EOYWV52COJC4JGMPPTG2P",
+      url: "/foursquare/venue/tips?token="+token+"&venueId=552d1f33498e8589de121113&fstoken=WVYACRR0VL5V2YTO0X4EKOP2BHTJIS1BH3L02GVD3ZD0LMKE",
       dataType: 'json',
       success: function(data){
         alert(JSON.stringify(data));

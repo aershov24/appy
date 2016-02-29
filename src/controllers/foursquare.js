@@ -17,24 +17,23 @@ var exp = require('express')
  * @apiGroup Foursquare
  */
 // http://localhost:3000/foursquare/search?near=Perth,WA&name=laundry&fstoken=DRA12X2VFBVZNVMCKFMJKSXY3V2EOYWV52COJC4JGMPPTG2P
-router.get('/search', customMw.isAuthentificated, function(req, res) {
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  decoder.getObjectByToken(token, function(err, id){
-    if (err) { return res.status(401).json({ error: err });  }
-    cache.fetchUser(id, function(err, user) {
-      if (err) { return res.status(401).json({ error: err });  }
-      logger.debug('Foursquare search...');
-      var lat = req.query.lat;
-      var lng = req.query.lan;
-      var near = req.query.near;
-      var name = req.query.name;
-      var token = req.query.fstoken;
+router.get('/search', 
+  customMw.isAuthentificated,
+  function(req, res) {
+  
+  logger.debug('Foursquare search...');
+  var lat = req.query.lat;
+  var lng = req.query.lan;
+  var near = req.query.near;
+  var name = req.query.name;
+  var token = req.query.fstoken;
 
-      foursquare.Venues.search(lat, lng, near, {query: name}, token, function(err, result){
-        if (err) return res.json({error: err});
-        return res.json(result);
-      });
-    });
+  foursquare.Venues.search(lat, lng, near, {query: name}, token, function(err, result){
+    if (err){
+      logger.debug(err);
+      return res.json(err);
+    }
+    return res.json(result);
   });
 });
 
@@ -45,20 +44,12 @@ router.get('/search', customMw.isAuthentificated, function(req, res) {
  */
 // http://localhost:3000/foursquare/venue?venueId=552d1f33498e8589de121113&fstoken=DRA12X2VFBVZNVMCKFMJKSXY3V2EOYWV52COJC4JGMPPTG2P
 router.get('/venue', customMw.isAuthentificated, function(req, res) {
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  decoder.getObjectByToken(token, function(err, id){
-    if (err) { return res.status(401).json({ error: err });  }
-    cache.fetchUser(id, function(err, user) {
-      if (err) { return res.status(401).json({ error: err });  }
-      logger.debug('Foursquare venue details...');
-      var venueId = req.query.venueId;
-      var token = req.query.fstoken;
-
-      foursquare.Venues.getVenue(venueId, token, function(err, result){
-        if (err) return res.json({error: err});
-        return res.json(result);
-      });
-    });
+  logger.debug('Foursquare venue details...');
+  var venueId = req.query.venueId;
+  var token = req.query.fstoken;
+  foursquare.Venues.getVenue(venueId, token, function(err, result){
+    if (err) return res.json({error: err});
+    return res.json(result);
   });
 });
 
@@ -69,20 +60,13 @@ router.get('/venue', customMw.isAuthentificated, function(req, res) {
  */
 // http://localhost:3000/foursquare/venue/tips?venueId=552d1f33498e8589de121113&fstoken=DRA12X2VFBVZNVMCKFMJKSXY3V2EOYWV52COJC4JGMPPTG2P
 router.get('/venue/tips', customMw.isAuthentificated, function(req, res) {
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  decoder.getObjectByToken(token, function(err, id){
-    if (err) { return res.status(401).json({ error: err });  }
-    cache.fetchUser(id, function(err, user) {
-      if (err) { return res.status(401).json({ error: err });  }
-      logger.debug('Foursquare venue tips...');
-      var venueId = req.query.venueId;
-      var token = req.query.fstoken;
+  logger.debug('Foursquare venue tips...');
+  var venueId = req.query.venueId;
+  var token = req.query.fstoken;
 
-      foursquare.Venues.getVenueAspect(venueId, 'tips', null, token, function(err, result){
-        if (err) return res.json({error: err});
-        return res.json(result);
-      });
-    });
+  foursquare.Venues.getVenueAspect(venueId, 'tips', null, token, function(err, result){
+    if (err) return res.json({error: err});
+    return res.json(result);
   });
 });
 

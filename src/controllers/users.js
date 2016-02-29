@@ -26,17 +26,7 @@ router.get('/login', function(req, res) {
  * @apiGroup User
  */
 router.get('/getUserInfo', customMw.isAuthentificated, function(req, res) {
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  decoder.getObjectByToken(token, function(err, id){
-    if (err) { return res.status(401).json({ error: err }); }
-    cache.fetchUser(id, function(err, user) {
-      if (err) { return res.status(401).json({ error: err });  }
-      if (!user) {
-        return res.status(401).json({ error: 'No user found' });
-      }
-      res.json({ user : user });
-    });
-  });
+  res.json({ user : req.user });
 });
 
 /**
@@ -45,20 +35,11 @@ router.get('/getUserInfo', customMw.isAuthentificated, function(req, res) {
  * @apiGroup User
  */
 router.get('/updateUser', customMw.isAuthentificated, function(req, res) {
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  decoder.getObjectByToken(token, function(err, id){
-    if (err) { return res.status(401).json({ error: err }); }
-    cache.fetchUser(id, function(err, user) {
-      if (err) { return res.status(401).json({ error: err });  }
-      if (!user) {
-        return res.status(401).json({ error: 'No user found' });
-      }
-      user.email = user.email+'1';
-      User.update(user, function(err, result){
-        if (err) { return res.status(401).json({ error: err });  }
-        res.json({ result : result });
-      });
-    });
+  var user = req.user;
+  user.email = user.email+'1';
+  User.update(user, function(err, result){
+    if (err) { return res.json({ error: err });  }
+    res.json({ result : result });
   });
 });
 
@@ -69,17 +50,7 @@ router.get('/updateUser', customMw.isAuthentificated, function(req, res) {
  * @apiGroup User
  */
 router.get('/profile', customMw.isAuthentificated, function(req, res) {
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  decoder.getObjectByToken(token, function(err, id){
-    if (err) { return res.status(401).json({ error: err }); }
-    User.GetUserById(id, function(err, user) {
-      if (err) { return res.status(401).json({ error: err }); }
-      if (!user) {
-        return res.status(401).json({ error: 'No user found' });
-      }
-      res.render('profile', { user : user });
-    });
-  });
+  res.render('profile', { user : user });
 });
 
 router.get('/signup', function(req, res) {
