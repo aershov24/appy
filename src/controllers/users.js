@@ -50,7 +50,7 @@ router.get('/updateUser', customMw.isAuthentificated, function(req, res) {
  * @apiGroup User
  */
 router.get('/profile', customMw.isAuthentificated, function(req, res) {
-  res.render('profile', { user : user });
+  res.render('profile', { user : req.user });
 });
 
 router.get('/signup', function(req, res) {
