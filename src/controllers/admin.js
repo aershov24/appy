@@ -27,9 +27,18 @@ router.get('/manageUsers', customMw.isAuthentificated, function(req, res) {
       acl.init(function(err){
         if (err) { return res.status(401).json({ error: err });  }
         acl.aclManager.isAllowed(User.getIdFromBLOB(id), acl.RESOURCES.User, acl.PERMISSIONS.All, function(err, result){
-          if (err) return res.status(401).json({ error: err }); 
-          if (result) return res.json({message: result});
-          else return res.status(401).json({ error: resources.ERRORS.PermissionDenied });
+          if (err){ 
+            logger.error(err); 
+            return res.status(401).json({ error: err }); 
+          }
+          if (result) {
+            logger.debug(result);
+            return res.json({message: result});
+          }
+          else {
+            logger.debug(resources.ERRORS.PermissionDenied );
+            return res.json({ error: resources.ERRORS.PermissionDenied });
+          }
         });
       });
     });
@@ -55,6 +64,32 @@ router.get('/addUserRoles/:userId/:role', customMw.isAuthentificated, function(r
           acl.aclManager.addUserRoles(req.params.userId, req.params.role, function(err){
             if (err) { return res.status(401).json({ error: err }); }
             return res.json({message: 'User added to role'});
+          });
+        });
+      });
+    });
+  });
+});
+
+/**
+ * @api {get} /admin/addUserRoles Add a user to a role
+ * @apiName AddUserRoles
+ * @apiGroup Admin
+ */
+router.get('/deleteUserRoles/:userId/:role', customMw.isAuthentificated, function(req, res) {
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  decoder.getObjectByToken(token, function(err, id){
+    if (err) { return res.status(401).json({ error: err });  }
+    cache.fetchUser(id, function(err, user) {
+      if (err) { return res.status(401).json({ error: err });  }
+      acl.init(function(err){
+        if (err) { return res.status(401).json({ error: err });  }
+        acl.aclManager.isAllowed(User.getIdFromBLOB(id), acl.RESOURCES.User, acl.PERMISSIONS.All, function(err, result){
+          if (err) return res.status(401).json({ error: err }); 
+          if (!result) return res.status(401).json({ error: resources.ERRORS.PermissionDenied });
+          acl.aclManager.removeUserRoles(req.params.userId, req.params.role, function(err){
+            if (err) { return res.status(401).json({ error: err }); }
+            return res.json({message: 'User removed from role'});
           });
         });
       });

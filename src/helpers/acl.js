@@ -30,7 +30,7 @@ module.exports.init = function (cb) {
     
     aclManager.allow(ROLES.Admin, RESOURCES.User, PERMISSIONS.All);
     aclManager.allow(ROLES.User, RESOURCES.User, [PERMISSIONS.View]);
-    aclManager.addUserRoles('56c729dce3532f701d461b84', ROLES.Admin);
+    aclManager.addUserRoles('56d3f3561f9bc26816190bc1', ROLES.Admin);
 
     module.exports.aclManager = aclManager;
 

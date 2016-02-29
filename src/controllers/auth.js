@@ -35,19 +35,26 @@ router.get('/linkedin',
  * @apiName AuthFacebookCallback
  * @apiGroup Authentication
  */
-router.get('/facebook/callback', function(req, res, next){
-  passport.authenticate('facebook', function(err, user, info) {
-    if (err) return res.json(401, { error: err});
-    if (!user) {
-      return res.json(401, { error: info });
-    }
-    //user has authenticated correctly thus we create a JWT token 
-    var token = jwt.sign(user._id, cfg.JSONToken.secret, {
-      expiresIn: cfg.JSONToken.expires
-    });
-    return res.json({ token : token, expires: cfg.JSONToken.expires });
-  })(req, res, next);
-});
+router.get('/facebook/callback', 
+  /*passport.authenticate('facebook', {
+      successRedirect : '/users/profile',
+      failureRedirect : '/users/login'
+  }));*/
+  function(req, res, next){
+    passport.authenticate('facebook', function(err, user, info) {
+      if (err) return res.json(401, { error: err});
+      if (!user) {
+        return res.json(401, { error: info });
+      }
+      //user has authenticated correctly thus we create a JWT token 
+      var token = jwt.sign(user._id, cfg.JSONToken.secret, {
+        expiresIn: cfg.JSONToken.expires
+      });
+      //return res.json({ token : token, expires: cfg.JSONToken.expires });
+      res.redirect('/users/profile?token='+token);
+    })(req, res, next);
+  }
+);
 
 /**
  * @api {get} /auth/linkedin/callback LinkedIn authentification callback
@@ -65,7 +72,8 @@ router.get('/linkedin/callback', function(req, res, next){
     var token = jwt.sign(user._id, cfg.JSONToken.secret, {
       expiresIn: cfg.JSONToken.expires
     });
-    return res.json({ token : token, expires: cfg.JSONToken.expires });
+    //return res.json({ token : token, expires: cfg.JSONToken.expires });
+    res.redirect('/users/profile?token='+token);
   })(req, res, next);
 });
 
@@ -85,7 +93,9 @@ router.post('/login', function(req, res, next){
     var token = jwt.sign(user._id, cfg.JSONToken.secret, {
       expiresIn: cfg.JSONToken.expires
     });
-    return res.json({ token : token, expires: cfg.JSONToken.expires });
+    //return res.json({ token : token, expires: cfg.JSONToken.expires });
+    logger.debug('/users/profile?token='+token);
+    return res.redirect('/users/profile?token='+token);
   })(req, res, next);
 });
 
@@ -111,30 +121,10 @@ router.post('/signup', function(req, res) {
     mailer.sendWelcomeEmail(user, function(err, body){
       if (err) 
         logger.error('Cant send register email: %s', err);
-      return res.json({ token : token, expires: cfg.JSONToken.expires });
+      //return res.json({ token : token, expires: cfg.JSONToken.expires });
+      res.redirect('/users/profile?token='+token);
     });
   });
 });
-
-/**
- * @api {get} /auth/login Get user info by token
- * @apiName AuthLogin
- * @apiGroup Authentication
- */
-router.post('/login', function(req, res, next){
-  passport.authenticate('local', function(err, user, info) {
-    if (err) { return next(err); }
-    if (!user) {
-      return res.json(401, { error: info });
-    }
-    //user has authenticated correctly thus we create a JWT token 
-    var token = jwt.sign(user._id, cfg.secret, {
-      expiresIn: cfg.JSONToken.expires
-    });
-    return res.json({ token : token, expires: cfg.JSONToken.expires });
-
-  })(req, res, next);
-});
-
 
 module.exports = router;

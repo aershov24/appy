@@ -12,6 +12,7 @@ exports.isAuthentificated = function(req, res, next){
       if (err) {
         return res.json({ success: false, message: 'Failed to authenticate token' });    
       } else {
+        logger.debug('Auth ok, next');
         // if everything is good, save to request for use in other routes
         req.decoded = decoded;
         next();
@@ -20,6 +21,7 @@ exports.isAuthentificated = function(req, res, next){
     } else {
        // respond with html page
     if (req.accepts('html')) {
+      logger.debug('isAuth');
       return res.redirect('/users/login')
     }
 

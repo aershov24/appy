@@ -1,5 +1,9 @@
 extends ./layout.jade
 
+block js
+  script(src='/libs/profile.js')
+  script(src='https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js')
+
 block body
   body
     include ./navbar.jade
@@ -10,7 +14,68 @@ block body
         li
           label Profile
       p
-        h1 #{user.username}: 
+        h1 #{user.username}:
       p
-        | !{JSON.stringify(user)}
-    include ./footer.jade
+        pre.prettyprint
+          !{JSON.stringify(user, null, 4)}
+      .row
+        .col-md-6
+          p
+            h1 Admin
+          p
+            ul
+              li
+                a#ManageUsers Manage Users
+              li
+                a#AddUserRole Add user role
+               li
+                a#DeleteUserRole Delete user from role
+          p
+            h1 Emails
+          p
+            ul
+              li
+                a#SendRawEmail Send raw email
+              li
+                a#SendWelcomeEmail Send welcome email
+              li
+                a#SendEmailWithAttachments Send email with attachments
+          p
+            h1 SMS
+          p
+            ul
+              li 
+                a#SendSMSMessage Send sms message
+        .col-md-6
+          p
+            h1 Foursquare
+          p
+            ul
+              li 
+                a(href="/foursquare") Get Foursquare token
+              li 
+                a#SearchFoursquareVenues Search venues
+              li 
+                a#GetFoursquareVenuewDetails Get venue details
+              li 
+                a#GetFoursquareVenueTips Get venue tips
+          p
+            h1 Locu
+          p
+            ul
+              li 
+                a#SearchLocuVenues Search venues
+              li 
+                a#GetLocuVenuewDetails Get venue details
+          p
+            h1 Linking accounts
+          p
+            ul
+              li 
+                a#LinkFacebookAccount Link Facebook
+              li 
+                a#LinkTwitterAccount Link Twitter
+              li 
+                a#LinkLinkedinAccount Link LinkedIn
+      br
+    //include ./footer.jade

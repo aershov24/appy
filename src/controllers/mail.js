@@ -26,7 +26,7 @@ router.get('/sendSMSMessage/:number', customMw.isAuthentificated, function(req, 
       var body = 'SMS message';
       smssender.sendSMSMessage(to, body, function(err, body){
         if (err) return res.json({error: err});
-        return res.json({message: 'ok'});
+        return res.json({message: "ok"});
       });
     });
   });

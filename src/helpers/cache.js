@@ -30,6 +30,7 @@ cache.set('foo', 'bar', ttl, function(err) {
     cache.del('foo', function(err) {});
   });
 });
+
  /**
  * Wraps User.get() with memoryCache.wrap().
  * First call to this function will call User.get and

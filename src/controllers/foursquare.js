@@ -110,7 +110,7 @@ router.get('/callback', function (req, res) {
  * @apiName GetToken
  * @apiGroup Foursquare
  */
-router.get('/', function(req, res) {
+router.get('/',  function(req, res) {
   logger.debug('Foursquare authentification...');
   res.writeHead(303, { 'location': foursquare.getAuthClientRedirectUrl() });
   res.end();

@@ -21,11 +21,11 @@ $(document).ready(function() {
     $.ajax({
       type: "GET",
       url: "/auth/facebook",
-      crossDomain: true,
-      contentType: "application/json; charset=utf-8",
-      dataType: "jsonp",
-      success: function(data){
-        alert(JSON.stringify(data));
+      //crossDomain: true,
+      //contentType: "application/json; charset=utf-8",
+      //dataType: "jsonp",
+      success: function(result,status,xhr){
+        alert(JSON.stringify(xhr));
       },
       failure: function(errMsg) {
           alert(errMsg);
