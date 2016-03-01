@@ -1,8 +1,12 @@
 extends ./layout.jade
 
+block css
+  link(rel='stylesheet', href='/css/jquery.json-viewer.css')
+
 block js
   script(src='/libs/profile.js')
-  script(src='https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js')
+  //script(src='https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js')
+  script(src='/libs/jquery.json-viewer.js')
   script.
     var user=!{JSON.stringify(user)}
 
@@ -107,6 +111,13 @@ block body
         a#hide Hide
         | /
         a#show Show
-        pre#json.prettyprint !{JSON.stringify(user, null, 4)}
+        pre#json-rendereruser
+      p
+        h1 Result JSON:
+      p
+        a#resultHide Hide
+        | /
+        a#resultShow Show
+        pre#json-renderer
       br
     //include ./footer.jade

@@ -1,5 +1,7 @@
 $(document).ready(function() {
   
+  $('#json-rendereruser').jsonViewer(user);
+
   var getUserEmails = function(user)
   {
     var emails = [];
@@ -45,11 +47,19 @@ $(document).ready(function() {
   console.log(token);
 
   $("#hide").click(function(){
-    $("#json").hide();
+    $("#json-rendereruser").hide();
   });
 
   $("#show").click(function(){
-    $("#json").show();
+    $("#json-rendereruser").show();
+  });
+
+  $("#resultHide").click(function(){
+    $("#json-renderer").hide();
+  });
+
+  $("#resultShow").click(function(){
+    $("#json-renderer").show();
   });
 
   $("#MainEmailSave").click(function(){
@@ -324,7 +334,7 @@ $(document).ready(function() {
       url: "/foursquare/search?token="+token+"&near=Perth,WA&name=laundry&fstoken=WVYACRR0VL5V2YTO0X4EKOP2BHTJIS1BH3L02GVD3ZD0LMKE",
       dataType: 'json',
       success: function(data){
-        alert(JSON.stringify(data));
+        $('#json-renderer').jsonViewer(data);
       },
       error: function(errMsg) {
         alert(JSON.stringify(errMsg));
@@ -338,7 +348,7 @@ $(document).ready(function() {
       url: "/foursquare/venue?token="+token+"&venueId=552d1f33498e8589de121113&fstoken=WVYACRR0VL5V2YTO0X4EKOP2BHTJIS1BH3L02GVD3ZD0LMKE",
       dataType: 'json',
       success: function(data){
-        alert(JSON.stringify(data));
+        $('#json-renderer').jsonViewer(data);
       },
       failure: function(errMsg) {
         alert(JSON.stringify(errMsg));
@@ -352,7 +362,21 @@ $(document).ready(function() {
       url: "/foursquare/venue/tips?token="+token+"&venueId=552d1f33498e8589de121113&fstoken=WVYACRR0VL5V2YTO0X4EKOP2BHTJIS1BH3L02GVD3ZD0LMKE",
       dataType: 'json',
       success: function(data){
-        alert(JSON.stringify(data));
+        $('#json-renderer').jsonViewer(data);
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
+  $("#SearchLocuVenues").click(function(){
+    $.ajax({
+      type: "GET",
+      url: "/locu/search?name=bar&country=Australia&locality=perth&token="+token,
+      dataType: 'json',
+      success: function(data){
+        $('#json-renderer').jsonViewer(data);
       },
       failure: function(errMsg) {
         alert(JSON.stringify(errMsg));
