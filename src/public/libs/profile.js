@@ -111,7 +111,7 @@ $(document).ready(function() {
   $("#GetUserRoles").click(function(){
     $.ajax({
       type: "GET",
-      url: "/users/getUserRoles/56d3ffb84808813025b0b23f?token="+token,
+      url: "/admin/getUserRoles?token="+token,
       success: function(data){
         alert(JSON.stringify(data));
       },
