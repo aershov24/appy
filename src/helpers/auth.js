@@ -103,52 +103,59 @@ facebookAuth = function(req, accessToken, refreshToken, profile, done){
   });
 };
 
-linkedinAuth = function(rq, accessToken, refreshToken, profile, done){
+linkedinAuth = function(req, accessToken, refreshToken, profile, done){
   process.nextTick(function(){
-    logger.debug("LinkedIn profile: ", JSON.stringify(profile, null, 2));
-    User.FindByLinkedinId(profile.id, 
-      function (err, user){
-        if (err)
-        {
-          logger.error(err);
-          return done(err, false);
-        }
-
-        logger.debug("Founded User: ", user);
-        if (!user){
-          var newUser = {
-            linkedin: {
-              id: profile.id,
-              username: profile.username,
-              displayName: profile.displayName,
-              name: {
-                  familyName: profile.name.familyName,
-                  givenName: profile.name.givenName,
-                  middleName: null
-              },
-              gender: profile.gender,
-              profileUrl: profile.profileUrl,
-              emails: profile.emails,
-            },
-            username:  profile.name.givenName+profile.name.familyName,
-            name: profile.name.givenName+' '+profile.name.familyName,
-            email: profile.emails[0].value
-          };
-
-          logger.debug("New LinkedIn User: ", newUser);
-
-          User.AddUser(newUser, function(err, user){
+  // linking accounta
+    if (req.query.state)
+    {
+      var userInfo = JSON.parse(req.query.state);
+      logger.debug('Linked user: ', userInfo);
+      // linking acoounts and return to profile page
+      User.getById(User.getObjectId(userInfo.userId), 
+        function(err, user){
+          if (err) return done(err, null);
+          logger.debug('Current user: ', user);
+          user.linkedin = profile;
+          user.token = userInfo.token;
+          User.update(user, function(err, result){
             if (err) return done(err, null);
-            logger.debug('User created with LinkedIn: %s', profile.id);
-            logger.debug(user);
             return done(null, user);
           });
-        }
-        else{
-          logger.debug('User with LinkedIn existed: ', profile.id);
-          return done(null, user);
-        }
       });
+    }
+    // user authentification
+    else
+    {
+      logger.debug("LinkedIn profile: ", JSON.stringify(profile, null, 2));
+      User.FindByLinkedinId(profile.id, 
+        function (err, user){
+          if (err)
+          {
+            logger.error(err);
+            return done(err, false);
+          }
+
+          logger.debug("Founded User: ", user);
+          if (!user){
+            var newUser = {
+              linkedin: profile
+            };
+
+            logger.debug("New LinkedIn User: ", newUser);
+
+            User.AddUser(newUser, function(err, user){
+              if (err) return done(err, null);
+              logger.debug('User created with LinkedIn: %s', profile.id);
+              logger.debug(user);
+              return done(null, user);
+            });
+          }
+          else{
+            logger.debug('User with LinkedIn existed: ', profile.id);
+            return done(null, user);
+          }
+      });
+    }
   });
 };
   

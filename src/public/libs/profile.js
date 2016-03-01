@@ -30,6 +30,20 @@ $(document).ready(function() {
     });
   });
 
+  $("#UnlinkLinkedInAccount").click(function(){
+    $.ajax({
+      type: "GET",
+      url: "/users/unlinkLinkedIn/56d3f3561f9bc26816190bc1?token="+token,
+      success: function(data){
+        alert(JSON.stringify(data));
+        location.reload();
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
   $("#WhatResources").click(function(){
     $.ajax({
       type: "GET",

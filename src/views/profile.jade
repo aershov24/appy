@@ -16,8 +16,7 @@ block body
       p
         h1 #{user.username}:
       p
-        pre.prettyprint
-          !{JSON.stringify(user, null, 4)}
+        pre.prettyprint !{JSON.stringify(user, null, 4)}
       .row
         .col-md-6
           p
@@ -94,8 +93,8 @@ block body
               li 
                 a#UnlinkTwitterAccount Unlink Twitter Account
               li 
-                a#LinkLinkedinAccount Link LinkedIn
+                a(href='/auth/linkedin/link?token=#{user.token}') Link LinkedIn Account
               li 
-                a#UnlinkLinkedinAccount Unlink Linkedin Account
+                a#UnlinkLinkedInAccount Unlink LinkedIn Account
       br
     //include ./footer.jade

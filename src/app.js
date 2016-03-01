@@ -60,7 +60,8 @@ passport.use(new LinkedInStrategy({
     clientID: cfg.linkedin.apiKey,
     clientSecret: cfg.linkedin.apiSecret,
     callbackURL: cfg.linkedin.callback,
-    scope: cfg.linkedin.profileFields
+    scope: cfg.linkedin.profileFields,
+    passReqToCallback: true
   }, auth.linkedinAuth));
   
 passport.serializeUser(function(user, done){
