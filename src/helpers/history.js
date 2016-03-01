@@ -55,7 +55,7 @@ exports.addHistory = function (object, collection, operation, id, meta) {
 
     return history.insert(historyRecord, { safe: true }, function(err, result){
       if (err) { logger.error(err); return cb(err); }
-      logger.debug('Add operaton to history: ', result);
+      logger.debug('Add operaton to history: ', collection, operation);
     });
   });
 };
