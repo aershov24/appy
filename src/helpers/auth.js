@@ -158,7 +158,29 @@ linkedinAuth = function(req, accessToken, refreshToken, profile, done){
     }
   });
 };
+
+twitterAuth = function(req, accessToken, refreshToken, profile, done){
+  process.nextTick(function(){
+    // linking accounta
+    if (req.session.user)
+    {
+      // linking acoounts and return to profile page
+      User.getById(User.getObjectId(req.session.user.userId), 
+        function(err, user){
+          if (err) return done(err, null);
+          user.token = req.session.user.userToken;
+          user.twitter = profile;
+          User.update(user, function(err, result){
+            if (err) return done(err, null);
+            return done(null, user);
+          });
+      });
+    }
+  });
+};
+
   
 exports.localAuth = localAuth;
 exports.facebookAuth = facebookAuth;
 exports.linkedinAuth = linkedinAuth;
+exports.twitterAuth = twitterAuth;

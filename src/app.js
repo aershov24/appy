@@ -12,7 +12,9 @@ var logger  = require('./helpers/logger.js')
   , LocalStrategy = require('passport-local').Strategy
   , LinkedInStrategy = require('passport-linkedin-oauth2').Strategy
   , FacebookStrategy = require('passport-facebook').Strategy
+  , TwitterStrategy = require('passport-twitter').Strategy
   , auth = require('./helpers/auth.js')
+  , session = require('express-session')
   , port = process.env.PORT || 3000;
 
 process.on('uncaughtException', function (err) {
@@ -25,6 +27,7 @@ var opt = {
   }
 };
 
+app.use(session({ secret: 'blah', name: 'id' }))
 app.set('secret', cfg.JSONToken.secret)
 app.set('views', cfg.rootPath + '/views')
 app.engine('jade', require('jade').__express)
@@ -63,6 +66,13 @@ passport.use(new LinkedInStrategy({
     scope: cfg.linkedin.profileFields,
     passReqToCallback: true
   }, auth.linkedinAuth));
+
+passport.use(new TwitterStrategy({
+  consumerKey: cfg.twitter.apiKey,
+  consumerSecret: cfg.twitter.apiSecret,
+  callbackURL: cfg.twitter.callback,
+  passReqToCallback: true
+}, auth.twitterAuth));
   
 passport.serializeUser(function(user, done){
     return done(null, user);

@@ -61,7 +61,7 @@ router.get('/unlinkFacebook/:userId', customMw.isAuthentificated, function(req, 
 });
 
 /**
- * @api {get} /users/unlinkFacebook/:userId Unlink LinkedIn account
+ * @api {get} /users/unlinkLinkedIn/:userId Unlink LinkedIn account
  * @apiName UnlinkLinkedInAccount
  * @apiGroup User
  */
@@ -69,6 +69,22 @@ router.get('/unlinkLinkedIn/:userId', customMw.isAuthentificated, function(req, 
   User.getById(User.getObjectId(req.params.userId), function(err, user){
     if (err) { return res.json({ error: err });  }
     user.linkedin = null;
+    User.update(user, function(err, result){
+      if (err) { return res.json({ error: err });  }
+      res.json({ result : result });
+    });
+  });
+});
+
+/**
+ * @api {get} /users/unlinkTwitter/:userId Unlink Twitter account
+ * @apiName UnlinkTwitterAccount
+ * @apiGroup User
+ */
+router.get('/unlinkTwitter/:userId', customMw.isAuthentificated, function(req, res) {
+  User.getById(User.getObjectId(req.params.userId), function(err, user){
+    if (err) { return res.json({ error: err });  }
+    user.twitter = null;
     User.update(user, function(err, result){
       if (err) { return res.json({ error: err });  }
       res.json({ result : result });

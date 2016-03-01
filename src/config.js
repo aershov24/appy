@@ -11,6 +11,7 @@ var redis = null;
 var datadiff = null;
 
 var fbcall = null;
+var twittercall = null;
 var linkedincall = null;
 var foursquarecall = null;
 var rootPath = __dirname;
@@ -60,6 +61,7 @@ if (ENV == 'PROD')
   };
 
   fbcall = 'https://appyws.herokuapp.com/auth/facebook/callback';
+  twittercall = 'https://appyws.herokuapp.com/auth/twitter/callback';
   linkedincall = 'https://appyws.herokuapp.com/auth/linkedin/callback';
   foursquarecall = 'https://appyws.herokuapp.com/foursquare/callback';
 }
@@ -107,6 +109,7 @@ if (ENV == 'DEV')
   };
 
   fbcall = 'http://localhost:3000/auth/facebook/callback';
+  twittercall = 'http://127.0.0.1:3000/auth/twitter/callback';
   linkedincall = 'http://localhost:3000/auth/linkedin/callback';
   foursquarecall = 'http://localhost:3000/foursquare/callback';
 }
@@ -125,6 +128,12 @@ var linkedin = {
     apiSecret: '4NH0WMakwmfngFAd',
     callback: linkedincall,
     profileFields: ['r_emailaddress', 'r_basicprofile']
+}
+
+var twitter = {
+    apiKey: 'IuTxnLFvhul7eP7kVI0nmo4K0',
+    apiSecret: 'eHh1TrfI1lza5qr8W4QQU6JIA7vBu7FtJgoEk1hcmFvffeOkiS',
+    callback: twittercall
 }
 
 var foursquare = {
@@ -162,6 +171,7 @@ exports.MongoDBLog = MongoDBLog;
 exports.MongoDBHistory = MongoDBHistory;
 exports.facebook = facebook;
 exports.linkedin = linkedin;
+exports.twitter = twitter;
 exports.foursquare = foursquare;
 exports.locu = locu;
 exports.loggly = loggly;

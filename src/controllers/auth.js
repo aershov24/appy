@@ -12,6 +12,22 @@ var exp = require('express')
 var User = new UserRepository();
 
 /**
+ * @api {get} /auth/twitter/link Link Twitter account 
+ * @apiName AuthTwitter
+ * @apiGroup Authentication
+ */
+router.get('/twitter/link', customMw.isAuthentificated, 
+  function(req, res, next){
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    logger.debug('Linking twitter account to', req.user);
+    req.session.user = {
+          userId: User.getIdFromBLOB(req.user._id),
+          userToken: token
+        };
+    passport.authenticate('twitter')(req, res, next);
+  });
+
+/**
  * @api {get} /auth/facebook/link Link Facebook account 
  * @apiName AuthFacebook
  * @apiGroup Authentication
@@ -39,8 +55,8 @@ router.get('/facebook', passport.authenticate('facebook', {
 }));
 
 /**
- * @api {get} /auth/facebook Facebook authentification
- * @apiName AuthFacebook
+ * @api {get} /auth/linkedin/link Link LinkedIn account
+ * @apiName LinkLinkedIn
  * @apiGroup Authentication
  */
 router.get('/linkedin/link', customMw.isAuthentificated, 
@@ -125,6 +141,26 @@ router.get('/linkedin/callback', function(req, res, next){
       });
       //return res.json({ token : token, expires: cfg.JSONToken.expires });
       res.redirect('/users/profile?token='+token);
+    }
+  })(req, res, next);
+});
+
+/**
+ * @api {get} /auth/linkedin/callback LinkedIn authentification callback
+ * @apiName AuthLinkedInCallback
+ * @apiGroup Authentication
+ */
+router.get('/twitter/callback', function(req, res, next){
+  logger.debug('twitter callback');
+  passport.authenticate('twitter', function(err, user, info) {
+    if (err) return res.json({ error: err});
+    if (!user) {
+      return res.json({ error: info });
+    }
+    if (user.token)
+    {
+      logger.debug('User token exists: ', user.token);
+      res.redirect('/users/profile?token='+user.token);
     }
   })(req, res, next);
 });

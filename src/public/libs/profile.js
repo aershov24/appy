@@ -16,6 +16,20 @@ $(document).ready(function() {
   var token = query.token;
   console.log(token);
 
+  $("#UnlinkTwitterAccount").click(function(){
+    $.ajax({
+      type: "GET",
+      url: "/users/unlinkTwitter/"+user._id+"?token="+token,
+      success: function(data){
+        alert(JSON.stringify(data));
+        location.reload();
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
   $("#UnlinkFacebookAccount").click(function(){
     $.ajax({
       type: "GET",
