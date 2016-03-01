@@ -16,10 +16,102 @@ $(document).ready(function() {
   var token = query.token;
   console.log(token);
 
+  $("#WhatResources").click(function(){
+    $.ajax({
+      type: "GET",
+      url: "/admin/whatResources/Admin?token="+token,
+      success: function(data){
+        alert(JSON.stringify(data));
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
+  $("#RemoveRole").click(function(){
+    $.ajax({
+      type: "GET",
+      url: "/admin/removeRole/User?token="+token,
+      success: function(data){
+        alert(JSON.stringify(data));
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
+  $("#RemoveResource").click(function(){
+    $.ajax({
+      type: "GET",
+      url: "/admin/removeResource/Messages?token="+token,
+      success: function(data){
+        alert(JSON.stringify(data));
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
+  $("#RemovePermission").click(function(){
+    $.ajax({
+      type: "POST",
+      url: "/admin/removePermission?token="+token,
+      data: JSON.stringify({ 
+        roles: 'Admin', 
+        resources: 'Messages',
+        permissions: 'View' 
+      }),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(data){
+        alert(JSON.stringify(data));
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
+  $("#AllowPermission").click(function(){
+    $.ajax({
+      type: "POST",
+      url: "/admin/allowPermission?token="+token,
+      data: JSON.stringify({ 
+        roles: 'Admin', 
+        resources: 'Messages',
+        permissions: 'View' 
+      }),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(data){
+        alert(JSON.stringify(data));
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
   $("#AddUserRole").click(function(){
     $.ajax({
       type: "GET",
       url: "/admin/addUserRoles/56d3ffb84808813025b0b23f/Admin?token="+token,
+      success: function(data){
+        alert(JSON.stringify(data));
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
+  $("#GetUserRoles").click(function(){
+    $.ajax({
+      type: "GET",
+      url: "/users/getUserRoles/56d3ffb84808813025b0b23f?token="+token,
       success: function(data){
         alert(JSON.stringify(data));
       },
@@ -46,6 +138,19 @@ $(document).ready(function() {
     $.ajax({
       type: "GET",
       url: "/admin/manageUsers?token="+token,
+      success: function(data){
+        alert(JSON.stringify(data));
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
+  $("#ManageMessages").click(function(){
+    $.ajax({
+      type: "GET",
+      url: "/admin/manageMessages?token="+token,
       success: function(data){
         alert(JSON.stringify(data));
       },

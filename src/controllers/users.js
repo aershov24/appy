@@ -9,6 +9,7 @@ var express = require('express')
   , UserRepository  = require('../models/users')
   , User = new UserRepository()
   , cfg   =   require('../config.js')
+  , acl = require('../helpers/acl.js')
   , passport = require('passport');
   
 /**
@@ -27,6 +28,21 @@ router.get('/login', function(req, res) {
  */
 router.get('/getUserInfo', customMw.isAuthentificated, function(req, res) {
   res.json({ user : req.user });
+});
+
+/**
+ * @api {get} /users/getUserRoles Get user roles
+ * @apiName GetUserInfo
+ * @apiGroup User
+ */
+router.get('/getUserRoles/:userId', 
+  customMw.isAuthentificated,
+  customMw.isAllowed('User', '*'),
+  function(req, res) {
+  acl.aclManager.userRoles(req.params.userId, function(err, roles){
+      if (err) { return res.json({ error: err }); }
+      return   res.json({ roles : roles });
+    });
 });
 
 /**
