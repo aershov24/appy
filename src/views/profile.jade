@@ -3,6 +3,8 @@ extends ./layout.jade
 block js
   script(src='/libs/profile.js')
   script(src='https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js')
+  script.
+    var user=!{JSON.stringify(user)}
 
 block body
   body

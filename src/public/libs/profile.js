@@ -19,7 +19,7 @@ $(document).ready(function() {
   $("#UnlinkFacebookAccount").click(function(){
     $.ajax({
       type: "GET",
-      url: "/users/unlinkFacebook/56d3f3561f9bc26816190bc1?token="+token,
+      url: "/users/unlinkFacebook/"+user._id+"?token="+token,
       success: function(data){
         alert(JSON.stringify(data));
         location.reload();
@@ -33,7 +33,7 @@ $(document).ready(function() {
   $("#UnlinkLinkedInAccount").click(function(){
     $.ajax({
       type: "GET",
-      url: "/users/unlinkLinkedIn/56d3f3561f9bc26816190bc1?token="+token,
+      url: "/users/unlinkLinkedIn/"+user._id+"?token="+token,
       success: function(data){
         alert(JSON.stringify(data));
         location.reload();
