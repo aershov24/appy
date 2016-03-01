@@ -168,7 +168,7 @@ router.get('/getUserRoles',
   customMw.isAuthentificated,
   customMw.isAllowed('User', '*'),
   function(req, res) {
-  acl.aclManager.userRoles(req.user._id, function(err, roles){
+  acl.aclManager.userRoles(User.getIdFromBLOB(req.user._id), function(err, roles){
       if (err) { return res.json({ error: err }); }
       return   res.json({ roles : roles });
     });
