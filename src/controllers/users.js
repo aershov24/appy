@@ -45,6 +45,22 @@ router.get('/updateUser', customMw.isAuthentificated, function(req, res) {
 });
 
 /**
+ * @api {get} /users/getUserInfo Get user info by token
+ * @apiName GetUserInfo
+ * @apiGroup User
+ */
+router.post('/changeEmail', 
+  customMw.isAuthentificated, 
+  function(req, res) {
+  var user = req.user;
+  user.email = req.body.email;
+  User.update(user, function(err, result){
+    if (err) { return res.json({ error: err });  }
+    res.json({ result : result });
+  });
+});
+
+/**
  * @api {get} /users/unlinkFacebook/:userId Unlink Facebook account
  * @apiName UnlinkFacebookAccount
  * @apiGroup User

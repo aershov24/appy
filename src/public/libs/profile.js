@@ -1,4 +1,32 @@
 $(document).ready(function() {
+  
+  var getUserEmails = function(user)
+  {
+    var emails = [];
+    emails.push(user.email);
+    if (user.facebook)
+    {
+      for(var i = 0; i < user.facebook.emails.length; i++)
+        emails.push(user.facebook.emails[i].value);
+    }
+    if (user.linkedin)
+    {
+      for(var i = 0; i < user.linkedin.emails.length; i++)
+        emails.push(user.linkedin.emails[i].value);
+    }
+
+    return emails;
+  }
+
+  var emailSelect  = $("#MainEmail");
+  var userEmails = getUserEmails(user);
+  console.log(userEmails);
+  for(var i = 0; i < userEmails.length; i++)
+    emailSelect.append($("<option>", 
+      { value: userEmails[i], 
+        html: userEmails[i]
+      }
+    ));
 
   function getQueryParams(qs) {
     qs = qs.split('+').join(' ');
@@ -15,6 +43,36 @@ $(document).ready(function() {
   var query = getQueryParams(document.location.search);
   var token = query.token;
   console.log(token);
+
+  $("#hide").click(function(){
+    $("#json").hide();
+  });
+
+  $("#show").click(function(){
+    $("#json").show();
+  });
+
+  $("#MainEmailSave").click(function(){
+    var select = $("#MainEmail");
+    var email = select.val();
+    console.log(email);
+    $.ajax({
+      type: "POST",
+      url: "/users/changeEmail?token="+token,
+      data: JSON.stringify({ 
+        email: email 
+      }),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(data){
+        alert(JSON.stringify(data));
+        location.reload();
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
 
   $("#UnlinkTwitterAccount").click(function(){
     $.ajax({

@@ -16,9 +16,7 @@ block body
         li
           label Profile
       p
-        h1 #{user.username}:
-      p
-        pre.prettyprint !{JSON.stringify(user, null, 4)}
+        h1 User: #{user.username}
       .row
         .col-md-6
           p
@@ -98,5 +96,17 @@ block body
                 a(href='/auth/linkedin/link?token=#{user.token}') Link LinkedIn Account
               li 
                 a#UnlinkLinkedInAccount Unlink LinkedIn Account
+              li
+                | Choose main email:  
+                select#MainEmail 
+                br
+                a#MainEmailSave Save email
+      p
+        h1 User JSON:
+      p
+        a#hide Hide
+        | /
+        a#show Show
+        pre#json.prettyprint !{JSON.stringify(user, null, 4)}
       br
     //include ./footer.jade
