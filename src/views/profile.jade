@@ -86,10 +86,16 @@ block body
           p
             ul
               li 
-                a#LinkFacebookAccount Link Facebook
+                a(href='/auth/facebook/link?token=#{user.token}') Link Facebook Account
+              li 
+                a#UnlinkFacebookAccount Unlink Facebook Account
               li 
                 a#LinkTwitterAccount Link Twitter
               li 
+                a#UnlinkTwitterAccount Unlink Twitter Account
+              li 
                 a#LinkLinkedinAccount Link LinkedIn
+              li 
+                a#UnlinkLinkedinAccount Unlink Linkedin Account
       br
     //include ./footer.jade

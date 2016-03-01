@@ -44,40 +44,62 @@ localAuth = function(req, username, password, done) {
   })
 };
 
-facebookAuth = function(rq, accessToken, refreshToken, profile, done){
+facebookAuth = function(req, accessToken, refreshToken, profile, done){
   process.nextTick(function(){
-    logger.debug("Facebook profile: ", JSON.stringify(profile, null, 2));
-    User.FindByFacebookId(profile.id, 
-      function (err, user){
-        if (err)
-        {
-          logger.error(err);
-          return done(err, false);
-        }
-
-        logger.debug("Founded User: ", user);
-        if (!user){
-          var newUser = {
-            facebook: profile,
-            username:  profile.name.givenName+profile.name.familyName,
-            name: profile.name.givenName+' '+profile.name.familyName,
-            email: profile.emails[0].value
-          };
-
-          logger.debug("New Facebook User: ", newUser);
-
-          User.AddUser(newUser, function(err, user){
+    // linking accounta
+    if (req.query.state)
+    {
+      var userInfo = JSON.parse(req.query.state);
+      logger.debug('Linked user: ', userInfo);
+      // linking acoounts and return to profile page
+      User.getById(User.getObjectId(userInfo.userId), 
+        function(err, user){
+          if (err) return done(err, null);
+          logger.debug('Current user: ', user);
+          user.facebook = profile;
+          user.token = userInfo.token;
+          User.update(user, function(err, result){
             if (err) return done(err, null);
-            logger.debug('User created with FacebookId: %s', profile.id);
-            logger.debug(user);
             return done(null, user);
           });
-        }
-        else{
-          logger.debug('User with FacebookId existed: ', profile.id);
-          return done(null, user);
-        }
       });
+    }
+    // user authentification
+    else
+    {
+      logger.debug("Facebook profile: ", JSON.stringify(profile, null, 2));
+      User.FindByFacebookId(profile.id, 
+        function (err, user){
+          if (err)
+          {
+            logger.error(err);
+            return done(err, false);
+          }
+
+          logger.debug("Founded User: ", user);
+          if (!user){
+            var newUser = {
+              facebook: profile,
+              username:  profile.name.givenName+profile.name.familyName,
+              name: profile.name.givenName+' '+profile.name.familyName,
+              email: profile.emails[0].value
+            };
+
+            logger.debug("New Facebook User: ", newUser);
+
+            User.AddUser(newUser, function(err, user){
+              if (err) return done(err, null);
+              logger.debug('User created with FacebookId: %s', profile.id);
+              logger.debug(user);
+              return done(null, user);
+            });
+          }
+          else{
+            logger.debug('User with FacebookId existed: ', profile.id);
+            return done(null, user);
+          }
+        });
+    }
   });
 };
 

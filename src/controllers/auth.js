@@ -5,9 +5,29 @@ var exp = require('express')
   , cfg   =   require('../config.js')
   , jwt     = require('jsonwebtoken')
   , UserRepository  = require('../models/users')
+  , User = new UserRepository()
+  , customMw = require('../middlewares/middleware.js')
   , router = exp.Router();
 
 var User = new UserRepository();
+
+/**
+ * @api {get} /auth/facebook Facebook authentification
+ * @apiName AuthFacebook
+ * @apiGroup Authentication
+ */
+router.get('/facebook/link', customMw.isAuthentificated, 
+  function(req, res, next){
+     var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    logger.debug('Linking facebook account to', req.user);
+    passport.authenticate('facebook', {
+      scope: ['email', 'user_friends'],
+      state: JSON.stringify({
+          userId: User.getIdFromBLOB(req.user._id),
+          userToken: token
+        })
+    })(req, res, next);
+  });
 
 /**
  * @api {get} /auth/facebook Facebook authentification
@@ -46,12 +66,20 @@ router.get('/facebook/callback',
       if (!user) {
         return res.json(401, { error: info });
       }
-      //user has authenticated correctly thus we create a JWT token 
-      var token = jwt.sign(user._id, cfg.JSONToken.secret, {
-        expiresIn: cfg.JSONToken.expires
-      });
-      //return res.json({ token : token, expires: cfg.JSONToken.expires });
-      res.redirect('/users/profile?token='+token);
+      if (user.token)
+      {
+        logger.debug('User token exists: ', user.token);
+        res.redirect('/users/profile?token='+user.token);
+      }
+      else
+      {
+        //user has authenticated correctly thus we create a JWT token 
+        var token = jwt.sign(user._id, cfg.JSONToken.secret, {
+          expiresIn: cfg.JSONToken.expires
+        });
+        //return res.json({ token : token, expires: cfg.JSONToken.expires });
+        res.redirect('/users/profile?token='+token);
+      }
     })(req, res, next);
   }
 );

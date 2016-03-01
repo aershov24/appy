@@ -31,21 +31,6 @@ router.get('/getUserInfo', customMw.isAuthentificated, function(req, res) {
 });
 
 /**
- * @api {get} /users/getUserRoles Get user roles
- * @apiName GetUserInfo
- * @apiGroup User
- */
-router.get('/getUserRoles/:userId', 
-  customMw.isAuthentificated,
-  customMw.isAllowed('User', '*'),
-  function(req, res) {
-  acl.aclManager.userRoles(req.params.userId, function(err, roles){
-      if (err) { return res.json({ error: err }); }
-      return   res.json({ roles : roles });
-    });
-});
-
-/**
  * @api {get} /users/getUserInfo Get user info by token
  * @apiName GetUserInfo
  * @apiGroup User
@@ -59,6 +44,21 @@ router.get('/updateUser', customMw.isAuthentificated, function(req, res) {
   });
 });
 
+/**
+ * @api {get} /users/unlinkFacebook/:userId Get user info by token
+ * @apiName GetUserInfo
+ * @apiGroup User
+ */
+router.get('/unlinkFacebook/:userId', customMw.isAuthentificated, function(req, res) {
+  User.getById(User.getObjectId(req.params.userId), function(err, user){
+    if (err) { return res.json({ error: err });  }
+    user.facebook = null;
+    User.update(user, function(err, result){
+      if (err) { return res.json({ error: err });  }
+      res.json({ result : result });
+    });
+  });
+});
 
 /**
  * @api {get} /users/profile Render profile page

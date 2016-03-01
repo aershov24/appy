@@ -16,6 +16,20 @@ $(document).ready(function() {
   var token = query.token;
   console.log(token);
 
+  $("#UnlinkFacebookAccount").click(function(){
+    $.ajax({
+      type: "GET",
+      url: "/users/unlinkFacebook/56d3f3561f9bc26816190bc1?token="+token,
+      success: function(data){
+        alert(JSON.stringify(data));
+        location.reload();
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
   $("#WhatResources").click(function(){
     $.ajax({
       type: "GET",

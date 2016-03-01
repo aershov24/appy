@@ -17,6 +17,7 @@ exports.isAuthentificated = function(req, res, next){
       cache.fetchUser(id, function(err, user) {
         if (err) { return res.json({ error: err });  }
         req.user = user;
+        req.user.token = token;
         next();
       });
     });
