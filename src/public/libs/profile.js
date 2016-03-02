@@ -250,7 +250,7 @@ $(document).ready(function() {
       data: JSON.stringify({ 
         roles: 'Admin', 
         resources: 'Messages',
-        permissions: 'View' 
+        permissions: ['View', 'Write'] 
       }),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
@@ -373,10 +373,11 @@ $(document).ready(function() {
   $("#SendSMSMessage").click(function(){
     $.ajax({
       type: "GET",
-      url: "/mail/SendSMSMessage/61402713607?token="+token,
+      //url: "/mail/SendSMSMessage/+61402713607?token="+token,
+      url: "/mail/SendSMSMessage/+905309702154?token="+token,
       dataType: 'json',
       success: function(data){
-        alert(JSON.stringify(data));
+         $('#json-renderer').jsonViewer(data);
       },
       failure: function(errMsg) {
         alert(JSON.stringify(errMsg));

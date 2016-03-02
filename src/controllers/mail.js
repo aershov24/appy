@@ -18,10 +18,10 @@ var exp = require('express')
  */
 router.get('/sendSMSMessage/:number', customMw.isAuthentificated, function(req, res) {
   var to = req.params.number;
-  var body = 'SMS message';
+  var body = 'Appy SMS message';
   smssender.sendSMSMessage(to, body, function(err, body){
     if (err) return res.json({error: err});
-    return res.json({message: "ok"});
+    return res.json(body);
   });
 });
 

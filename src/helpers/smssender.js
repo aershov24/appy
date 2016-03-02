@@ -3,6 +3,7 @@ var cfg  = require('../config.js')
   , smsclient = require('twilio')(cfg.twilio.accountSid, cfg.twilio.authToken);
  
 sendSMSMessage = function(to, body, cb){
+  logger.debug(to);
   smsclient.messages.create({
     from: cfg.twilio.from,
     body: body,
