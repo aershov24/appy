@@ -115,6 +115,7 @@ if (ENV == 'DEV')
 }
 
 var facebook = {
+    appAccessToken: '1526838307617018|4c96buF2n5y0v3jjVhdl8lUsyMs',
     apiKey: '1526838307617018',
     apiSecret: '6e7115c22cb22d89d7b208ba1b5045a6',
     callback: fbcall,

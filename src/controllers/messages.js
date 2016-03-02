@@ -28,4 +28,23 @@ router.post('/facebook/postOnWall',
     });
 });
 
+/**
+ * @api {get} /messages/postOnWall Post message on a user's Facebook wall
+ * @apiName FacebookPostOnWall
+ * @apiGroup Messages
+ */
+router.post('/facebook/sendNotification', 
+  customMw.isAuthentificated, 
+  function(req, res) {
+    logger.debug('Notification on facebook');
+    facebook.sendNotification(req.body.accessToken, 
+      req.body.userId,
+      req.body.message, 
+      function(err, body){
+        if (err) return res.json({error: err});
+        logger.debug(body);
+        return res.json({message: body});
+      });
+});
+
 module.exports = router;
