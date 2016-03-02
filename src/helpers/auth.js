@@ -163,8 +163,10 @@ linkedinAuth = function(req, accessToken, refreshToken, profile, done){
   });
 };
 
-twitterAuth = function(req, accessToken, refreshToken, profile, done){
+twitterAuth = function(req, accessToken, accessTokenSecret, profile, done){
   process.nextTick(function(){
+    logger.debug(accessToken);
+    logger.debug(accessTokenSecret);
     // linking accounta
     if (req.session.user)
     {
@@ -174,6 +176,8 @@ twitterAuth = function(req, accessToken, refreshToken, profile, done){
           if (err) return done(err, null);
           user.token = req.session.user.userToken;
           user.twitter = profile;
+          user.twitter.accessTokenKey = accessToken;
+          user.twitter.accessTokenSecret = accessTokenSecret;
           User.update(user, function(err, result){
             if (err) return done(err, null);
             return done(null, user);

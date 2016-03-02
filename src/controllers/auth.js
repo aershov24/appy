@@ -99,6 +99,7 @@ router.get('/facebook/callback',
       if (!user) {
         return res.json(401, { error: info });
       }
+      // TODO: token could be expired and must be rewriten
       if (user.token)
       {
         logger.debug('User token exists: ', user.token);

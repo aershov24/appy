@@ -10,7 +10,27 @@ var exp = require('express')
   , decoder = require('../helpers/decoder.js')
   , cache = require('../helpers/cache.js')
   , facebook = require('../helpers/facebook.js')
+  , twitter = require('../helpers/twitter.js')
   , router = exp.Router();
+
+/**
+ * @api {get} /messages/postOnWall Post message on a user's Facebook wall
+ * @apiName FacebookPostOnWall
+ * @apiGroup Messages
+ */
+router.post('/twitter/postOnWall', 
+  customMw.isAuthentificated, 
+  function(req, res) {
+    logger.debug('Post to Twitter');
+    twitter.postOnWall(
+      req.user,
+      req.body.message, 
+      function(err, body){
+        if (err) return res.json({error: err});
+        logger.debug(body);
+        return res.json({message: body});
+    });
+});
 
 /**
  * @api {get} /messages/postOnWall Post message on a user's Facebook wall
