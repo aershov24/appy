@@ -57,7 +57,7 @@ facebookAuth = function(req, accessToken, refreshToken, profile, done){
           if (err) return done(err, null);
           logger.debug('Current user: ', user);
           user.facebook = profile;
-          user.token = userInfo.token;
+          user.facebook.accessToken = accessToken;
           User.update(user, function(err, result){
             if (err) return done(err, null);
             return done(null, user);
@@ -84,7 +84,7 @@ facebookAuth = function(req, accessToken, refreshToken, profile, done){
               name: profile.name.givenName+' '+profile.name.familyName,
               email: profile.emails[0].value
             };
-
+            newUser.facebook.accessToken = accessToken;
             logger.debug("New Facebook User: ", newUser);
 
             User.AddUser(newUser, function(err, user){
@@ -96,7 +96,11 @@ facebookAuth = function(req, accessToken, refreshToken, profile, done){
           }
           else{
             logger.debug('User with FacebookId existed: ', profile.id);
-            return done(null, user);
+            user.facebook.accessToken = accessToken;
+            User.update(user, function(err, result){
+              if (err) return done(err, null);
+              return done(null, user);
+            });
           }
         });
     }

@@ -62,6 +62,26 @@ $(document).ready(function() {
     $("#json-renderer").show();
   });
 
+
+  $("#FacebookPostOnWall").click(function(){
+    $.ajax({
+      type: "POST",
+      url: "/messages/facebook/postOnWall?token="+token,
+      data: JSON.stringify({ 
+        accessToken: user.facebook.accessToken,
+        message: "I think it's a good day today..."
+      }),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(data){
+        $('#json-renderer').jsonViewer(data);
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
   $("#MainEmailSave").click(function(){
     var select = $("#MainEmail");
     var email = select.val();

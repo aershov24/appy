@@ -10,6 +10,7 @@ router.use('/admin', require('./admin'));
 router.use('/mail', require('./mail'));
 router.use('/foursquare', require('./foursquare'));
 router.use('/locu', require('./locu'));
+router.use('/messages', require('./messages'));
 
 router.get('/', customMw.isAuthentificated, function(req, res){
     res.redirect('/users/profile');

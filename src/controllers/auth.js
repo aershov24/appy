@@ -51,7 +51,7 @@ router.get('/facebook/link', customMw.isAuthentificated,
  * @apiGroup Authentication
  */
 router.get('/facebook', passport.authenticate('facebook', {
-  scope: ['email', 'user_friends']
+  scope: ['email', 'user_friends','publish_actions']
 }));
 
 /**
