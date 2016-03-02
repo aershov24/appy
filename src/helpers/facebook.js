@@ -8,8 +8,7 @@ function postMessage(access_token, message, cb) {
     var url = 'https://graph.facebook.com/me/feed';
     var params = {
         access_token: access_token,
-        message: message,
-        privacy: { value: SELF }
+        message: message
     };
 
     request.post({url: url, qs: params}, function(err, resp, body) {
