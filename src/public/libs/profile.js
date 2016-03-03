@@ -370,6 +370,7 @@ $(document).ready(function() {
     });
   });
 
+  // https://www.twilio.com/user/account/settings/international/sms
   $("#SendSMSMessage").click(function(){
     $.ajax({
       type: "GET",
