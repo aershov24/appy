@@ -14,6 +14,8 @@ var fbcall = null;
 var twittercall = null;
 var linkedincall = null;
 var foursquarecall = null;
+var instagramcall = null;
+
 var rootPath = __dirname;
 var templatesPath = path.join(rootPath, 'templates'); 
 var filesPath = path.join(rootPath, 'files'); 
@@ -63,7 +65,8 @@ if (ENV == 'PROD')
   fbcall = 'https://appyws.herokuapp.com/auth/facebook/callback';
   twittercall = 'https://appyws.herokuapp.com/auth/twitter/callback';
   linkedincall = 'https://appyws.herokuapp.com/auth/linkedin/callback';
-  foursquarecall = 'https://appyws.herokuapp.com/foursquare/callback';
+  foursquarecall = 'https://appyws.herokuapp.com/auth/foursquare/callback';
+  instagramcall = 'https://appyws.herokuapp.com/auth/instagram/callback';
 }
 
 // development environment
@@ -112,6 +115,7 @@ if (ENV == 'DEV')
   twittercall = 'http://127.0.0.1:3000/auth/twitter/callback';
   linkedincall = 'http://localhost:3000/auth/linkedin/callback';
   foursquarecall = 'http://localhost:3000/foursquare/callback';
+  instagramcall = 'http://localhost:3000/auth/instagram/callback';
 }
 
 var facebook = {
@@ -128,7 +132,7 @@ var linkedin = {
     apiKey: '755qgme9oyarzu',
     apiSecret: '4NH0WMakwmfngFAd',
     callback: linkedincall,
-    profileFields: ['r_emailaddress', 'r_basicprofile']
+    profileFields: ['r_emailaddress', 'w_share']
 }
 
 var twitter = {
@@ -143,6 +147,12 @@ var foursquare = {
     'clientSecret' : 'Q2DQQHRKI2VVPG2NJTQEKNSENGBAT05YRCOT4N0KIW2LFDT5',
     'redirectUrl' : foursquarecall
   }
+}
+
+var instagram = {
+    clientId : '95a30de28f5b41f5ada7d76e799894f1',
+    clientSecret : '613091c2f99d47fa8db541ea11a7fe60',
+    callback : instagramcall
 }
 
 var locu = {
@@ -165,6 +175,19 @@ var mail = {
   from: 'info@appy.com'
 }
 
+var googlegcm = {
+  serverAPIKey: 'AIzaSyBLRnQib6RUGvfUGjVv3A8eO6Uik30BNTs',
+  senderID: '960605552586'
+}
+
+// Server API Key help
+// AIzaSyBLRnQib6RUGvfUGjVv3A8eO6Uik30BNTs
+// Sender ID help
+// 960605552586
+// https://developers.google.com/cloud-messaging/android/client?configured=true
+// https://developers.google.com/instance-id/
+http://androidexample.com/Android_Push_Notifications_using_Google_Cloud_Messaging_GCM/index.php?view=article_discription&aid=119&aaid=139
+
 exports.ENV = ENV;
 exports.Log = Log;
 exports.MongoDB = MongoDB;
@@ -173,8 +196,11 @@ exports.MongoDBHistory = MongoDBHistory;
 exports.facebook = facebook;
 exports.linkedin = linkedin;
 exports.twitter = twitter;
+exports.instagram = instagram;
 exports.foursquare = foursquare;
 exports.locu = locu;
+exports.googlegcm = googlegcm;
+
 exports.loggly = loggly;
 exports.JSONToken = JSONToken;
 exports.mailgun = mailgun;

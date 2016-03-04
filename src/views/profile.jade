@@ -108,6 +108,10 @@ block body
                 a(href='/auth/linkedin/link?token=#{user.token}') Link LinkedIn Account
               li 
                 a#UnlinkLinkedInAccount Unlink LinkedIn Account
+              li 
+                a(href='/auth/instagram/link?token=#{user.token}') Link Instagram Account
+              li 
+                a#UnlinkInstagramAccount Unlink Instagram Account
               li
                 | Choose main email:  
                 select#MainEmail 
@@ -119,6 +123,12 @@ block body
             ul
               li 
                 a#TwitterPostOnWall Post on user's wall
+          p
+            h1 LinkedIn messages
+          p
+            ul
+              li 
+                a#LinkedInPostOnWall Post on user's wall
       p
         h1 User JSON:
       p

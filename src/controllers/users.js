@@ -109,6 +109,22 @@ router.get('/unlinkTwitter/:userId', customMw.isAuthentificated, function(req, r
 });
 
 /**
+ * @api {get} /users/unlinkInstagram/:userId Unlink Instagram account
+ * @apiName UnlinkInstagramAccount
+ * @apiGroup User
+ */
+router.get('/unlinkInstagram/:userId', customMw.isAuthentificated, function(req, res) {
+  User.getById(User.getObjectId(req.params.userId), function(err, user){
+    if (err) { return res.json({ error: err });  }
+    user.instagram = null;
+    User.update(user, function(err, result){
+      if (err) { return res.json({ error: err });  }
+      res.json({ result : result });
+    });
+  });
+});
+
+/**
  * @api {get} /users/profile Render profile page
  * @apiName UserProfile
  * @apiGroup User

@@ -1,5 +1,4 @@
 var passport = require('passport')
-  , FacebookStrategy = require('passport-facebook').Strategy
   , logger = require('../helpers/logger')
   , jwt     = require('jsonwebtoken')
   , cfg   =   require('../config')
@@ -114,12 +113,14 @@ linkedinAuth = function(req, accessToken, refreshToken, profile, done){
     {
       var userInfo = JSON.parse(req.query.state);
       logger.debug('Linked user: ', userInfo);
+      logger.debug('Linked accessToken: ', accessToken);
       // linking acoounts and return to profile page
       User.getById(User.getObjectId(userInfo.userId), 
         function(err, user){
           if (err) return done(err, null);
           logger.debug('Current user: ', user);
           user.linkedin = profile;
+          user.linkedin.accessToken = accessToken;
           user.token = userInfo.token;
           User.update(user, function(err, result){
             if (err) return done(err, null);
@@ -187,8 +188,35 @@ twitterAuth = function(req, accessToken, accessTokenSecret, profile, done){
   });
 };
 
+instagramAuth = function(req, accessToken, accessTokenSecret, profile, done){
+  process.nextTick(function(){
+    logger.debug(accessToken);
+    if (req.query.state){
+      var userInfo = JSON.parse(req.query.state);
+      logger.debug('User info: ', userInfo);
+      logger.debug('Instagram accessToken: ', accessToken);
+      // linking acoounts and return to profile page
+      User.getById(User.getObjectId(userInfo.userId), 
+        function(err, user){
+          if (err) return done(err, null);
+          logger.debug('Current user: ', user);
+          user.instagram = profile;
+          user.instagram.accessToken = accessToken;
+          user.token = userInfo.userToken;
+          logger.debug('token from info: ', user.token);
+          User.update(user, function(err, result){
+            if (err) return done(err, null);
+            logger.debug('auth user with token:', user);
+            return done(null, user);
+          });
+      });
+    }
+  });
+};
+
   
 exports.localAuth = localAuth;
 exports.facebookAuth = facebookAuth;
 exports.linkedinAuth = linkedinAuth;
 exports.twitterAuth = twitterAuth;
+exports.instagramAuth = instagramAuth;

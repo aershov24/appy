@@ -12,6 +12,24 @@ var exp = require('express')
 var User = new UserRepository();
 
 /**
+ * @api {get} /auth/instagram/link Link Instagram account 
+ * @apiName AuthInstagram
+ * @apiGroup Authentication
+ */
+router.get('/instagram/link', customMw.isAuthentificated, 
+  function(req, res, next){
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    logger.debug('Linking Instagram account to', req.user);
+
+    passport.authenticate('instagram', {
+      state: JSON.stringify({
+          userId: User.getIdFromBLOB(req.user._id),
+          userToken: token
+        })
+    })(req, res, next);
+  });
+
+/**
  * @api {get} /auth/twitter/link Link Twitter account 
  * @apiName AuthTwitter
  * @apiGroup Authentication
@@ -77,7 +95,7 @@ router.get('/linkedin/link', customMw.isAuthentificated,
  * @apiGroup Authentication
  */
 router.get('/linkedin',
-  passport.authenticate('linkedin', { state: 'SOME STATE'  }),
+  passport.authenticate('linkedin', { scope: ['r_fullprofile', 'r_emailaddress', 'w_share']}, { state: 'SOME STATE'  }),
   function(req, res){
     // The request will be redirected to LinkedIn for authentication, so this
     // function will not be called.
@@ -147,13 +165,34 @@ router.get('/linkedin/callback', function(req, res, next){
 });
 
 /**
- * @api {get} /auth/linkedin/callback LinkedIn authentification callback
+ * @api {get} /auth/twitter/callback LinkedIn authentification callback
  * @apiName AuthLinkedInCallback
  * @apiGroup Authentication
  */
 router.get('/twitter/callback', function(req, res, next){
   logger.debug('twitter callback');
   passport.authenticate('twitter', function(err, user, info) {
+    if (err) return res.json({ error: err});
+    if (!user) {
+      return res.json({ error: info });
+    }
+    if (user.token)
+    {
+      logger.debug('User token exists: ', user.token);
+      res.redirect('/users/profile?token='+user.token);
+    }
+  })(req, res, next);
+});
+
+/**
+ * @api {get} /auth/instagram/callback LinkedIn authentification callback
+ * @apiName AuthLinkedInCallback
+ * @apiGroup Authentication
+ */
+router.get('/instagram/callback', function(req, res, next){
+  logger.debug('instagram callback');
+  passport.authenticate('instagram', function(err, user, info) {
+    logger.debug('After callback: ', user);
     if (err) return res.json({ error: err});
     if (!user) {
       return res.json({ error: info });

@@ -13,6 +13,7 @@ var logger  = require('./helpers/logger.js')
   , LinkedInStrategy = require('passport-linkedin-oauth2').Strategy
   , FacebookStrategy = require('passport-facebook').Strategy
   , TwitterStrategy = require('passport-twitter').Strategy
+  , InstagramStrategy = require('passport-instagram').Strategy
   , auth = require('./helpers/auth.js')
   , session = require('express-session')
   , port = process.env.PORT || 3000;
@@ -73,6 +74,13 @@ passport.use(new TwitterStrategy({
   callbackURL: cfg.twitter.callback,
   passReqToCallback: true
 }, auth.twitterAuth));
+
+passport.use(new InstagramStrategy({
+  clientID: cfg.instagram.clientId,
+  clientSecret: cfg.instagram.clientSecret,
+  callbackURL: cfg.instagram.callback,
+  passReqToCallback: true
+}, auth.instagramAuth));
   
 passport.serializeUser(function(user, done){
     return done(null, user);

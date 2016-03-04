@@ -62,6 +62,24 @@ $(document).ready(function() {
     $("#json-renderer").show();
   });
 
+  $("#LinkedInPostOnWall").click(function(){
+    $.ajax({
+      type: "POST",
+      url: "/messages/linkedin/postOnWall?token="+token,
+      data: JSON.stringify({ 
+        accessToken: user.linkedin.accessToken,
+        message: "I think it's a good day today..."
+      }),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(data){
+        $('#json-renderer').jsonViewer(data);
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
 
   $("#FacebookPostOnWall").click(function(){
     $.ajax({
@@ -132,6 +150,20 @@ $(document).ready(function() {
       }),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
+      success: function(data){
+        alert(JSON.stringify(data));
+        location.reload();
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
+  $("#UnlinkInstagramAccount").click(function(){
+    $.ajax({
+      type: "GET",
+      url: "/users/unlinkInstagram/"+user._id+"?token="+token,
       success: function(data){
         alert(JSON.stringify(data));
         location.reload();
@@ -391,7 +423,7 @@ $(document).ready(function() {
   $("#SearchFoursquareVenues").click(function(){
     $.ajax({
       type: "GET",
-      url: "/foursquare/search?token="+token+"&near=Perth,WA&name=laundry&fstoken=WVYACRR0VL5V2YTO0X4EKOP2BHTJIS1BH3L02GVD3ZD0LMKE",
+      url: "/foursquare/search?token="+token+"&near=Perth,WA&name=bar&fstoken=WVYACRR0VL5V2YTO0X4EKOP2BHTJIS1BH3L02GVD3ZD0LMKE",
       dataType: 'json',
       success: function(data){
         $('#json-renderer').jsonViewer(data);
@@ -433,7 +465,7 @@ $(document).ready(function() {
   $("#SearchLocuVenues").click(function(){
     $.ajax({
       type: "GET",
-      url: "/locu/search?name=bar&country=Australia&locality=perth&token="+token,
+      url: "/locu/search/552d1f33498e8589de121113?token="+token,
       dataType: 'json',
       success: function(data){
         $('#json-renderer').jsonViewer(data);

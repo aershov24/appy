@@ -34,6 +34,12 @@ router.get('/search', customMw.isAuthentificated, function(req, res) {
          country: req.query.country
       };
 
+      var params = {
+         name: req.query.name,
+         locality: req.query.locality,
+         country: req.query.country
+      };
+
       venuesClient.search(params, function(result){
         return res.json(result);
       });
@@ -47,8 +53,8 @@ locuAPIRequest = function(fields, offset, limit, venueQueries, menuItemQueries, 
     fields: fields,
     offset: offset,
     limit: limit,
-    venue_queries: venueQueries,
-    menu_item_queries: menuItemQueries
+    venue_queries: venueQueries
+    //menu_item_queries: menuItemQueries
   };
 
   var options = {
@@ -106,6 +112,33 @@ router.get('/menu/search', customMw.isAuthentificated, function(req, res) {
         return res.json(result);
       });
     });
+  });
+});
+
+/**
+ * @api {get} /locu/search/:foursquareId Search venues by foursquareId
+ * @apiName SearchByFoursquareId
+ * @apiGroup Foursquare
+ */
+router.get('/search/:foursquareId', customMw.isAuthentificated, function(req, res) {
+  logger.debug('Locu search by externalId...');
+  var fields = [ "name"];
+  var venue_queries = [
+    {
+      external : {
+        opentable: {
+          id: req.params.foursquareId, 
+          url: "http://www.opentable.com/rest_profile_menu.aspx?rid=42592"
+        }
+      }
+    }
+  ];
+
+  menu_item_queries =  [];
+
+  locuAPIRequest(fields, 0, 10, venue_queries, menu_item_queries, function(err, result){
+    if (err) { return res.json({ error: err });  }
+    return res.json(result);
   });
 });
 
