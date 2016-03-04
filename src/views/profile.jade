@@ -16,15 +16,15 @@ block body
     .container
       ol.breadcrumb
         li
-          a(href='/profile') #{user.username}
+          label USERS
         li
-          label Profile
+          a(href='/profile') #{user.username}
       p
         h1 User: #{user.username}
       .row
         .col-md-6
           p
-            h1 Admin
+            h1 ACL
           p
             ul
               li
@@ -58,7 +58,7 @@ block body
               li
                 a#SendEmailWithAttachments Send email with attachments
           p
-            h1 SMS
+            h1 SMS messages
           p
             ul
               li 
@@ -71,13 +71,23 @@ block body
                 a#FacebookPostOnWall Post on user's wall
               li 
                 a#FacebookSendNotification Send notification
+          p
+            h1 Twitter messages
+          p
+            ul
+              li 
+                a#TwitterPostOnWall Post on user's wall
+          p
+            h1 LinkedIn messages
+          p
+            ul
+              li 
+                a#LinkedInPostOnWall Post on user's wall
         .col-md-6
           p
             h1 Foursquare
           p
             ul
-              li 
-                a(href="/foursquare") Get Foursquare token
               li 
                 a#SearchFoursquareVenues Search venues
               li 
@@ -97,38 +107,55 @@ block body
           p
             ul
               li 
-                a(href='/auth/facebook/link?token=#{user.token}') Link Facebook Account
+                h4 Facebook
+                ul
+                  li 
+                    a(href='/auth/facebook/link?token=#{user.token}') Link Facebook Account
+                  li 
+                    a#UnlinkFacebookAccount Unlink Facebook Account
               li 
-                a#UnlinkFacebookAccount Unlink Facebook Account
+                h4 Twitter
+                ul
+                  li 
+                    a(href='/auth/twitter/link?token=#{user.token}') Link Twitter
+                  li 
+                    a#UnlinkTwitterAccount Unlink Twitter Account
               li 
-                a(href='/auth/twitter/link?token=#{user.token}') Link Twitter
+                h4 LinkedIn
+                ul
+                  li 
+                    a(href='/auth/linkedin/link?token=#{user.token}') Link LinkedIn Account
+                  li 
+                    a#UnlinkLinkedInAccount Unlink LinkedIn Account
               li 
-                a#UnlinkTwitterAccount Unlink Twitter Account
+                h4 Instagram
+                ul
+                  li 
+                    a(href='/auth/instagram/link?token=#{user.token}') Link Instagram Account
+                  li 
+                    a#UnlinkInstagramAccount Unlink Instagram Account
               li 
-                a(href='/auth/linkedin/link?token=#{user.token}') Link LinkedIn Account
+                h4 Foursquare
+                ul
+                  li 
+                    a(href='/auth/foursquare/link?token=#{user.token}') Link Foursquare Account
+                  li 
+                    a#UnlinkFoursquareAccount Unlink Foursquare Account
               li 
-                a#UnlinkLinkedInAccount Unlink LinkedIn Account
-              li 
-                a(href='/auth/instagram/link?token=#{user.token}') Link Instagram Account
-              li 
-                a#UnlinkInstagramAccount Unlink Instagram Account
+                h4 Google+
+                ul
+                  li 
+                    a(href='/auth/google/link?token=#{user.token}') Link Google+ Account
+                  li 
+                    a#UnlinkGoogleAccount Unlink Google+ Account
+          p
+            h1 User email
+          p  
+            ul
               li
-                | Choose main email:  
                 select#MainEmail 
                 br
                 a#MainEmailSave Save email
-          p
-            h1 Twitter messages
-          p
-            ul
-              li 
-                a#TwitterPostOnWall Post on user's wall
-          p
-            h1 LinkedIn messages
-          p
-            ul
-              li 
-                a#LinkedInPostOnWall Post on user's wall
       p
         h1 User JSON:
       p

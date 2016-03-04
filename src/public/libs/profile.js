@@ -16,6 +16,16 @@ $(document).ready(function() {
       for(var i = 0; i < user.linkedin.emails.length; i++)
         emails.push(user.linkedin.emails[i].value);
     }
+    if (user.foursquare)
+    {
+      for(var i = 0; i < user.foursquare.emails.length; i++)
+        emails.push(user.foursquare.emails[i].value);
+    }
+    if (user.google)
+    {
+      for(var i = 0; i < user.google.emails.length; i++)
+        emails.push(user.google.emails[i].value);
+    }
 
     return emails;
   }
@@ -150,6 +160,34 @@ $(document).ready(function() {
       }),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
+      success: function(data){
+        alert(JSON.stringify(data));
+        location.reload();
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
+  $("#UnlinkGoogleAccount").click(function(){
+    $.ajax({
+      type: "GET",
+      url: "/users/unlinkGoogle/"+user._id+"?token="+token,
+      success: function(data){
+        alert(JSON.stringify(data));
+        location.reload();
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
+  $("#UnlinkFoursquareAccount").click(function(){
+    $.ajax({
+      type: "GET",
+      url: "/users/unlinkFoursquare/"+user._id+"?token="+token,
       success: function(data){
         alert(JSON.stringify(data));
         location.reload();
@@ -423,7 +461,7 @@ $(document).ready(function() {
   $("#SearchFoursquareVenues").click(function(){
     $.ajax({
       type: "GET",
-      url: "/foursquare/search?token="+token+"&near=Perth,WA&name=bar&fstoken=WVYACRR0VL5V2YTO0X4EKOP2BHTJIS1BH3L02GVD3ZD0LMKE",
+      url: "/foursquare/search?token="+token+"&near=Perth,WA&name=bar&fstoken="+user.foursquare.accessToken,
       dataType: 'json',
       success: function(data){
         $('#json-renderer').jsonViewer(data);
@@ -437,7 +475,7 @@ $(document).ready(function() {
   $("#GetFoursquareVenuewDetails").click(function(){
     $.ajax({
       type: "GET",
-      url: "/foursquare/venue?token="+token+"&venueId=552d1f33498e8589de121113&fstoken=WVYACRR0VL5V2YTO0X4EKOP2BHTJIS1BH3L02GVD3ZD0LMKE",
+      url: "/foursquare/venue?token="+token+"&venueId=552d1f33498e8589de121113&fstoken="+user.foursquare.accessToken,
       dataType: 'json',
       success: function(data){
         $('#json-renderer').jsonViewer(data);

@@ -9,7 +9,7 @@ length = function(it){
     return it.length;
   };
 
-localAuth = function(req, username, password, done) {
+exports.localAuth = function(req, username, password, done) {
   process.nextTick(function() {
     logger.debug("Local authentification...");
     logger.debug("Username: %s", username);
@@ -43,7 +43,7 @@ localAuth = function(req, username, password, done) {
   })
 };
 
-facebookAuth = function(req, accessToken, refreshToken, profile, done){
+exports.facebookAuth = function(req, accessToken, refreshToken, profile, done){
   process.nextTick(function(){
     // linking accounta
     if (req.query.state)
@@ -106,7 +106,7 @@ facebookAuth = function(req, accessToken, refreshToken, profile, done){
   });
 };
 
-linkedinAuth = function(req, accessToken, refreshToken, profile, done){
+exports.linkedinAuth = function(req, accessToken, refreshToken, profile, done){
   process.nextTick(function(){
   // linking accounta
     if (req.query.state)
@@ -164,7 +164,7 @@ linkedinAuth = function(req, accessToken, refreshToken, profile, done){
   });
 };
 
-twitterAuth = function(req, accessToken, accessTokenSecret, profile, done){
+exports.twitterAuth = function(req, accessToken, accessTokenSecret, profile, done){
   process.nextTick(function(){
     logger.debug(accessToken);
     logger.debug(accessTokenSecret);
@@ -188,7 +188,7 @@ twitterAuth = function(req, accessToken, accessTokenSecret, profile, done){
   });
 };
 
-instagramAuth = function(req, accessToken, accessTokenSecret, profile, done){
+exports.instagramAuth = function(req, accessToken, accessTokenSecret, profile, done){
   process.nextTick(function(){
     logger.debug(accessToken);
     if (req.query.state){
@@ -214,9 +214,54 @@ instagramAuth = function(req, accessToken, accessTokenSecret, profile, done){
   });
 };
 
-  
-exports.localAuth = localAuth;
-exports.facebookAuth = facebookAuth;
-exports.linkedinAuth = linkedinAuth;
-exports.twitterAuth = twitterAuth;
-exports.instagramAuth = instagramAuth;
+exports.foursquareAuth = function(req, accessToken, accessTokenSecret, profile, done){
+  process.nextTick(function(){
+    logger.debug(accessToken);
+    if (req.query.state){
+      var userInfo = JSON.parse(req.query.state);
+      logger.debug('User info: ', userInfo);
+      logger.debug('Foursquare accessToken: ', accessToken);
+      // linking acoounts and return to profile page
+      User.getById(User.getObjectId(userInfo.userId), 
+        function(err, user){
+          if (err) return done(err, null);
+          logger.debug('Current user: ', user);
+          user.foursquare = profile;
+          user.foursquare.accessToken = accessToken;
+          user.token = userInfo.userToken;
+          logger.debug('token from info: ', user.token);
+          User.update(user, function(err, result){
+            if (err) return done(err, null);
+            logger.debug('auth user with token:', user);
+            return done(null, user);
+          });
+      });
+    }
+  });
+};
+
+exports.googleAuth = function(req, accessToken, accessTokenSecret, profile, done){
+  process.nextTick(function(){
+    logger.debug(accessToken);
+    if (req.query.state){
+      var userInfo = JSON.parse(req.query.state);
+      logger.debug('User info: ', userInfo);
+      logger.debug('Google accessToken: ', accessToken);
+      // linking acoounts and return to profile page
+      User.getById(User.getObjectId(userInfo.userId), 
+        function(err, user){
+          if (err) return done(err, null);
+          logger.debug('Current user: ', user);
+          user.google = profile;
+          user.google.accessToken = accessToken;
+          user.token = userInfo.userToken;
+          logger.debug('token from info: ', user.token);
+          User.update(user, function(err, result){
+            if (err) return done(err, null);
+            logger.debug('auth user with token:', user);
+            return done(null, user);
+          });
+      });
+    }
+  });
+};

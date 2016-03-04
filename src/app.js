@@ -14,6 +14,8 @@ var logger  = require('./helpers/logger.js')
   , FacebookStrategy = require('passport-facebook').Strategy
   , TwitterStrategy = require('passport-twitter').Strategy
   , InstagramStrategy = require('passport-instagram').Strategy
+  , FoursquareStrategy = require('passport-foursquare').Strategy
+  , GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
   , auth = require('./helpers/auth.js')
   , session = require('express-session')
   , port = process.env.PORT || 3000;
@@ -75,12 +77,26 @@ passport.use(new TwitterStrategy({
   passReqToCallback: true
 }, auth.twitterAuth));
 
+passport.use(new FoursquareStrategy({
+  clientID: cfg.foursquare.secrets.clientId,
+  clientSecret: cfg.foursquare.secrets.clientSecret,
+  callbackURL: cfg.foursquare.secrets.redirectUrl,
+  passReqToCallback: true
+}, auth.foursquareAuth));
+
 passport.use(new InstagramStrategy({
   clientID: cfg.instagram.clientId,
   clientSecret: cfg.instagram.clientSecret,
   callbackURL: cfg.instagram.callback,
   passReqToCallback: true
 }, auth.instagramAuth));
+
+passport.use(new GoogleStrategy({
+  clientID: cfg.googleplus.clientId,
+  clientSecret: cfg.googleplus.clientSecret,
+  callbackURL: cfg.googleplus.callback,
+  passReqToCallback: true
+}, auth.googleAuth));
   
 passport.serializeUser(function(user, done){
     return done(null, user);

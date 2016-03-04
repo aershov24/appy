@@ -5,7 +5,6 @@ var express = require('express')
   , cache = require('../helpers/cache.js')
   , decoder = require('../helpers/decoder.js')
   , customMw = require('../middlewares/middleware.js')
-  //, User    = require('../models/users.js')
   , UserRepository  = require('../models/users')
   , User = new UserRepository()
   , cfg   =   require('../config.js')
@@ -66,13 +65,11 @@ router.post('/changeEmail',
  * @apiGroup User
  */
 router.get('/unlinkFacebook/:userId', customMw.isAuthentificated, function(req, res) {
-  User.getById(User.getObjectId(req.params.userId), function(err, user){
+  var user = req.user;
+  user.facebook = null;
+  User.update(user, function(err, result){
     if (err) { return res.json({ error: err });  }
-    user.facebook = null;
-    User.update(user, function(err, result){
-      if (err) { return res.json({ error: err });  }
-      res.json({ result : result });
-    });
+    res.json({ result : result });
   });
 });
 
@@ -82,13 +79,11 @@ router.get('/unlinkFacebook/:userId', customMw.isAuthentificated, function(req, 
  * @apiGroup User
  */
 router.get('/unlinkLinkedIn/:userId', customMw.isAuthentificated, function(req, res) {
-  User.getById(User.getObjectId(req.params.userId), function(err, user){
+  var user = req.user;
+  user.linkedin = null;
+  User.update(user, function(err, result){
     if (err) { return res.json({ error: err });  }
-    user.linkedin = null;
-    User.update(user, function(err, result){
-      if (err) { return res.json({ error: err });  }
-      res.json({ result : result });
-    });
+    res.json({ result : result });
   });
 });
 
@@ -98,13 +93,11 @@ router.get('/unlinkLinkedIn/:userId', customMw.isAuthentificated, function(req, 
  * @apiGroup User
  */
 router.get('/unlinkTwitter/:userId', customMw.isAuthentificated, function(req, res) {
-  User.getById(User.getObjectId(req.params.userId), function(err, user){
+  var user = req.user;
+  user.twitter = null;
+  User.update(user, function(err, result){
     if (err) { return res.json({ error: err });  }
-    user.twitter = null;
-    User.update(user, function(err, result){
-      if (err) { return res.json({ error: err });  }
-      res.json({ result : result });
-    });
+    res.json({ result : result });
   });
 });
 
@@ -114,13 +107,39 @@ router.get('/unlinkTwitter/:userId', customMw.isAuthentificated, function(req, r
  * @apiGroup User
  */
 router.get('/unlinkInstagram/:userId', customMw.isAuthentificated, function(req, res) {
-  User.getById(User.getObjectId(req.params.userId), function(err, user){
+  var user = req.user;
+  user.instagram = null;
+  User.update(user, function(err, result){
     if (err) { return res.json({ error: err });  }
-    user.instagram = null;
-    User.update(user, function(err, result){
-      if (err) { return res.json({ error: err });  }
-      res.json({ result : result });
-    });
+    res.json({ result : result });
+  });
+});
+
+/**
+ * @api {get} /users/unlinkFoursquare/:userId Unlink Foursquare account
+ * @apiName UnlinkFoursquareAccount
+ * @apiGroup User
+ */
+router.get('/unlinkFoursquare/:userId', customMw.isAuthentificated, function(req, res) {
+  var user = req.user;
+  user.foursquare = null;
+  User.update(user, function(err, result){
+    if (err) { return res.json({ error: err });  }
+    res.json({ result : result });
+  });
+});
+
+/**
+ * @api {get} /users/unlinkGoogle/:userId Unlink Google account
+ * @apiName UnlinkGoogleAccount
+ * @apiGroup User
+ */
+router.get('/unlinkGoogle/:userId', customMw.isAuthentificated, function(req, res) {
+  var user = req.user;
+  user.google = null;
+  User.update(user, function(err, result){
+    if (err) { return res.json({ error: err });  }
+    res.json({ result : result });
   });
 });
 

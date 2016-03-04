@@ -15,6 +15,7 @@ var twittercall = null;
 var linkedincall = null;
 var foursquarecall = null;
 var instagramcall = null;
+var googlepluscall = null;
 
 var rootPath = __dirname;
 var templatesPath = path.join(rootPath, 'templates'); 
@@ -67,6 +68,7 @@ if (ENV == 'PROD')
   linkedincall = 'https://appyws.herokuapp.com/auth/linkedin/callback';
   foursquarecall = 'https://appyws.herokuapp.com/auth/foursquare/callback';
   instagramcall = 'https://appyws.herokuapp.com/auth/instagram/callback';
+  googlepluscall = 'https://appyws.herokuapp.com/auth/google/callback';
 }
 
 // development environment
@@ -114,8 +116,9 @@ if (ENV == 'DEV')
   fbcall = 'http://localhost:3000/auth/facebook/callback';
   twittercall = 'http://127.0.0.1:3000/auth/twitter/callback';
   linkedincall = 'http://localhost:3000/auth/linkedin/callback';
-  foursquarecall = 'http://localhost:3000/foursquare/callback';
+  foursquarecall = 'http://localhost:3000/auth/foursquare/callback';
   instagramcall = 'http://localhost:3000/auth/instagram/callback';
+  googlepluscall = 'http://localhost:3000/auth/google/callback';
 }
 
 var facebook = {
@@ -155,6 +158,12 @@ var instagram = {
     callback : instagramcall
 }
 
+var googleplus = {
+    clientId : '960605552586-c3ejn9bloog6nv003cotli7b3qhkdobg.apps.googleusercontent.com',
+    clientSecret : '8vk6j3e0tmgkVb0Ij-qITp6r',
+    callback : googlepluscall
+}
+
 var locu = {
   apiKey : 'f5a0902036696fdbc49875dc4440d41114cfbd47',
   widgetKey : 'a1f89be959bc4f8c683d3a687f4d2640fe7af675'
@@ -186,7 +195,7 @@ var googlegcm = {
 // 960605552586
 // https://developers.google.com/cloud-messaging/android/client?configured=true
 // https://developers.google.com/instance-id/
-http://androidexample.com/Android_Push_Notifications_using_Google_Cloud_Messaging_GCM/index.php?view=article_discription&aid=119&aaid=139
+//http://androidexample.com/Android_Push_Notifications_using_Google_Cloud_Messaging_GCM/index.php?view=article_discription&aid=119&aaid=139
 
 exports.ENV = ENV;
 exports.Log = Log;
@@ -198,6 +207,7 @@ exports.linkedin = linkedin;
 exports.twitter = twitter;
 exports.instagram = instagram;
 exports.foursquare = foursquare;
+exports.googleplus = googleplus;
 exports.locu = locu;
 exports.googlegcm = googlegcm;
 

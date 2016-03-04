@@ -12,6 +12,42 @@ var exp = require('express')
 var User = new UserRepository();
 
 /**
+ * @api {get} /auth/google/link Link Google account 
+ * @apiName AuthGoogle
+ * @apiGroup Authentication
+ */
+router.get('/google/link', customMw.isAuthentificated, 
+  function(req, res, next){
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    logger.debug('Linking Google+ account to', req.user);
+    passport.authenticate('google', {
+      scope: ['profile', 'email'],
+      state: JSON.stringify({
+          userId: User.getIdFromBLOB(req.user._id),
+          userToken: token
+        })
+    })(req, res, next);
+  });
+
+/**
+ * @api {get} /auth/foursquare/link Link Fousquare account 
+ * @apiName AuthFousquare
+ * @apiGroup Authentication
+ */
+router.get('/foursquare/link', customMw.isAuthentificated, 
+  function(req, res, next){
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    logger.debug('Linking Foursquare account to', req.user);
+
+    passport.authenticate('foursquare', {
+      state: JSON.stringify({
+          userId: User.getIdFromBLOB(req.user._id),
+          userToken: token
+        })
+    })(req, res, next);
+  });
+
+/**
  * @api {get} /auth/instagram/link Link Instagram account 
  * @apiName AuthInstagram
  * @apiGroup Authentication
@@ -64,15 +100,6 @@ router.get('/facebook/link', customMw.isAuthentificated,
   });
 
 /**
- * @api {get} /auth/facebook Facebook authentification
- * @apiName AuthFacebook
- * @apiGroup Authentication
- */
-router.get('/facebook', passport.authenticate('facebook', {
-  scope: ['email', 'user_friends','publish_actions']
-}));
-
-/**
  * @api {get} /auth/linkedin/link Link LinkedIn account
  * @apiName LinkLinkedIn
  * @apiGroup Authentication
@@ -88,6 +115,15 @@ router.get('/linkedin/link', customMw.isAuthentificated,
         })
     })(req, res, next);
   });
+
+/**
+ * @api {get} /auth/facebook Facebook authentification
+ * @apiName AuthFacebook
+ * @apiGroup Authentication
+ */
+router.get('/facebook', passport.authenticate('facebook', {
+  scope: ['email', 'user_friends','publish_actions']
+}));
 
 /**
  * @api {get} /auth/linkedin LinkedIn authentification
@@ -192,6 +228,48 @@ router.get('/twitter/callback', function(req, res, next){
 router.get('/instagram/callback', function(req, res, next){
   logger.debug('instagram callback');
   passport.authenticate('instagram', function(err, user, info) {
+    logger.debug('After callback: ', user);
+    if (err) return res.json({ error: err});
+    if (!user) {
+      return res.json({ error: info });
+    }
+    if (user.token)
+    {
+      logger.debug('User token exists: ', user.token);
+      res.redirect('/users/profile?token='+user.token);
+    }
+  })(req, res, next);
+});
+
+/**
+ * @api {get} /auth/foursquare/callback Foursquare authentification callback
+ * @apiName AuthFoursquareCallback
+ * @apiGroup Authentication
+ */
+router.get('/foursquare/callback', function(req, res, next){
+  logger.debug('foursquare callback');
+  passport.authenticate('foursquare', function(err, user, info) {
+    logger.debug('After callback: ', user);
+    if (err) return res.json({ error: err});
+    if (!user) {
+      return res.json({ error: info });
+    }
+    if (user.token)
+    {
+      logger.debug('User token exists: ', user.token);
+      res.redirect('/users/profile?token='+user.token);
+    }
+  })(req, res, next);
+});
+
+/**
+ * @api {get} /auth/google/callback Google authentification callback
+ * @apiName AuthGoogleCallback
+ * @apiGroup Authentication
+ */
+router.get('/google/callback', function(req, res, next){
+  logger.debug('Google callback');
+  passport.authenticate('google', function(err, user, info) {
     logger.debug('After callback: ', user);
     if (err) return res.json({ error: err});
     if (!user) {
