@@ -20,7 +20,7 @@ var exp = require('express')
  */
 router.get('/manageUsers', 
   customMw.isAuthentificated, 
-  customMw.isAllowed('User', '*'), 
+  customMw.isAllowed('User', '*'), // Read, Write, Select, * 
   function(req, res) {
     logger.debug('Managing users...');
     return res.json({message: 'managing users...'});
