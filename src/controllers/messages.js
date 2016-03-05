@@ -12,6 +12,7 @@ var exp = require('express')
   , facebook = require('../helpers/facebook.js')
   , twitter = require('../helpers/twitter.js')
   , linkedin = require('../helpers/linkedin.js')
+  , gcm = require('../helpers/gcm.js')
   , router = exp.Router();
 
 /**
@@ -81,6 +82,38 @@ router.post('/facebook/sendNotification',
       req.body.userId,
       req.body.message, 
       function(err, body){
+        if (err) return res.json({error: err});
+        logger.debug(body);
+        return res.json({message: body});
+      });
+});
+
+/**
+ * @api {get} /android/notification Send message on Android
+ * @apiName AndroidNotification
+ * @apiGroup Messages
+ */
+router.get('/android/notification', 
+  customMw.isAuthentificated, 
+  function(req, res) {
+    logger.debug('Notification on Android');
+    gcm.sendNotification(function(err, body){
+        if (err) return res.json({error: err});
+        logger.debug(body);
+        return res.json({message: body});
+      });
+});
+
+/**
+ * @api {get} /android/notification Send message on Android
+ * @apiName AndroidNotification
+ * @apiGroup Messages
+ */
+router.get('/android/topicNotification', 
+  customMw.isAuthentificated, 
+  function(req, res) {
+    logger.debug('Topic notification on Android');
+    gcm.sendTopicNotification(function(err, body){
         if (err) return res.json({error: err});
         logger.debug(body);
         return res.json({message: body});

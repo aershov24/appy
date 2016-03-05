@@ -72,6 +72,36 @@ $(document).ready(function() {
     $("#json-renderer").show();
   });
 
+  $("#AndroidTopicNotification").click(function(){
+    $.ajax({
+      type: "GET",
+      url: "/messages/android/topicNotification?token="+token,
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(data){
+        $('#json-renderer').jsonViewer(data);
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
+  $("#AndroidNotification").click(function(){
+    $.ajax({
+      type: "GET",
+      url: "/messages/android/notification?token="+token,
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(data){
+        $('#json-renderer').jsonViewer(data);
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
   $("#LinkedInPostOnWall").click(function(){
     $.ajax({
       type: "POST",
