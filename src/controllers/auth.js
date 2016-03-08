@@ -12,6 +12,24 @@ var exp = require('express')
 var User = new UserRepository();
 
 /**
+ * @api {get} /auth/vk/link Link Vk account 
+ * @apiName AuthVk
+ * @apiGroup Authentication
+ */
+router.get('/vk/link', customMw.isAuthentificated, 
+  function(req, res, next){
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    logger.debug('Linking Vk account to', req.user);
+    passport.authenticate('vkontakte', {
+      scope: ['friends', 'email'],
+      state: JSON.stringify({
+          userId: User.getIdFromBLOB(req.user._id),
+          userToken: token
+        })
+    })(req, res, next);
+  });
+
+/**
  * @api {get} /auth/google/link Link Google account 
  * @apiName AuthGoogle
  * @apiGroup Authentication
@@ -270,6 +288,27 @@ router.get('/foursquare/callback', function(req, res, next){
 router.get('/google/callback', function(req, res, next){
   logger.debug('Google callback');
   passport.authenticate('google', function(err, user, info) {
+    logger.debug('After callback: ', user);
+    if (err) return res.json({ error: err});
+    if (!user) {
+      return res.json({ error: info });
+    }
+    if (user.token)
+    {
+      logger.debug('User token exists: ', user.token);
+      res.redirect('/users/profile?token='+user.token);
+    }
+  })(req, res, next);
+});
+
+/**
+ * @api {get} /auth/vk/callback Vk authentification callback
+ * @apiName AuthVkCallback
+ * @apiGroup Authentication
+ */
+router.get('/vk/callback', function(req, res, next){
+  logger.debug('Vk callback');
+  passport.authenticate('vkontakte', function(err, user, info) {
     logger.debug('After callback: ', user);
     if (err) return res.json({ error: err});
     if (!user) {

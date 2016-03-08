@@ -16,6 +16,7 @@ var linkedincall = null;
 var foursquarecall = null;
 var instagramcall = null;
 var googlepluscall = null;
+var vkcall = null;
 
 var rootPath = __dirname;
 var templatesPath = path.join(rootPath, 'templates'); 
@@ -69,6 +70,7 @@ if (ENV == 'PROD')
   foursquarecall = 'https://appyws.herokuapp.com/auth/foursquare/callback';
   instagramcall = 'https://appyws.herokuapp.com/auth/instagram/callback';
   googlepluscall = 'https://appyws.herokuapp.com/auth/google/callback';
+  vkcall = 'https://appyws.herokuapp.com/auth/vk/callback';
 }
 
 // development environment
@@ -119,6 +121,7 @@ if (ENV == 'DEV')
   foursquarecall = 'http://localhost:3000/auth/foursquare/callback';
   instagramcall = 'http://localhost:3000/auth/instagram/callback';
   googlepluscall = 'http://localhost:3000/auth/google/callback';
+  vkcall = 'http://localhost:3000/auth/vk/callback';
 }
 
 var facebook = {
@@ -162,6 +165,13 @@ var googleplus = {
     clientId : '960605552586-c3ejn9bloog6nv003cotli7b3qhkdobg.apps.googleusercontent.com',
     clientSecret : '8vk6j3e0tmgkVb0Ij-qITp6r',
     callback : googlepluscall
+}
+
+var vk = {
+    clientId : '5335535',
+    clientSecret : 'wY0YMU5yQUFmDVQNoCib',
+    callback : vkcall,
+    profileFields: ['screen_name','domain','photo_200_orig','sex','middle_name', 'city', 'bdate', 'photo_100','education', 'counters'] //http://vk.com/dev/fields
 }
 
 var locu = {
@@ -208,6 +218,7 @@ exports.twitter = twitter;
 exports.instagram = instagram;
 exports.foursquare = foursquare;
 exports.googleplus = googleplus;
+exports.vk = vk;
 exports.locu = locu;
 exports.googlegcm = googlegcm;
 

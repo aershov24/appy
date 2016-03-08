@@ -265,3 +265,31 @@ exports.googleAuth = function(req, accessToken, accessTokenSecret, profile, done
     }
   });
 };
+
+exports.vkAuth = function(req, accessToken, accessTokenSecret, params, profile, done){
+  process.nextTick(function(){
+    logger.debug(accessToken);
+    if (req.query.state){
+      var userInfo = JSON.parse(req.query.state);
+      logger.debug('User info: ', userInfo);
+      logger.debug('Vk accessToken: ', accessToken);
+      logger.debug('Vk params: ', params);
+      // linking acoounts and return to profile page
+      User.getById(User.getObjectId(userInfo.userId), 
+        function(err, user){
+          if (err) return done(err, null);
+          logger.debug('Current user: ', user);
+          user.vkontakte = profile;
+          user.vkontakte.accessToken = accessToken;
+          user.vkontakte.params = params;
+          user.token = userInfo.userToken;
+          logger.debug('token from info: ', user.token);
+          User.update(user, function(err, result){
+            if (err) return done(err, null);
+            logger.debug('auth user with token:', user);
+            return done(null, user);
+          });
+      });
+    }
+  });
+};

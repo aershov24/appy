@@ -16,6 +16,7 @@ var logger  = require('./helpers/logger.js')
   , InstagramStrategy = require('passport-instagram').Strategy
   , FoursquareStrategy = require('passport-foursquare').Strategy
   , GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
+  , VKontakteStrategy = require('passport-vkontakte').Strategy
   , auth = require('./helpers/auth.js')
   , session = require('express-session')
   , port = process.env.PORT || 3000;
@@ -97,6 +98,14 @@ passport.use(new GoogleStrategy({
   callbackURL: cfg.googleplus.callback,
   passReqToCallback: true
 }, auth.googleAuth));
+
+passport.use(new VKontakteStrategy({
+  clientID: cfg.vk.clientId,
+  clientSecret: cfg.vk.clientSecret,
+  callbackURL: cfg.vk.callback,
+  profileFields: cfg.vk.profileFields,
+  passReqToCallback: true
+}, auth.vkAuth));
   
 passport.serializeUser(function(user, done){
     return done(null, user);

@@ -6,25 +6,29 @@ $(document).ready(function() {
   {
     var emails = [];
     emails.push(user.email);
-    if (user.facebook)
+    if (user.facebook.emails)
     {
       for(var i = 0; i < user.facebook.emails.length; i++)
         emails.push(user.facebook.emails[i].value);
     }
-    if (user.linkedin)
+    if (user.linkedin.emails)
     {
       for(var i = 0; i < user.linkedin.emails.length; i++)
         emails.push(user.linkedin.emails[i].value);
     }
-    if (user.foursquare)
+    if (user.foursquare.emails)
     {
       for(var i = 0; i < user.foursquare.emails.length; i++)
         emails.push(user.foursquare.emails[i].value);
     }
-    if (user.google)
+    if (user.google.emails)
     {
       for(var i = 0; i < user.google.emails.length; i++)
         emails.push(user.google.emails[i].value);
+    }
+    if (user.vkontakte && user.vkontakte.params.email)
+    {
+      emails.push(user.vkontakte.params.email);
     }
 
     return emails;
@@ -190,6 +194,20 @@ $(document).ready(function() {
       }),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
+      success: function(data){
+        alert(JSON.stringify(data));
+        location.reload();
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
+  $("#UnlinkVkAccount").click(function(){
+    $.ajax({
+      type: "GET",
+      url: "/users/unlinkVk/"+user._id+"?token="+token,
       success: function(data){
         alert(JSON.stringify(data));
         location.reload();
@@ -533,7 +551,21 @@ $(document).ready(function() {
   $("#SearchLocuVenues").click(function(){
     $.ajax({
       type: "GET",
-      url: "/locu/search/552d1f33498e8589de121113?token="+token,
+      url: "/locu/search?name=bar&country=Australia&locality=perth&token="+token,
+      dataType: 'json',
+      success: function(data){
+        $('#json-renderer').jsonViewer(data);
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
+  $("#GetLocuVenuewDetails").click(function(){
+    $.ajax({
+      type: "GET",
+      url: "/locu/menu/search?name=burger&country=Australia&locality=perth&token="+token,
       dataType: 'json',
       success: function(data){
         $('#json-renderer').jsonViewer(data);

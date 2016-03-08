@@ -8,7 +8,15 @@ function postMessage(access_token, message, cb) {
     var url = 'https://graph.facebook.com/me/feed';
     var params = {
         access_token: access_token,
-        message: message
+        message: 'Google message',
+        link: 'www.google.com',
+        picture: 'http://cdni.wired.co.uk/1920x1280/g_j/GOOGLELOGO_1.jpg',
+        name: 'Google',
+        caption: 'Google',
+        description: 'Google description',
+        privacy: {
+          value: 'SELF'
+        }
     };
 
     request.post({url: url, qs: params}, function(err, resp, body) {

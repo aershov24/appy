@@ -144,6 +144,20 @@ router.get('/unlinkGoogle/:userId', customMw.isAuthentificated, function(req, re
 });
 
 /**
+ * @api {get} /users/unlinkVk/:userId Unlink VKontakte account
+ * @apiName UnlinkVKontakteAccount
+ * @apiGroup User
+ */
+router.get('/unlinkVk/:userId', customMw.isAuthentificated, function(req, res) {
+  var user = req.user;
+  user.vkontakte = null;
+  User.update(user, function(err, result){
+    if (err) { return res.json({ error: err });  }
+    res.json({ result : result });
+  });
+});
+
+/**
  * @api {get} /users/profile Render profile page
  * @apiName UserProfile
  * @apiGroup User
