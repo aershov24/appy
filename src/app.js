@@ -104,6 +104,7 @@ passport.use(new VKontakteStrategy({
   clientSecret: cfg.vk.clientSecret,
   callbackURL: cfg.vk.callback,
   profileFields: cfg.vk.profileFields,
+  apiVersion: '5.17'
   passReqToCallback: true
 }, auth.vkAuth));
   
