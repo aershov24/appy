@@ -131,14 +131,15 @@ var facebook = {
     callback: fbcall,
     // All the fields
     // https://developers.facebook.com/docs/graph-api/reference/v2.5/user
-    fields: ["id", "birthday", "email", "first_name", "gender", "last_name", "friends", "languages"]
+    profileFields: ['id', 'birthday', 'email', 'first_name', 'gender', 'last_name', 'friends', 'languages'],
+    scope: ['email', 'user_friends', 'publish_actions']
 }
 
 var linkedin = {
     apiKey: '755qgme9oyarzu',
     apiSecret: '4NH0WMakwmfngFAd',
     callback: linkedincall,
-    profileFields: ['r_emailaddress', 'w_share']
+    scope: ['r_emailaddress', 'w_share']
 }
 
 var twitter = {
@@ -164,14 +165,17 @@ var instagram = {
 var googleplus = {
     clientId : '960605552586-c3ejn9bloog6nv003cotli7b3qhkdobg.apps.googleusercontent.com',
     clientSecret : '8vk6j3e0tmgkVb0Ij-qITp6r',
-    callback : googlepluscall
+    callback : googlepluscall,
+    scope: ['profile', 'email']
 }
 
 var vk = {
     clientId : '5335535',
     clientSecret : 'wY0YMU5yQUFmDVQNoCib',
     callback : vkcall,
-    profileFields: ['screen_name','domain','photo_200_orig','sex','middle_name', 'city', 'bdate', 'photo_100','education', 'counters'] //http://vk.com/dev/fields
+    //http://vk.com/dev/fields
+    profileFields: ['screen_name','domain','photo_200_orig','sex','middle_name', 'city', 'bdate', 'photo_100','education', 'counters'],
+    scope: ['friends', 'email']
 }
 
 var locu = {

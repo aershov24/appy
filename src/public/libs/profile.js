@@ -6,22 +6,22 @@ $(document).ready(function() {
   {
     var emails = [];
     emails.push(user.email);
-    if (user.facebook.emails)
+    if (user.facebook && user.facebook.emails)
     {
       for(var i = 0; i < user.facebook.emails.length; i++)
         emails.push(user.facebook.emails[i].value);
     }
-    if (user.linkedin.emails)
+    if (user.linkedin && user.linkedin.emails)
     {
       for(var i = 0; i < user.linkedin.emails.length; i++)
         emails.push(user.linkedin.emails[i].value);
     }
-    if (user.foursquare.emails)
+    if (user.foursquare && user.foursquare.emails)
     {
       for(var i = 0; i < user.foursquare.emails.length; i++)
         emails.push(user.foursquare.emails[i].value);
     }
-    if (user.google.emails)
+    if (user.google && user.google.emails)
     {
       for(var i = 0; i < user.google.emails.length; i++)
         emails.push(user.google.emails[i].value);

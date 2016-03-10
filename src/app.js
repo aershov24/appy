@@ -59,7 +59,7 @@ passport.use(new FacebookStrategy({
     clientID: cfg.facebook.apiKey,
     clientSecret: cfg.facebook.apiSecret,
     callbackURL: cfg.facebook.callback,
-    profileFields: cfg.facebook.fields,
+    profileFields: cfg.facebook.profileFields,
     passReqToCallback: true
   }, auth.facebookAuth));
 
@@ -67,7 +67,7 @@ passport.use(new LinkedInStrategy({
     clientID: cfg.linkedin.apiKey,
     clientSecret: cfg.linkedin.apiSecret,
     callbackURL: cfg.linkedin.callback,
-    scope: cfg.linkedin.profileFields,
+    scope: cfg.linkedin.scope,
     passReqToCallback: true
   }, auth.linkedinAuth));
 

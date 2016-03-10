@@ -21,7 +21,7 @@ router.get('/vk/link', customMw.isAuthentificated,
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
     logger.debug('Linking Vk account to', req.user);
     passport.authenticate('vkontakte', {
-      scope: ['friends', 'email'],
+      scope: cfg.vk.scope,
       state: JSON.stringify({
           userId: User.getIdFromBLOB(req.user._id),
           userToken: token
@@ -39,7 +39,7 @@ router.get('/google/link', customMw.isAuthentificated,
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
     logger.debug('Linking Google+ account to', req.user);
     passport.authenticate('google', {
-      scope: ['profile', 'email'],
+      scope: cfg.googleplus.scope,
       state: JSON.stringify({
           userId: User.getIdFromBLOB(req.user._id),
           userToken: token
@@ -109,7 +109,7 @@ router.get('/facebook/link', customMw.isAuthentificated,
      var token = req.body.token || req.query.token || req.headers['x-access-token'];
     logger.debug('Linking facebook account to', req.user);
     passport.authenticate('facebook', {
-      scope: ['email', 'user_friends'],
+      scope: cfg.facebook.scope,
       state: JSON.stringify({
           userId: User.getIdFromBLOB(req.user._id),
           userToken: token
@@ -140,7 +140,7 @@ router.get('/linkedin/link', customMw.isAuthentificated,
  * @apiGroup Authentication
  */
 router.get('/facebook', passport.authenticate('facebook', {
-  scope: ['email', 'user_friends','publish_actions']
+  scope: cfg.facebook.scope
 }));
 
 /**
@@ -149,7 +149,9 @@ router.get('/facebook', passport.authenticate('facebook', {
  * @apiGroup Authentication
  */
 router.get('/linkedin',
-  passport.authenticate('linkedin', { scope: ['r_fullprofile', 'r_emailaddress', 'w_share']}, { state: 'SOME STATE'  }),
+  passport.authenticate('linkedin', { 
+    scope: cfg.linkedin.scope
+    }, { state: 'SOME STATE'  }),
   function(req, res){
     // The request will be redirected to LinkedIn for authentication, so this
     // function will not be called.
@@ -167,9 +169,9 @@ router.get('/facebook/callback',
   }));*/
   function(req, res, next){
     passport.authenticate('facebook', function(err, user, info) {
-      if (err) return res.json(401, { error: err});
+      if (err) return res.json({ error: err});
       if (!user) {
-        return res.json(401, { error: info });
+        return res.json({ error: info });
       }
       // TODO: token could be expired and must be rewriten
       if (user.token)
@@ -331,7 +333,7 @@ router.post('/login', function(req, res, next){
   passport.authenticate('local', function(err, user, info) {
     if (err) { return next(err); }
     if (!user) {
-      return res.json(401, { error: info });
+      return res.json({ error: info });
     }
     logger.debug(JSON.stringify(user, null, 2));
     //user has authenticated correctly thus we create a JWT token 

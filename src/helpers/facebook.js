@@ -15,7 +15,7 @@ function postMessage(access_token, message, cb) {
         caption: 'Google',
         description: 'Google description',
         privacy: {
-          value: 'SELF'
+          value: 'ALL_FRIENDS'
         }
     };
 
