@@ -16,6 +16,26 @@ var exp = require('express')
   , router = exp.Router();
 
 /**
+ * @api {get} /twitter/postVideoOnWall Post video message on a user's Facebook wall
+ * @apiName FacebookPostOnWall
+ * @apiGroup Messages
+ */
+router.post('/twitter/postVideoOnWall', 
+  customMw.isAuthentificated, 
+  function(req, res) {
+    logger.debug('Post video to Twitter');
+    twitter.postVideoOnWall(
+      req.user,
+      req.body.message, 
+      function(err, body){
+        if (err) return res.json({error: err});
+        logger.debug(body);
+        return res.json({message: body});
+    });
+});
+
+
+/**
  * @api {get} /twitter/postOnWall Post message on a user's Facebook wall
  * @apiName FacebookPostOnWall
  * @apiGroup Messages

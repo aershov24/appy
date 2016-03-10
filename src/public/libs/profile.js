@@ -144,6 +144,24 @@ $(document).ready(function() {
     });
   });
 
+  $("#TwitterPostVideoOnWall").click(function(){
+    $.ajax({
+      type: "POST",
+      url: "/messages/twitter/postVideoOnWall?token="+token,
+      data: JSON.stringify({ 
+        message: "I think it's a good day today..."
+      }),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(data){
+        $('#json-renderer').jsonViewer(data);
+      },
+      failure: function(errMsg) {
+        alert(JSON.stringify(errMsg));
+      }
+    });
+  });
+
   $("#TwitterPostOnWall").click(function(){
     $.ajax({
       type: "POST",

@@ -45,7 +45,9 @@
     "passport-vkontakte": "^0.4.0",
     "request": "^2.69.0",
     "twilio": "^2.9.0",
+    "twit": "^2.2.3",
     "twitter": "^1.2.5",
+    "twitter-media": "^0.1.0",
     "winston": "^2.1.1",
     "winston-loggly": "^1.3.1",
     "winston-mongodb": "^1.3.0"
