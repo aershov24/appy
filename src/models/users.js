@@ -51,20 +51,24 @@ User.prototype.FindByLinkedinId = function(linkedinId, cb) {
   });
 };
 
+User.prototype.FindByFoursquareId = function(foursquareId, cb) {
+  this.findByValue('foursquare.id', foursquareId, function(err, user) {
+    if (err) 
+      return cb(err, null);
+    return cb(null, user);
+  });
+};
+
 User.prototype.AddUser = function(newUser, cb){
   var self = this;
-  self.findByValue('username', newUser.username, function(err, user) {
+  self.findByValue('email', newUser.email, function(err, user) {
     if (err) return cb(err, null);
-    if (user) return cb(RESOURCES.ERRORS.UserNameExists, null);
-    self.findByValue('email', newUser.email, function(e, user) {
-      if (err) return cb(err, null);
-      if (user) return cb(RESOURCES.ERRORS.UserEmailExists, null);
-      saltAndHash(newUser.password, function(hash){
-        newUser.password = hash;
-        self.create(newUser, function(err, user){
-          if (err) return cb(err, null);
-          return cb(null, user);
-        });
+    if (user) return cb(RESOURCES.ERRORS.UserEmailExists, null);
+    saltAndHash(newUser.password, function(hash){
+      newUser.password = hash;
+      self.create(newUser, function(err, user){
+        if (err) return cb(err, null);
+        return cb(null, user);
       });
     });
   });

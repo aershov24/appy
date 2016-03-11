@@ -127,12 +127,21 @@ router.get('/linkedin/link', customMw.isAuthentificated,
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
     logger.debug('Linking Linkedin account to', req.user);
     passport.authenticate('linkedin', {
+      scope: cfg.linkedin.scope,
       state: JSON.stringify({
           userId: User.getIdFromBLOB(req.user._id),
-          userToken: token
+          userToken: token,
+          flag: 'true'
         })
     })(req, res, next);
   });
+
+/**
+ * @api {get} /auth/foursquare Fousquare authentification 
+ * @apiName AuthFousquare
+ * @apiGroup Authentication
+ */
+router.get('/foursquare', passport.authenticate('foursquare'));
 
 /**
  * @api {get} /auth/facebook Facebook authentification
@@ -150,8 +159,9 @@ router.get('/facebook', passport.authenticate('facebook', {
  */
 router.get('/linkedin',
   passport.authenticate('linkedin', { 
-    scope: cfg.linkedin.scope
-    }, { state: 'SOME STATE'  }),
+    scope: cfg.linkedin.scope,
+    state: JSON.stringify({flag: 'false'})
+    }),
   function(req, res){
     // The request will be redirected to LinkedIn for authentication, so this
     // function will not be called.
@@ -185,8 +195,11 @@ router.get('/facebook/callback',
         var token = jwt.sign(user._id, cfg.JSONToken.secret, {
           expiresIn: cfg.JSONToken.expires
         });
-        //return res.json({ token : token, expires: cfg.JSONToken.expires });
-        res.redirect('/users/profile?token='+token);
+        user.token = token;
+        User.update(user, function(err, result){
+          if (err) return res.json({ error: err});
+          res.redirect('/users/profile?token='+user.token);
+        });
       }
     })(req, res, next);
   }
@@ -214,8 +227,11 @@ router.get('/linkedin/callback', function(req, res, next){
       var token = jwt.sign(user._id, cfg.JSONToken.secret, {
         expiresIn: cfg.JSONToken.expires
       });
-      //return res.json({ token : token, expires: cfg.JSONToken.expires });
-      res.redirect('/users/profile?token='+token);
+      user.token = token;
+      User.update(user, function(err, result){
+        if (err) return res.json({ error: err});
+        res.redirect('/users/profile?token='+user.token);
+      });
     }
   })(req, res, next);
 });
@@ -278,6 +294,17 @@ router.get('/foursquare/callback', function(req, res, next){
     {
       logger.debug('User token exists: ', user.token);
       res.redirect('/users/profile?token='+user.token);
+    } 
+    else {
+      //user has authenticated correctly thus we create a JWT token 
+      var token = jwt.sign(user._id, cfg.JSONToken.secret, {
+        expiresIn: cfg.JSONToken.expires
+      });
+      user.token = token;
+      User.update(user, function(err, result){
+        if (err) return res.json({ error: err});
+        res.redirect('/users/profile?token='+user.token);
+      });
     }
   })(req, res, next);
 });

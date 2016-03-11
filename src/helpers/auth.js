@@ -108,10 +108,11 @@ exports.facebookAuth = function(req, accessToken, refreshToken, profile, done){
 
 exports.linkedinAuth = function(req, accessToken, refreshToken, profile, done){
   process.nextTick(function(){
-  // linking accounta
-    if (req.query.state)
+    // linking accounta
+    logger.debug('state: ', req.query);
+    var userInfo = JSON.parse(req.query.state);
+    if (userInfo.flag == 'true')
     {
-      var userInfo = JSON.parse(req.query.state);
       logger.debug('Linked user: ', userInfo);
       logger.debug('Linked accessToken: ', accessToken);
       // linking acoounts and return to profile page
@@ -131,7 +132,7 @@ exports.linkedinAuth = function(req, accessToken, refreshToken, profile, done){
     // user authentification
     else
     {
-      logger.debug("LinkedIn profile: ", JSON.stringify(profile, null, 2));
+      //logger.debug("LinkedIn profile: ", JSON.stringify(profile, null, 2));
       User.FindByLinkedinId(profile.id, 
         function (err, user){
           if (err)
@@ -143,10 +144,15 @@ exports.linkedinAuth = function(req, accessToken, refreshToken, profile, done){
           logger.debug("Founded User: ", user);
           if (!user){
             var newUser = {
-              linkedin: profile
+              linkedin: profile,
+              username:  profile.name.givenName+profile.name.familyName,
+              name: profile.name.givenName+' '+profile.name.familyName,
+              email: profile.emails[0].value
             };
 
+            newUser.linkedin.accessToken = accessToken;
             logger.debug("New LinkedIn User: ", newUser);
+            //user has authenticated correctly thus we create a JWT token 
 
             User.AddUser(newUser, function(err, user){
               if (err) return done(err, null);
@@ -216,7 +222,7 @@ exports.instagramAuth = function(req, accessToken, accessTokenSecret, profile, d
 
 exports.foursquareAuth = function(req, accessToken, accessTokenSecret, profile, done){
   process.nextTick(function(){
-    logger.debug(accessToken);
+    logger.debug('token: ', accessToken);
     if (req.query.state){
       var userInfo = JSON.parse(req.query.state);
       logger.debug('User info: ', userInfo);
@@ -235,6 +241,43 @@ exports.foursquareAuth = function(req, accessToken, accessTokenSecret, profile, 
             logger.debug('auth user with token:', user);
             return done(null, user);
           });
+      });
+    }
+    // user authentification
+    else
+    {
+      logger.debug("Foursquare profile: ", JSON.stringify(profile, null, 2));
+      User.FindByFoursquareId(profile.id, 
+        function (err, user){
+          if (err)
+          {
+            logger.error(err);
+            return done(err, false);
+          }
+
+          logger.debug("Founded User: ", user);
+          if (!user){
+            var newUser = {
+              foursquare: profile,
+              username:  profile.name.givenName+profile.name.familyName,
+              name: profile.name.givenName+' '+profile.name.familyName,
+              email: profile.emails[0].value
+            };
+
+            newUser.foursquare.accessToken = accessToken;
+            logger.debug("New Foursquare User: ", newUser);
+
+            User.AddUser(newUser, function(err, user){
+              if (err) return done(err, null);
+              logger.debug('User created with Foursquare: %s', profile.id);
+              logger.debug(user);
+              return done(null, user);
+            });
+          }
+          else{
+            logger.debug('User with Foursquare existed: ', profile.id);
+            return done(null, user);
+          }
       });
     }
   });
